@@ -1,0 +1,404 @@
+$window-full-cont-width: 1900px;
+$window-mob-cont-width: 320px;
+
+@function VW($size) {
+  @return calc($size / $window-full-cont-width) * 100vw;
+}
+
+@function VWMob($size) {
+  @return calc($size / $window-mob-cont-width) * 100vw;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap');
+
+//reset start
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  padding-inline-start: 0;
+}
+
+html, body {
+  min-height: 100vh;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  position: relative;
+  width: 100%;
+  //overflow-x: hidden;
+  background-color: #F2F4F7;
+}
+
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+button {
+  padding: 0;
+}
+
+a, p, h1, h2, h3, h4, h5, h6, button, input, label, span, div {
+  overflow-wrap: break-word;
+
+  font-family: Montserrat, sans-serif;
+  color: black;
+  font-weight: 600;
+  font-size: VW(18px);
+}
+
+.visually-hidden {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  clip: rect(0 0 0 0);
+  margin: -1px;
+  visibility: hidden;
+}
+
+.undisplayed {
+  display: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+input[data-autocompleted] {
+  background-color: transparent !important;
+}
+
+//reset end
+
+.hide-on-mob {
+  display: block;
+}
+
+.btn_black {
+  display: block;
+  text-align: center;
+  width: 100%;
+
+  padding: VW(19px) 0;
+
+  font-size: VW(18px);
+  color: #FFFFFF;
+
+  border: none;
+  outline: none;
+
+  border-radius: VW(15px);
+  background-color: #000000;
+
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+
+  transition: background-color ease-in-out 250ms;
+
+  &:hover {
+    background-color: #2E0041;
+  }
+
+  &:disabled {
+    cursor: auto;
+    color: gray;
+    //color: #FFFFFF80;
+    //background-color: #0047FF33;
+  }
+}
+
+.input_white{
+  position: relative;
+  width: 100%;
+  height: VW(60px);
+
+  background-color: #FFFFFF;
+  border-radius: VW(15px);
+
+  &-field{
+    position: absolute;
+    left: VW(30px);
+    top: VW(19px);
+    width: 75%;
+
+    background: none;
+    border: none;
+    outline: none;
+
+    &::placeholder{
+      color: #6F7071;
+    }
+  }
+
+  &-eye{
+    position: absolute;
+    top: VW(24px);
+    right: VW(30px);
+
+    width: VW(21px);
+    height: VW(13px);
+
+    cursor: pointer;
+    user-select: none;
+
+    transition: opacity ease-in-out 250ms;
+    opacity: 0;
+
+    &_active{
+      opacity: 1;
+    }
+
+    img{
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.header{
+  position: fixed;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  gap: VW(60px);
+
+  padding: VW(10px) VW(200px);
+  width: 100%;
+  height: VW(80px);
+
+  background-color: #FFFFFF;
+}
+
+.auth{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+
+  width: VW(360px);
+
+  display: grid;
+  align-items: center;
+  text-align: center;
+
+  &__head{
+    font-weight: 700;
+    font-size:VW(32px);
+
+    margin-bottom: VW(20px);
+  }
+
+  &__input{
+    margin-top: VW(30px);
+  }
+
+  &__link{
+    color: #00000080;
+
+    margin-top: VW(20px);
+
+    transition: color ease-in-out 250ms;
+
+    &:hover{
+      color: #000000;
+    }
+  }
+
+  &__btn{
+    margin-top: VW(50px);
+  }
+
+  &__text{
+    margin-top: VW(20px);
+    a{
+      color: #B700FF;
+    }
+  }
+}
+
+
+.hide-on-desktop {
+  display: none;
+}
+
+
+@media (max-width: 768px) {
+
+  .hide-on-desktop {
+    display: block;
+  }
+
+  a, p, h1, h2, h3, h4, h5, h6, button, input, label {
+    overflow-wrap: break-word;
+
+    font-family: Montserrat, sans-serif;
+    color: black;
+    font-weight: 600;
+    font-size: VWMob(10px);
+  }
+
+  .btn_black {
+    display: block;
+    text-align: center;
+    width: 100%;
+
+    padding: VWMob(10px) 0 VWMob(11px);
+
+    font-weight: 700;
+    font-size: VWMob(10px);
+    color: #FFFFFF;
+
+    border: none;
+    outline: none;
+
+    border-radius: VWMob(8px);
+    background-color: #000000;
+
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+
+    transition: background-color ease-in-out 250ms;
+
+    &:hover {
+      //background-color: #0033B7;
+    }
+
+    &:disabled {
+      cursor: auto;
+      color: gray;
+      //color: #FFFFFF80;
+      //background-color: #0047FF33;
+    }
+  }
+
+  .input_white{
+    position: relative;
+    width: 100%;
+    height: VWMob(33px);
+
+    background-color: #FFFFFF;
+    border-radius: VWMob(7.5px);
+
+    &-field{
+      position: absolute;
+      left: VWMob(15px);
+      top: VWMob(10px);
+      width: 75%;
+
+      background: none;
+      border: none;
+      outline: none;
+
+      &::placeholder{
+        color: #6F7071;
+      }
+    }
+
+    &-eye{
+      position: absolute;
+      top: VWMob(13px);
+      right: VWMob(14.5px);
+
+      width: VWMob(14px);
+      height: VWMob(8px);
+
+      cursor: pointer;
+      user-select: none;
+
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .header{
+    position: fixed;
+    top: 0;
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    gap: VWMob(20px);
+
+    padding: VWMob(5px) VWMob(15px);
+    width: 100%;
+    height: VWMob(50px);
+
+    background-color: #FFFFFF;
+  }
+
+  .auth{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    width: VWMob(262px);
+
+    display: grid;
+    align-items: center;
+    text-align: center;
+
+    &__head{
+      font-weight: 700;
+      font-size:VWMob(20px);
+
+      margin-bottom: VWMob(10px);
+    }
+
+    &__input{
+      margin-top: VWMob(15px);
+    }
+
+    &__link{
+      color: #00000080;
+
+      margin-top: VWMob(10px);
+    }
+
+    &__btn{
+      margin-top: VWMob(25px);
+    }
+
+    &__text{
+      margin-top: VWMob(10px);
+      a{
+        color: #B700FF;
+      }
+    }
+  }
+
+
+
+
+
+  .hide-on-mob {
+    display: none;
+  }
+}

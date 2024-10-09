@@ -1,0 +1,308 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap");
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 0;
+}
+
+html, body {
+    min-height: 100vh;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    position: relative;
+    width: 100%;
+    background-color: #F2F4F7;
+}
+
+body:has(dialog[open]) {
+    overflow: hidden;
+}
+
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+
+input, button, textarea, select {
+    font: inherit;
+}
+
+button {
+    padding: 0;
+}
+
+a, p, h1, h2, h3, h4, h5, h6, button, input, label, span, div {
+    overflow-wrap: break-word;
+    font-family: Montserrat, sans-serif;
+    color: black;
+    font-weight: 600;
+    font-size: 0.9473684211vw;
+}
+
+.visually-hidden {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    clip: rect(0 0 0 0);
+    margin: -1px;
+    visibility: hidden;
+}
+
+.undisplayed {
+    display: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+input[data-autocompleted] {
+    background-color: transparent !important;
+}
+
+.hide-on-mob {
+    display: block;
+}
+
+.btn_black {
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 1vw 0;
+    font-size: 0.9473684211vw;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+    border-radius: 0.7894736842vw;
+    background-color: #000000;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    transition: background-color ease-in-out 250ms;
+}
+.btn_black:hover {
+    background-color: #2E0041;
+}
+.btn_black:disabled {
+    cursor: auto;
+    color: gray;
+}
+
+.input_white {
+    position: relative;
+    width: 100%;
+    height: 3.1578947368vw;
+    background-color: #FFFFFF;
+    border-radius: 0.7894736842vw;
+}
+.input_white-field {
+    position: absolute;
+    left: 1.5789473684vw;
+    top: 1vw;
+    width: 75%;
+    background: none;
+    border: none;
+    outline: none;
+}
+.input_white-field::placeholder {
+    color: #6F7071;
+}
+.input_white-eye {
+    position: absolute;
+    top: 1.2631578947vw;
+    right: 1.5789473684vw;
+    width: 1.1052631579vw;
+    height: 0.6842105263vw;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity ease-in-out 250ms;
+    opacity: 0;
+}
+.input_white-eye_active {
+    opacity: 1;
+}
+.input_white-eye img {
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 3.1578947368vw;
+    padding: 0.5263157895vw 10.5263157895vw;
+    width: 100%;
+    height: 4.2105263158vw;
+    background-color: #FFFFFF;
+}
+
+.auth {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18.9473684211vw;
+    display: grid;
+    align-items: center;
+    text-align: center;
+}
+.auth__head {
+    font-weight: 700;
+    font-size: 1.6842105263vw;
+    margin-bottom: 1.0526315789vw;
+}
+.auth__input {
+    margin-top: 1.5789473684vw;
+}
+.auth__link {
+    color: rgba(0, 0, 0, 0.5019607843);
+    margin-top: 1.0526315789vw;
+    transition: color ease-in-out 250ms;
+}
+.auth__link:hover {
+    color: #000000;
+}
+.auth__btn {
+    margin-top: 2.6315789474vw;
+}
+.auth__text {
+    margin-top: 1.0526315789vw;
+}
+.auth__text a {
+    color: #B700FF;
+}
+
+.hide-on-desktop {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .hide-on-desktop {
+        display: block;
+    }
+    a, p, h1, h2, h3, h4, h5, h6, button, input, label {
+        overflow-wrap: break-word;
+        font-family: Montserrat, sans-serif;
+        color: black;
+        font-weight: 600;
+        font-size: 3.125vw;
+    }
+    .btn_black {
+        display: block;
+        text-align: center;
+        width: 100%;
+        padding: 3.125vw 0 3.4375vw;
+        font-weight: 700;
+        font-size: 3.125vw;
+        color: #FFFFFF;
+        border: none;
+        outline: none;
+        border-radius: 2.5vw;
+        background-color: #000000;
+        cursor: pointer;
+        text-decoration: none;
+        user-select: none;
+        transition: background-color ease-in-out 250ms;
+    }
+    .btn_black:disabled {
+        cursor: auto;
+        color: gray;
+    }
+    .input_white {
+        position: relative;
+        width: 100%;
+        height: 10.3125vw;
+        background-color: #FFFFFF;
+        border-radius: 2.34375vw;
+    }
+    .input_white-field {
+        position: absolute;
+        left: 4.6875vw;
+        top: 3.125vw;
+        width: 75%;
+        background: none;
+        border: none;
+        outline: none;
+    }
+    .input_white-field::placeholder {
+        color: #6F7071;
+    }
+    .input_white-eye {
+        position: absolute;
+        top: 4.0625vw;
+        right: 4.53125vw;
+        width: 4.375vw;
+        height: 2.5vw;
+        cursor: pointer;
+        user-select: none;
+    }
+    .input_white-eye img {
+        width: 100%;
+        height: 100%;
+    }
+    .header {
+        position: fixed;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 6.25vw;
+        padding: 1.5625vw 4.6875vw;
+        width: 100%;
+        height: 15.625vw;
+        background-color: #FFFFFF;
+    }
+    .auth {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 81.875vw;
+        display: grid;
+        align-items: center;
+        text-align: center;
+    }
+    .auth__head {
+        font-weight: 700;
+        font-size: 6.25vw;
+        margin-bottom: 3.125vw;
+    }
+    .auth__input {
+        margin-top: 4.6875vw;
+    }
+    .auth__link {
+        color: rgba(0, 0, 0, 0.5019607843);
+        margin-top: 3.125vw;
+    }
+    .auth__btn {
+        margin-top: 7.8125vw;
+    }
+    .auth__text {
+        margin-top: 3.125vw;
+    }
+    .auth__text a {
+        color: #B700FF;
+    }
+    .hide-on-mob {
+        display: none;
+    }
+}
+
+/*# sourceMappingURL=main.css.map */
