@@ -1,26 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { HelmetProvider } from 'react-helmet-async';
+import { Route, Routes } from 'react-router-dom';
+import { AppRoute } from './const';
+import LoginPage from './pages/LoginPage';
+import SigninPage from './pages/SigninPage';
+import MainPage from './pages/MainPage';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <HelmetProvider>
+            <Routes>
+                <Route path={AppRoute.Main} element={<MainPage />} />
+                <Route path={AppRoute.Login} element={<LoginPage />} />
+                <Route path={AppRoute.SignIn} element={<SigninPage />} />
+            </Routes>
+        </HelmetProvider>
+    );
 }
 
 export default App;
