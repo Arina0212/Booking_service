@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap");
+
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -94,9 +95,11 @@ input[data-autocompleted] {
     user-select: none;
     transition: background-color ease-in-out 250ms;
 }
+
 .btn_black:hover {
     background-color: #2E0041;
 }
+
 .btn_black:disabled {
     cursor: auto;
     color: gray;
@@ -109,6 +112,7 @@ input[data-autocompleted] {
     background-color: #FFFFFF;
     border-radius: 0.7894736842vw;
 }
+
 .input_white-field {
     position: absolute;
     left: 1.5789473684vw;
@@ -118,9 +122,11 @@ input[data-autocompleted] {
     border: none;
     outline: none;
 }
+
 .input_white-field::placeholder {
     color: #6F7071;
 }
+
 .input_white-eye {
     position: absolute;
     top: 1.2631578947vw;
@@ -130,11 +136,12 @@ input[data-autocompleted] {
     cursor: pointer;
     user-select: none;
     transition: opacity ease-in-out 250ms;
-    opacity: 0;
 }
+
 .input_white-eye_active {
     opacity: 1;
 }
+
 .input_white-eye img {
     width: 100%;
     height: 100%;
@@ -163,28 +170,35 @@ input[data-autocompleted] {
     align-items: center;
     text-align: center;
 }
+
 .auth__head {
     font-weight: 700;
     font-size: 1.6842105263vw;
     margin-bottom: 1.0526315789vw;
 }
+
 .auth__input {
     margin-top: 1.5789473684vw;
 }
+
 .auth__link {
     color: rgba(0, 0, 0, 0.5019607843);
     margin-top: 1.0526315789vw;
     transition: color ease-in-out 250ms;
 }
+
 .auth__link:hover {
     color: #000000;
 }
+
 .auth__btn {
     margin-top: 2.6315789474vw;
 }
+
 .auth__text {
     margin-top: 1.0526315789vw;
 }
+
 .auth__text a {
     color: #B700FF;
 }
@@ -197,6 +211,7 @@ input[data-autocompleted] {
     .hide-on-desktop {
         display: block;
     }
+
     a, p, h1, h2, h3, h4, h5, h6, button, input, label {
         overflow-wrap: break-word;
         font-family: Montserrat, sans-serif;
@@ -204,6 +219,7 @@ input[data-autocompleted] {
         font-weight: 600;
         font-size: 3.125vw;
     }
+
     .btn_black {
         display: block;
         text-align: center;
@@ -221,10 +237,12 @@ input[data-autocompleted] {
         user-select: none;
         transition: background-color ease-in-out 250ms;
     }
+
     .btn_black:disabled {
         cursor: auto;
         color: gray;
     }
+
     .input_white {
         position: relative;
         width: 100%;
@@ -232,6 +250,7 @@ input[data-autocompleted] {
         background-color: #FFFFFF;
         border-radius: 2.34375vw;
     }
+
     .input_white-field {
         position: absolute;
         left: 4.6875vw;
@@ -241,9 +260,11 @@ input[data-autocompleted] {
         border: none;
         outline: none;
     }
+
     .input_white-field::placeholder {
         color: #6F7071;
     }
+
     .input_white-eye {
         position: absolute;
         top: 4.0625vw;
@@ -253,10 +274,12 @@ input[data-autocompleted] {
         cursor: pointer;
         user-select: none;
     }
+
     .input_white-eye img {
         width: 100%;
         height: 100%;
     }
+
     .header {
         position: fixed;
         top: 0;
@@ -269,6 +292,7 @@ input[data-autocompleted] {
         height: 15.625vw;
         background-color: #FFFFFF;
     }
+
     .auth {
         position: absolute;
         top: 50%;
@@ -279,27 +303,34 @@ input[data-autocompleted] {
         align-items: center;
         text-align: center;
     }
+
     .auth__head {
         font-weight: 700;
         font-size: 6.25vw;
         margin-bottom: 3.125vw;
     }
+
     .auth__input {
         margin-top: 4.6875vw;
     }
+
     .auth__link {
         color: rgba(0, 0, 0, 0.5019607843);
         margin-top: 3.125vw;
     }
+
     .auth__btn {
         margin-top: 7.8125vw;
     }
+
     .auth__text {
         margin-top: 3.125vw;
     }
+
     .auth__text a {
         color: #B700FF;
     }
+
     .hide-on-mob {
         display: none;
     }

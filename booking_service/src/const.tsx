@@ -23,5 +23,5 @@ export enum AuthorizationStatus {
 
 export const SingInErrorMessage = {
     Email: 'Введите верный email',
-    Password: 'Пароль должен содежать хотя бы одину букву и одну цифру',
+    Password: 'Пароль должен содежать хотя бы одину букву и одну цифру и быть не короче 8 символов',
 };

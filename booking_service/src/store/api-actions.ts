@@ -26,9 +26,10 @@ export const loginAction = createAsyncThunk<
         state: State;
         extra: AxiosInstance;
     }
->('auth/login', async ({ email, password }, { dispatch, extra: api }) => {
-    const { data } = await api.post<UserData>(APIRoute.Login, { email, password });
-    saveToken(data.token);
+>('auth/login', async ({ email, password }: AuthData, { dispatch, extra: api }): Promise<LoginData> => {
+    const { data } = await api.post<LoginData>(APIRoute.Login, { email, password });
+    saveToken(data.access_token);
+    console.log(data.access_token);
     if (data.error === undefined) {
         dispatch(redirectToRoute(AppRoute.Main));
     } else {
@@ -58,11 +59,8 @@ export const SignInAction = createAsyncThunk<
         state: State;
         extra: AxiosInstance;
     }
->('auth/register', async ({ first_name, last_name, patronymic, password, email }, { dispatch, extra: api }) => {
+>('auth/register', async ({ password, email }: SignInData, { dispatch, extra: api }): Promise<UserData> => {
     const { data } = await api.post<UserData>(APIRoute.SignIn, {
-        first_name,
-        last_name,
-        patronymic,
         password,
         email,
     });
