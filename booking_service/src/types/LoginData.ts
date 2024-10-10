@@ -5,6 +5,7 @@ export type AuthData = {
 
 export type LoginData = {
     email: string;
-    token: string;
+    access_token: string;
+    token_type: string;
     error: string;
 };
