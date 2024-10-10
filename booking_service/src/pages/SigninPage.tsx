@@ -11,8 +11,6 @@ export default function SigninPage() {
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const [inputType, setInputType] = useState('password');
     const [error, setError] = useState('');
-    const [isErrorEmail, setIsErrorEmail] = useState(false);
-    const [isErrorPassword, setIsErrorPassword] = useState(false);
 
     const dispatch = useAppDispatch();
 
@@ -40,19 +38,17 @@ export default function SigninPage() {
     const containsAnyNumbers = (password: string) => /[0-9]+/i.test(password);
     const isValidEmail = (email: string) => /^[\w-\\.]+@+[\w-]+\.[a-z]{2,4}$/i.test(email);
 
-    const hendlerSubmitForm = (evt: FormEvent<HTMLFormElement>) => {
+    const handlerSubmitForm = (evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
         if (emailRef.current && passwordRef.current) {
             if (!isValidEmail(emailRef.current.value)) {
                 setError(SingInErrorMessage.Email);
-                setIsErrorEmail(true);
             } else if (
                 !containsAnyLetters(passwordRef.current.value) ||
                 !containsAnyNumbers(passwordRef.current.value) ||
                 passwordRef.current.value.length < 8
             ) {
                 setError(SingInErrorMessage.Password);
-                setIsErrorPassword(true);
             } else if (valueNewPass !== valueConfirmNewPass) {
                 setError('Пароли должны совпадать');
             } else {
@@ -69,7 +65,7 @@ export default function SigninPage() {
         <>
             <header className="header"></header>
 
-            <form className="auth" onSubmit={hendlerSubmitForm}>
+            <form className="auth" onSubmit={handlerSubmitForm}>
                 <h1 className="auth__head">Регистрация</h1>
                 <div className="login__message">
                     <p>{error}</p>

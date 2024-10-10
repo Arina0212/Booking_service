@@ -7,17 +7,6 @@ import { dropToken, saveToken } from '../services/token';
 import { SignInData, UserData } from '../types/SignInData';
 import { AuthData, LoginData } from '../types/LoginData';
 
-// export const checkAuthAction = createAsyncThunk<void, undefined, {
-//   dispatch: AppDispatch;
-//   state: State;
-//   extra: AxiosInstance;
-// }>(
-//   'user/checkAuth',
-//   async (_arg, {extra: api}) => {
-//     await api.get(APIRoute.Login);
-//   },
-// );
-
 export const loginAction = createAsyncThunk<
     LoginData,
     AuthData,
@@ -64,7 +53,7 @@ export const SignInAction = createAsyncThunk<
         password,
         email,
     });
-    saveToken(data.token);
+    saveToken(data.access_token);
     if (data.email === undefined) {
         dispatch(redirectToRoute(AppRoute.Main));
     } else {

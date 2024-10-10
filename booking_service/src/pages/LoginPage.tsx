@@ -17,9 +17,6 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [password, setPassword] = useState<string | null>(null);
 
-    const [isErrorEmail, setIsErrorEmail] = useState(false);
-    const [isErrorPassword, setIsErrorPassword] = useState(false);
-    console.log(isErrorEmail, isErrorPassword);
     const dispatch = useAppDispatch();
 
     const containsAnyLetters = (password: string) => /[a-z]+/i.test(password);
@@ -31,10 +28,8 @@ export default function LoginPage() {
         if (emailRef.current && passwordRef.current) {
             if (!isValidEmail(emailRef.current.value)) {
                 setError(SingInErrorMessage.Email);
-                setIsErrorEmail(true);
             } else if (!containsAnyLetters(passwordRef.current.value) || !containsAnyNumbers(passwordRef.current.value)) {
                 setError(SingInErrorMessage.Password);
-                setIsErrorPassword(true);
             } else {
                 dispatch(
                     loginAction({

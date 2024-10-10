@@ -5,6 +5,7 @@ export type SignInData = {
 
 export type UserData = {
     email: string;
-    token: string;
-    error: string;
+    access_token: string;
+    token_type: string;
+    msg: string;
 };
