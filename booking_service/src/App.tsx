@@ -2,7 +2,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from './const';
 import LoginPage from './pages/LoginPage';
-import SigninPage from './pages/SigninPage';
+import SigninPage from './pages/SignInPage';
 import MainPage from './pages/MainPage';
 
 function App() {

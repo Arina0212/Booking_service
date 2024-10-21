@@ -4,6 +4,7 @@ import { FormEvent, useRef, useState } from 'react';
 import { loginAction } from '../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { getError } from '../store/user-process/selectors';
+import Header from '../components/Header';
 
 export default function LoginPage() {
     const [inputType, setInputType] = useState('password');
@@ -42,7 +43,7 @@ export default function LoginPage() {
     };
     return (
         <>
-            <header className="header"></header>
+            <Header />
 
             <form className="auth" onSubmit={handleSubmit}>
                 <h1 className="auth__head">Вход</h1>

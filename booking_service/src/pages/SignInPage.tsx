@@ -4,8 +4,9 @@ import { FormEvent, SetStateAction, useRef, useState } from 'react';
 import { SignInAction } from '../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { getEmailError } from '../store/user-process/selectors';
+import Header from '../components/Header';
 
-export default function SigninPage() {
+export default function SignInPage() {
     const error_api = useAppSelector(getEmailError);
     const emailRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
@@ -63,7 +64,7 @@ export default function SigninPage() {
     };
     return (
         <>
-            <header className="header"></header>
+            <Header />
 
             <form className="auth" onSubmit={handlerSubmitForm}>
                 <h1 className="auth__head">Регистрация</h1>
