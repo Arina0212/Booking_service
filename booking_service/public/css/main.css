@@ -177,6 +177,8 @@ input[data-autocompleted] {
     font-size: 0.8421052632vw;
     display: flex;
     align-items: center;
+    padding-left: 1.0526315789vw;
+    padding-right: 1.0526315789vw;
     justify-content: space-between;
     border-radius: 0.6315789474vw;
     width: 100%;
@@ -189,7 +191,6 @@ input[data-autocompleted] {
     height: 100%;
     display: flex;
     align-items: center;
-    padding-left: 1.0526315789vw;
     color: #000000;
     font-weight: 600;
     font-size: 0.8421052632vw;
@@ -208,10 +209,6 @@ input[data-autocompleted] {
 }
 
 .dropdown-select-caret {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 1.0526315789vw;
     width: 0.7368421053vw;
     height: 0.4736842105vw;
     user-select: none;
