@@ -2,8 +2,15 @@ import Header from '../components/Header';
 import { EVENTS } from '../types/moks';
 import EventsBlock from '../components/EventsBlock';
 import Dropdown from '../components/DropDown';
+import * as React from 'react';
+import MyDateRangePicker from '../components/DataRangePicker/DataRangePicker';
+import { parseDate } from '@internationalized/date';
 
 export default function MainPage() {
+    let [value, setValue] = React.useState({
+        start: parseDate('2024-10-23'),
+        end: parseDate('2024-10-25'),
+    });
     return (
         <>
             <Header />
@@ -15,17 +22,8 @@ export default function MainPage() {
                             <img src="/svg/searchIcon.svg" alt="search" draggable="false" />
                         </div>
                     </div>
+                    <MyDateRangePicker value={value} onChange={setValue} />
 
-                    <div className="main__filters-dropdown main__filters-dropdown_1 dropdown">
-                        <div className="dropdown-select">
-                            <div className="dropdown-select-selected">
-                                {/* <span>Даты:</span>&nbsp;<p className="dropdown-select-selected-text">в любое время</p>*/}
-                            </div>
-                        </div>
-                        {/*<div className="dropdown-menu">
-                           
-                        </div>*/}
-                    </div>
                     <Dropdown
                         placeHolder="Место:"
                         type="arrow-down"
