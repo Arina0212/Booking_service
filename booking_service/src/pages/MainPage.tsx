@@ -8,8 +8,8 @@ import { parseDate } from '@internationalized/date';
 
 export default function MainPage() {
     let [value, setValue] = React.useState({
-        start: parseDate('2024-10-23'),
-        end: parseDate('2024-10-25'),
+        start: parseDate(new Date().toISOString().split('T')[0]),
+        end: parseDate(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]),
     });
     return (
         <>

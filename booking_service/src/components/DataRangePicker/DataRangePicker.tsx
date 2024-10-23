@@ -39,11 +39,11 @@ export default function MyDateRangePicker<T extends DateValue>({ label, descript
             <Popover>
                 <Dialog>
                     <RangeCalendar>
-                        <div>
+                        <header>
                             <Button slot="previous">◀</Button>
                             <Heading />
                             <Button slot="next">▶</Button>
-                        </div>
+                        </header>
                         <CalendarGrid>{(date) => <CalendarCell date={date} />}</CalendarGrid>
                     </RangeCalendar>
                 </Dialog>
