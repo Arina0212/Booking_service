@@ -188,7 +188,7 @@ input[data-autocompleted] {
 }
 
 .dropdown-select-selected {
-    height: 100%;
+    height: 2.6315789474vw;
     display: flex;
     align-items: center;
     color: #000000;
@@ -1085,6 +1085,7 @@ input[data-autocompleted] {
 .react-aria-RangeCalendar {
     width: fit-content;
     max-width: 100%;
+    max-height: 100%;
 
 
     & header {
@@ -1108,14 +1109,25 @@ input[data-autocompleted] {
 
     & table {
         border-collapse: collapse;
+        margin-top: 0.7vw;
+        width: 13vw;
 
         & td {
-            padding: 2px 0;
+            padding: 0.1vw 0;
+        }
+
+        & tr {
+            width: 13vw;
+        }
+
+        & th {
+            width: 0;
+            padding: 0;
         }
     }
 
     .react-aria-CalendarCell {
-        width: 2.286rem;
+        width: 2vw;
         line-height: 2.286rem;
         text-align: center;
         border-radius: 6px;
@@ -1127,14 +1139,6 @@ input[data-autocompleted] {
             display: none;
         }
 
-        &[data-pressed] {
-            background: gray;
-        }
-
-        /*&[data-focus-visible] {
-            outline: 2px solid #B700FF;
-            outline-offset: -2px;
-        }*/
 
         &[data-selected] {
             background: #B700FF;
@@ -1156,6 +1160,10 @@ input[data-autocompleted] {
 
 .react-aria-RangeCalendar {
     background-color: #FFFFFF;
+    border-radius: 1.6315789474vw;
+    width: 14.236842vw;
+    display: flex;
+    flex-direction: column;
 
 }
 
@@ -1165,12 +1173,14 @@ input[data-autocompleted] {
     font-weight: 600;
     font-size: 3.75vw;
     display: flex;
+    width: 14.736842vw;
     align-items: center;
     justify-content: space-between;
     border-radius: 0.6315789474vw;
-    height: 3.375vw;
+    padding: 0.2vw 0.2vw 0.2vw 0.4vw;
     cursor: pointer;
     transition: outline ease-in-out 250ms;
+    height: 2.6315789474vw;
 
 
     .react-aria-Group {
@@ -1184,8 +1194,8 @@ input[data-autocompleted] {
 
         display: flex;
 
-        width: fit-content;
-        min-width: 220px;
+
+        width: 14.736842vw;
         max-width: 100%;
         box-sizing: border-box;
 
@@ -1241,21 +1251,21 @@ input[data-autocompleted] {
 }
 
 .react-aria-Popover {
-    position: absolute;
+    /*position: absolute;*/
     list-style: none;
     background: #FFFFFF;
+    padding: 0.2vw 0.2vw 0.2vw 0.4vw;
     border-radius: 0.6315789474vw;
-
     z-index: 2;
     display: grid;
     grid-template-rows: 1fr;
     margin-top: 0.7894736842vw;
-
+    left: 40.021053vw !important;
 }
 
 .react-aria-Dialog {
     z-index: 20;
-    border-radius: 0.6315789474vw;
+    border-radius: 2.5vw;
     overscroll-behavior-y: contain;
 }
 
@@ -1274,6 +1284,7 @@ input[data-autocompleted] {
 
 .react-aria-Popover[data-trigger=DateRangePicker] {
     max-width: unset;
+    border: none;
 }
 
 /*# sourceMappingURL=main.css.map */
