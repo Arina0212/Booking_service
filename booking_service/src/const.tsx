@@ -13,6 +13,7 @@ export enum AppRoute {
     SignIn = '/signin',
     Login = '/login',
     Logout = '/logout',
+    Event = '/event',
 }
 
 export enum AuthorizationStatus {

@@ -1,4 +1,6 @@
 import { EVENTS } from '../types/moks';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../const';
 
 interface EventsBlockProps {
     title: string;
@@ -12,13 +14,13 @@ export default function EventsBlock({ title, events }: EventsBlockProps) {
             <div className="main__events-content">
                 {events.map((event) => (
                     <div className="main__events-content-slide">
-                        <a href="" className="main__events-content-slide-pic" draggable="false">
+                        <Link to={AppRoute.Event} className="main__events-content-slide-pic" draggable="false">
                             <img src="/img/testEvent.png" alt="event" />
                             <p>{event.type}</p>
-                        </a>
-                        <a href="" className="main__events-content-slide-head">
+                        </Link>
+                        <Link to={AppRoute.Event} className="main__events-content-slide-head">
                             {event.name}
-                        </a>
+                        </Link>
                         <div className="main__events-content-slide-dates">
                             <div className="main__events-content-slide-dates-date">
                                 <span>Начало</span>

@@ -19,7 +19,7 @@ export default function Header() {
             </Link>
 
             <Link to="" className="header__btn hide-on-mob">
-                создать
+                создать мероприятие
             </Link>
             <Link to="" className="header__btnMob hide-on-desktop">
                 <img src="/svg/header/create.svg" alt="+" />
@@ -35,7 +35,7 @@ export default function Header() {
             </Link>
 
             <div className="header__mob hide-on-desktop">
-                <Link to="main.html" className="header__link header__link_active">
+                <Link to={AppRoute.Main} className="header__link header__link_active">
                     мероприятия
                 </Link>
                 <Link to="" className="header__link header__link_mid">
