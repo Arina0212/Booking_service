@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../const';
+import { AppRoute, AuthorizationStatus } from '../const';
+import { getAuthorizationStatus } from '../store/user-process/selectors';
+import { useAppSelector } from '../hooks';
 
 export default function Header() {
+    const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
     return (
         <header className="header">
-            <Link to="" className="header__logo">
+            <Link to={AppRoute.Main} className="header__logo">
                 <img src="/svg/header/logo.svg" alt="наместе" />
             </Link>
 
@@ -17,22 +21,29 @@ export default function Header() {
             <Link to="" className="header__link hide-on-mob">
                 о нас
             </Link>
+            {authorizationStatus === AuthorizationStatus.Auth ? (
+                <>
+                    <Link to="" className="header__btn hide-on-mob">
+                        создать мероприятие
+                    </Link>
+                    <Link to="" className="header__btnMob hide-on-desktop">
+                        <img src="/svg/header/create.svg" alt="+" />
+                    </Link>
 
-            <Link to="" className="header__btn hide-on-mob">
-                создать мероприятие
-            </Link>
-            <Link to="" className="header__btnMob hide-on-desktop">
-                <img src="/svg/header/create.svg" alt="+" />
-            </Link>
+                    <button className="header__notify">
+                        <img src="/svg/header/notify.svg" alt="notify" />
+                        <span className="header__notify-new"></span>
+                    </button>
 
-            <button className="header__notify">
-                <img src="/svg/header/notify.svg" alt="notify" />
-                <span className="header__notify-new"></span>
-            </button>
-
-            <Link to={AppRoute.Login} className="header__profile">
-                <img src="/svg/header/profile.svg" alt="profile" />
-            </Link>
+                    <Link to={AppRoute.Lk} className="header__profile">
+                        <img src="/svg/header/profile.svg" alt="profile" />
+                    </Link>
+                </>
+            ) : (
+                <Link to={AppRoute.Login} className="header__btn">
+                    войти
+                </Link>
+            )}
 
             <div className="header__mob hide-on-desktop">
                 <Link to={AppRoute.Main} className="header__link header__link_active">

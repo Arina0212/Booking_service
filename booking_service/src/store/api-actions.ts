@@ -6,6 +6,7 @@ import { APIRoute, AppRoute } from '../const';
 import { dropToken, saveToken } from '../services/token';
 import { SignInData, UserData } from '../types/SignInData';
 import { AuthData, LoginData } from '../types/LoginData';
+import { ProfileData } from '../types/ProfileData';
 
 export const loginAction = createAsyncThunk<
     LoginData,
@@ -18,11 +19,11 @@ export const loginAction = createAsyncThunk<
 >('auth/login', async ({ email, password }: AuthData, { dispatch, extra: api }): Promise<LoginData> => {
     const { data } = await api.post<LoginData>(APIRoute.Login, { email, password });
     saveToken(data.access_token);
-    console.log(data.access_token);
     if (data.error === undefined) {
         dispatch(redirectToRoute(AppRoute.Main));
     } else {
     }
+    dispatch(fetchProfileData());
     return data;
 });
 
@@ -60,3 +61,48 @@ export const SignInAction = createAsyncThunk<
     }
     return data;
 });
+
+export const fetchProfileData = createAsyncThunk<
+    ProfileData,
+    undefined,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('data/fetchProfileData', async (_arg, { extra: api }) => {
+    const { data } = await api.get<ProfileData>(APIRoute.ProfileData);
+    return data;
+});
+
+export const postProfileDataAction = createAsyncThunk<
+    ProfileData,
+    ProfileData,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>(
+    'patient/postProfileData',
+    async (
+        { first_name, last_name, patronymic, email, birth_date, city, phone_number, company_name, vk, telegram, whatsapp },
+        { dispatch, extra: api },
+    ) => {
+        const { data } = await api.put<ProfileData>(APIRoute.ProfileData, {
+            first_name,
+            last_name,
+            patronymic,
+            email,
+            birth_date,
+            city,
+            phone_number,
+            company_name,
+            vk,
+            telegram,
+            whatsapp,
+        });
+        dispatch(fetchProfileData());
+        return data;
+    },
+);

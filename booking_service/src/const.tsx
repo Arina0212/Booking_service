@@ -6,6 +6,7 @@ export enum APIRoute {
     SignIn = 'auth/register/',
     Login = 'auth/login/',
     Logout = 'auth/logout/',
+    ProfileData = 'profile/me',
 }
 
 export enum AppRoute {
@@ -14,6 +15,7 @@ export enum AppRoute {
     Login = '/login',
     Logout = '/logout',
     Event = '/event',
+    Lk = 'lk',
 }
 
 export enum AuthorizationStatus {

@@ -27,7 +27,7 @@ export const createAPI = (): AxiosInstance => {
     api.interceptors.request.use((config: AxiosRequestConfig) => {
         const token = getToken();
         if (token && config.headers) {
-            config.headers['Authorization'] = `Token ${token}`;
+            config.headers['Authorization'] = `Bearer ${token}`;
         }
         return config;
     });
@@ -37,7 +37,6 @@ export const createAPI = (): AxiosInstance => {
             if (error.response && shouldDisplayError(error.response)) {
                 const detailMessage = error.response.data;
                 toast.warn(detailMessage.error);
-                console.log(detailMessage.error);
             } else if (error.response && shouldUnauthorizedError(error.response)) {
                 dropToken();
             } else {
