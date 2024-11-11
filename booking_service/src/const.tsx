@@ -1,12 +1,15 @@
 export enum NameSpace {
     User = 'USER',
+    Event = 'EVENT',
 }
 
 export enum APIRoute {
     SignIn = 'auth/register/',
     Login = 'auth/login/',
     Logout = 'auth/logout/',
-    ProfileData = 'profile/me',
+    ProfileData = 'profile/me/',
+    Events = 'event/view/',
+    Event = 'event/',
 }
 
 export enum AppRoute {
@@ -14,7 +17,7 @@ export enum AppRoute {
     SignIn = '/signin',
     Login = '/login',
     Logout = '/logout',
-    Event = '/event',
+    Events = '/events',
     Lk = 'lk',
 }
 

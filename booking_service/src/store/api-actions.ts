@@ -7,6 +7,7 @@ import { dropToken, saveToken } from '../services/token';
 import { SignInData, UserData } from '../types/SignInData';
 import { AuthData, LoginData } from '../types/LoginData';
 import { ProfileData } from '../types/ProfileData';
+import { EventShortData, EventsShortData } from '../types/EventData';
 
 export const loginAction = createAsyncThunk<
     LoginData,
@@ -106,3 +107,29 @@ export const postProfileDataAction = createAsyncThunk<
         return data;
     },
 );
+
+export const fetchAllEventsData = createAsyncThunk<
+    EventsShortData,
+    undefined,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('data/fetchAllEventsData', async (_arg, { extra: api }) => {
+    const { data } = await api.get<EventsShortData>(APIRoute.Events);
+    return data;
+});
+
+export const fetchEventData = createAsyncThunk<
+    EventShortData,
+    { id: number },
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('data/fetchEventData', async ({ id }, { extra: api }) => {
+    const { data } = await api.get<EventShortData>(`${APIRoute.Event}${id}/view/`);
+    return data;
+});
