@@ -34,16 +34,44 @@ export default function MainPage() {
                         </div>
                     </div>
                     <MyDateRangePicker value={value} onChange={setValue} />
-
                     <Dropdown
-                        placeHolder="Место:"
+                        placeHolder="Город:"
                         type="arrow-down"
-                        options={[{ labelValue: 'все' }, { labelValue: 1 }, { labelValue: 2 }, { labelValue: 3 }, { labelValue: 4 }]}
+                        options={[
+                            { labelValue: 'все' },
+                            { labelValue: 'Онлайн' },
+                            { labelValue: 'Екатеринбург' },
+                            { labelValue: 'Санкт-Петербург' },
+                            { labelValue: 'Пермь' },
+                            { labelValue: 'Петропавловск Камчатский' },
+                        ]}
                     />
                     <Dropdown
                         placeHolder="Формат:"
                         type="arrow-down"
-                        options={[{ labelValue: 'все' }, { labelValue: 1 }, { labelValue: 2 }, { labelValue: 3 }, { labelValue: 4 }]}
+                        options={[
+                            { labelValue: 'все' },
+                            { labelValue: 'Акселератор' },
+                            { labelValue: 'Воркшоп' },
+                            { labelValue: 'Встреча' },
+                            { labelValue: 'Выставка' },
+                            { labelValue: 'День открытых дверей' },
+                            { labelValue: 'Конференция' },
+                            { labelValue: 'Круглый стол' },
+                            { labelValue: 'Лекция' },
+                            { labelValue: 'Мастер-класс' },
+                            { labelValue: 'Метода' },
+                            { labelValue: 'Митап' },
+                            { labelValue: 'Панельная дискуссия' },
+                            { labelValue: 'Питч' },
+                            { labelValue: 'Семинар' },
+                            { labelValue: 'Соревнование' },
+                            { labelValue: 'Собрание' },
+                            { labelValue: 'Стратегическая сессия' },
+                            { labelValue: 'Форсайт' },
+                            { labelValue: 'Форум' },
+                            { labelValue: 'Хакатон' },
+                        ]}
                     />
                 </section>
                 {!isLoading ? (

@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { fetchEventData } from '../store/api-actions';
 import { getEvent, getLoadingEvent } from '../store/events-process/selectors';
 import Loading from '../components/Loading';
+import CopyButtonWithFeedback from '../components/CopyTextButton';
 
 export default function EventPage() {
     const dispatch = useAppDispatch();
@@ -26,7 +27,7 @@ export default function EventPage() {
                     <main className="event">
                         <section className="event__card">
                             <div className="event__card-pic">
-                                <img src="/img/testEvent.png" alt="event" />
+                                <img src="/svg/event/defaultBanner.svg" alt="event" />
                             </div>
 
                             <div className="event__card-tags">
@@ -127,7 +128,7 @@ export default function EventPage() {
                             <h2 className="event__host-head">Организатор</h2>
 
                             <div className="event__host-pic">
-                                <img src="/img/testHost.png" alt="host" />
+                                <img src="/svg/defaultUser1.svg" alt="host" />
                             </div>
 
                             <span className="event__host-subhead">Компания:</span>
@@ -139,20 +140,20 @@ export default function EventPage() {
                             <span className="event__host-subhead">Контакты:</span>
                             <div className="event__host-contact">
                                 <img src="/svg/event/whatsappIcon.svg" alt="whatsapp" />
-                                <p>+79022721339</p>
+                                <CopyButtonWithFeedback textToCopy="+79022721339" />
                             </div>
                             <div className="event__host-contact">
                                 <img src="/svg/event/vkIcon.svg" alt="vk" />
-                                <p>@ruslikut</p>
+                                <CopyButtonWithFeedback textToCopy="@ruslikut" />
                             </div>
-                            <a className="event__host-contact">
+                            <div className="event__host-contact">
                                 <img src="/svg/event/tgIcon.svg" alt="tg" />
-                                <p>@matelr</p>
-                            </a>
-                            <a className="event__host-contact">
+                                <CopyButtonWithFeedback textToCopy="@matelr" />
+                            </div>
+                            <div className="event__host-contact">
                                 <img src="/svg/event/mailIcon.svg" alt="mail" />
-                                <p>utenkov2003@mail.ru</p>
-                            </a>
+                                <CopyButtonWithFeedback textToCopy="utenkov2003@mail.ru" />
+                            </div>
                         </section>
                     </main>
                 </>

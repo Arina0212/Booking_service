@@ -31,7 +31,7 @@ export default function MyDateRangePicker<T extends DateValue>({ label, descript
                 <span aria-hidden="true">–</span>
                 <DateInput slot="end">{(segment) => <DateSegment segment={segment} />}</DateInput>
                 <Button>
-                    <img alt="" src="/svg/caret.svg" />
+                    <img alt="" src="/svg/calendar.svg" />
                 </Button>
             </Group>
             {description && <Text slot="description">{description}</Text>}

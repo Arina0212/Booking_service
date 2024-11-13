@@ -77,12 +77,12 @@ export default function ProfilePage() {
                         <form onSubmit={handleSubmit}>
                             <div className="profile__info">
                                 <div className="profile__info-pic">
-                                    <img src="/img/testHost.png" width={'25.1578947368vw'} height={'25.1578947368vw'} alt="avatar" />
+                                    <img src="/svg/defaultUser2.svg" width={'25.1578947368vw'} height={'25.1578947368vw'} alt="avatar" />
                                 </div>
 
                                 <div className="profile__info-block profile__info-block_span3">
                                     <p className="profile__info-block-text">ФИО</p>
-                                    <div className="profile__info-block-input input_white">
+                                    <div className="profile__info-block-input profile_input_white">
                                         <input
                                             className="input_white-field"
                                             name="fio"
@@ -96,7 +96,7 @@ export default function ProfilePage() {
 
                                 <div className="profile__info-block profile__info-block_span2">
                                     <p className="profile__info-block-text">Город проживания</p>
-                                    <div className="profile__info-block-input input_white">
+                                    <div className="profile__info-block-input profile_input_white">
                                         <input
                                             className="input_white-field"
                                             type="text"
@@ -109,7 +109,7 @@ export default function ProfilePage() {
                                 </div>
                                 <div className="profile__info-block">
                                     <p className="profile__info-block-text">Дата рождения</p>
-                                    <div className="profile__info-block-input input_white">
+                                    <div className="profile__info-block-input profile_input_white">
                                         <input
                                             className="input_white-field input_white-field_date"
                                             type="text"
@@ -124,7 +124,7 @@ export default function ProfilePage() {
 
                                 <div className="profile__info-block profile__info-block_span3">
                                     <p className="profile__info-block-text">Компания</p>
-                                    <div className="profile__info-block-input input_white">
+                                    <div className="profile__info-block-input profile_input_white">
                                         <input
                                             className="input_white-field"
                                             type="text"
@@ -151,7 +151,7 @@ export default function ProfilePage() {
                             <div className="profile__info profile__info_contact">
                                 <div className="profile__info-block">
                                     <p className="profile__info-block-text">Телефон</p>
-                                    <div className="profile__info-block-input input_white">
+                                    <div className="profile__info-block-input profile_input_white">
                                         <input
                                             className="input_white-field"
                                             type="tel"
@@ -166,7 +166,7 @@ export default function ProfilePage() {
 
                                 <div className="profile__info-block">
                                     <p className="profile__info-block-text">Почта</p>
-                                    <div className="profile__info-block-input input_white">
+                                    <div className="profile__info-block-input profile_input_white">
                                         <input
                                             className="input_white-field"
                                             type="email"
@@ -179,7 +179,7 @@ export default function ProfilePage() {
                                 </div>
                                 <div className="profile__info-block">
                                     <p className="profile__info-block-text">Telegram</p>
-                                    <div className="profile__info-block-input input_white">
+                                    <div className="profile__info-block-input profile_input_white">
                                         <input
                                             className="input_white-field"
                                             type="text"
@@ -193,7 +193,7 @@ export default function ProfilePage() {
 
                                 <div className="profile__info-block">
                                     <p className="profile__info-block-text">What’s App</p>
-                                    <div className="profile__info-block-input input_white">
+                                    <div className="profile__info-block-input profile_input_white">
                                         <input
                                             className="input_white-field"
                                             type="tel"
@@ -208,7 +208,7 @@ export default function ProfilePage() {
 
                                 <div className="profile__info-block">
                                     <p className="profile__info-block-text">VK</p>
-                                    <div className="profile__info-block-input input_white">
+                                    <div className="profile__info-block-input profile_input_white">
                                         <input
                                             className="input_white-field"
                                             type="text"

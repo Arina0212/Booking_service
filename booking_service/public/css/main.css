@@ -30,8 +30,8 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: #2E0041; /* цвет плашки */
-    border-radius: 1.0526315789vw; /* закругления плашки */
+    background-color: #2E0041;
+    border-radius: 1.0526315789vw;
 }
 
 body {
@@ -123,10 +123,11 @@ input[data-autocompleted] {
 .input_white {
     position: relative;
     width: 100%;
-    height: 3.1578947368vw;
+    height: 2.6315789474vw;
     background-color: #FFFFFF;
     border-radius: 0.7894736842vw;
 }
+
 
 .input_white-field {
     position: absolute;
@@ -215,6 +216,18 @@ input[data-autocompleted] {
     font-size: 0.8421052632vw;
 }
 
+/*.dropdown-select-selected {
+    height: 2.6315789474vw;
+    display: flex;
+    align-items: center;
+    color: #000000;
+    font-weight: 600;
+    font-size: 0.8421052632vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 5px;
+}*/
+
 .dropdown-select-selected span {
     color: #ACB6BF;
     font-weight: 600;
@@ -225,6 +238,7 @@ input[data-autocompleted] {
     color: #000000;
     font-weight: 600;
     font-size: 0.8421052632vw;
+    /*   white-space: nowrap;*/
 }
 
 .dropdown-select-caret {
@@ -261,7 +275,23 @@ input[data-autocompleted] {
 .dropdown-menu-wrapper {
     z-index: 20;
     overflow: hidden;
-    overscroll-behavior-y: contain;
+    max-height: 15.7894736842vw;
+    overflow-y: scroll;
+    overscroll-behavior-y: auto;
+}
+
+.dropdown-menu-wrapper::-webkit-scrollbar {
+    width: 0.3263157895vw;
+
+}
+
+.dropdown-menu-wrapper::-webkit-scrollbar-track {
+    background: white;
+}
+
+.dropdown-menu-wrapper::-webkit-scrollbar-thumb {
+    background-color: #2E0041;
+    border-radius: 1.0526315789vw;
 }
 
 .dropdown-menu_open {
@@ -576,6 +606,10 @@ input[data-autocompleted] {
 .main__events-content-slide-info-price_free {
     color: #4BB543;
     background-color: rgba(75, 181, 67, 0.1019607843);
+    font-weight: 700;
+    font-size: 0.5789473684vw;
+    padding: 0.4210526316vw 0.8421052632vw;
+    border-radius: 0.4210526316vw;
 }
 
 .event {
@@ -809,11 +843,11 @@ input[data-autocompleted] {
     width: 1.4210526316vw;
 }
 
-.event__host-contact:hover p {
+.event__host-contact:hover button {
     text-decoration: underline;
 }
 
-.event__host-contact p {
+.event__host-contact button {
     font-size: 0.8421052632vw;
     transition: text-decoration ease-in-out 250ms;
 }
@@ -844,6 +878,14 @@ input[data-autocompleted] {
     outline: none;
     border: none;
     cursor: pointer;
+}
+
+.profile_input_white {
+    position: relative;
+    width: 100%;
+    height: 3.1578947368vw;
+    background-color: #FFFFFF;
+    border-radius: 0.7894736842vw;
 }
 
 .profile__info_contact_head {
