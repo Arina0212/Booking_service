@@ -21,10 +21,24 @@ html {
     overflow-x: hidden;
 }
 
+body::-webkit-scrollbar {
+    width: 0.3263157895vw;
+}
+
+body::-webkit-scrollbar-track {
+    background: white;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #2E0041; /* цвет плашки */
+    border-radius: 1.0526315789vw; /* закругления плашки */
+}
+
 body {
     position: relative;
     width: 100%;
     background-color: #F2F4F7;
+
 }
 
 body:has(dialog[open]) {
@@ -1011,7 +1025,7 @@ input[data-autocompleted] {
         box-sizing: border-box;
 
         position: relative;
-        padding: 4px 4px 4px 8px;
+        padding: 0.2105263158vw 0.2105263158vw 0.2105263158vw 0.4210526316vw;
         background: white;
         white-space: nowrap;
 
@@ -1022,7 +1036,7 @@ input[data-autocompleted] {
     }
 
     [slot=start] + span {
-        padding: 0 4px;
+        padding: 0 0.2105263158vw;
     }
 
     [slot=end] {
@@ -1737,7 +1751,7 @@ input[data-autocompleted] {
             max-width: 100%;
             box-sizing: border-box;
             position: relative;
-            padding: 4px 4px 4px 8px;
+            padding: 0.2vw 0.2vw 0.2vw 0.4vw;
             background: white;
             white-space: nowrap;
             margin-top: 3.125vw;
@@ -1750,7 +1764,7 @@ input[data-autocompleted] {
         }
 
         [slot=start] + span {
-            padding: 0 4px;
+            padding: 0 0.2vw;
         }
 
         [slot=end] {
@@ -1837,7 +1851,7 @@ input[data-autocompleted] {
     & header {
         display: flex;
         align-items: center;
-        margin: 0 4px .5rem 4px;
+        margin: 0 0.2vw .5rem 0.2vw;
 
         .react-aria-Heading {
             flex: 1;
@@ -1855,7 +1869,7 @@ input[data-autocompleted] {
 
     & table {
         border-collapse: collapse;
-        margin-top: 0.7vw;
+        margin: 0.7vw auto;
         width: 13vw;
 
         & td {
@@ -1893,13 +1907,13 @@ input[data-autocompleted] {
         }
 
         &[data-selection-start] {
-            border-start-start-radius: 6px;
-            border-end-start-radius: 6px;
+            border-start-start-radius: 0.3157894737vw;
+            border-end-start-radius: 0.3157894737vw;
         }
 
         &[data-selection-end] {
-            border-start-end-radius: 6px;
-            border-end-end-radius: 6px;
+            border-start-end-radius: 0.3157894737vw;
+            border-end-end-radius: 0.3157894737vw;
         }
     }
 }
