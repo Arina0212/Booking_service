@@ -7,6 +7,7 @@ import { fetchEventData } from '../store/api-actions';
 import { getEvent, getLoadingEvent } from '../store/events-process/selectors';
 import Loading from '../components/Loading';
 import CopyButtonWithFeedback from '../components/CopyTextButton';
+import { phoneFormater } from '../services/utils/PhoneFormater';
 
 export default function EventPage() {
     const dispatch = useAppDispatch();
@@ -140,7 +141,7 @@ export default function EventPage() {
                             <span className="event__host-subhead">Контакты:</span>
                             <div className="event__host-contact">
                                 <img src="/svg/event/whatsappIcon.svg" alt="whatsapp" />
-                                <CopyButtonWithFeedback textToCopy="+79022721339" />
+                                <CopyButtonWithFeedback textToCopy={phoneFormater('+79022721339')} />
                             </div>
                             <div className="event__host-contact">
                                 <img src="/svg/event/vkIcon.svg" alt="vk" />

@@ -23,10 +23,10 @@ export default function Header() {
             </Link>
             {authorizationStatus === AuthorizationStatus.Auth ? (
                 <>
-                    <Link to="" className="header__btn hide-on-mob">
+                    <Link to={AppRoute.Create} className="header__btn hide-on-mob">
                         создать мероприятие
                     </Link>
-                    <Link to="" className="header__btnMob hide-on-desktop">
+                    <Link to={AppRoute.Create} className="header__btnMob hide-on-desktop">
                         <img src="/svg/header/create.svg" alt="+" />
                     </Link>
 

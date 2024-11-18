@@ -8,6 +8,8 @@ const initialState: UserProcess = {
     error: ' ',
     email: '',
     profileData: undefined,
+    isProfileLoading: true,
+    isLoading: false,
 };
 
 export const userProcess = createSlice({
@@ -29,6 +31,13 @@ export const userProcess = createSlice({
                 } else {
                     state.authorizationStatus = AuthorizationStatus.NoAuth;
                 }
+                state.isLoading = false;
+            })
+            .addCase(loginAction.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(SignInAction.pending, (state) => {
+                state.isLoading = true;
             })
             .addCase(SignInAction.rejected, (state) => {
                 state.authorizationStatus = AuthorizationStatus.NoAuth;
@@ -40,6 +49,7 @@ export const userProcess = createSlice({
                 } else {
                     state.authorizationStatus = AuthorizationStatus.NoAuth;
                 }
+                state.isLoading = false;
             })
             .addCase(loginAction.rejected, (state) => {
                 state.authorizationStatus = AuthorizationStatus.NoAuth;

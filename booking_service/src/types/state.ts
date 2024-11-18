@@ -9,6 +9,7 @@ export type UserProcess = {
     email: string;
     profileData?: ProfileData;
     isProfileLoading?: boolean;
+    isLoading?: boolean;
 };
 
 export type EventProcess = {

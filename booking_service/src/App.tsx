@@ -6,6 +6,7 @@ import MainPage from './pages/MainPage';
 import ProfilePage from './pages/ProfilePage';
 import SignInPage from './pages/SignInPage';
 import EventPage from './pages/EventPage';
+import CreateEventPage from './pages/CreateEventPage';
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                 <Route path={AppRoute.SignIn} element={<SignInPage />} />
 
                 <Route path={AppRoute.Lk} element={<ProfilePage />} />
+                <Route path={AppRoute.Create} element={<CreateEventPage />} />
             </Routes>
         </HelmetProvider>
     );

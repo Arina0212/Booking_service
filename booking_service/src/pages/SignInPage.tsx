@@ -3,11 +3,14 @@ import { AppRoute, SingInErrorMessage } from '../const';
 import { FormEvent, SetStateAction, useRef, useState } from 'react';
 import { SignInAction } from '../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { getEmailError } from '../store/user-process/selectors';
+import { getEmailError, getLoading } from '../store/user-process/selectors';
 import Header from '../components/Header';
+import Spinner from '../components/Spinner';
 
 export default function SignInPage() {
     const error_api = useAppSelector(getEmailError);
+    const isLoading = useAppSelector(getLoading);
+
     const emailRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const [inputType, setInputType] = useState('password');
@@ -123,7 +126,7 @@ export default function SignInPage() {
                 </div>
 
                 <button type="submit" className="auth__btn btn_black">
-                    Зарегистрироваться
+                    {isLoading ? <Spinner /> : 'Зарегистрироваться'}
                 </button>
 
                 <p className="auth__text">

@@ -19,6 +19,7 @@ export enum AppRoute {
     Logout = '/logout',
     Events = '/events',
     Lk = 'lk',
+    Create = '/create',
 }
 
 export enum AuthorizationStatus {
@@ -33,3 +34,27 @@ export const SingInErrorMessage = {
 };
 
 export const MONTH = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+
+export const FORMATS = [
+    { labelValue: 'все' },
+    { labelValue: 'Акселератор' },
+    { labelValue: 'Воркшоп' },
+    { labelValue: 'Встреча' },
+    { labelValue: 'Выставка' },
+    { labelValue: 'День открытых дверей' },
+    { labelValue: 'Конференция' },
+    { labelValue: 'Круглый стол' },
+    { labelValue: 'Лекция' },
+    { labelValue: 'Мастер-класс' },
+    { labelValue: 'Метода' },
+    { labelValue: 'Митап' },
+    { labelValue: 'Панельная дискуссия' },
+    { labelValue: 'Питч' },
+    { labelValue: 'Семинар' },
+    { labelValue: 'Соревнование' },
+    { labelValue: 'Собрание' },
+    { labelValue: 'Стратегическая сессия' },
+    { labelValue: 'Форсайт' },
+    { labelValue: 'Форум' },
+    { labelValue: 'Хакатон' },
+];

@@ -60,6 +60,7 @@ export const SignInAction = createAsyncThunk<
         dispatch(redirectToRoute(AppRoute.Main));
     } else {
     }
+    dispatch(fetchProfileData());
     return data;
 });
 

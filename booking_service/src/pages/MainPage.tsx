@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { fetchAllEventsData } from '../store/api-actions';
 import { getAllEvents, getLoadingAllEvents } from '../store/events-process/selectors';
 import Loading from '../components/Loading';
+import { FORMATS } from '../const';
 
 export default function MainPage() {
     let [value, setValue] = React.useState({
@@ -46,33 +47,7 @@ export default function MainPage() {
                             { labelValue: 'Петропавловск Камчатский' },
                         ]}
                     />
-                    <Dropdown
-                        placeHolder="Формат:"
-                        type="arrow-down"
-                        options={[
-                            { labelValue: 'все' },
-                            { labelValue: 'Акселератор' },
-                            { labelValue: 'Воркшоп' },
-                            { labelValue: 'Встреча' },
-                            { labelValue: 'Выставка' },
-                            { labelValue: 'День открытых дверей' },
-                            { labelValue: 'Конференция' },
-                            { labelValue: 'Круглый стол' },
-                            { labelValue: 'Лекция' },
-                            { labelValue: 'Мастер-класс' },
-                            { labelValue: 'Метода' },
-                            { labelValue: 'Митап' },
-                            { labelValue: 'Панельная дискуссия' },
-                            { labelValue: 'Питч' },
-                            { labelValue: 'Семинар' },
-                            { labelValue: 'Соревнование' },
-                            { labelValue: 'Собрание' },
-                            { labelValue: 'Стратегическая сессия' },
-                            { labelValue: 'Форсайт' },
-                            { labelValue: 'Форум' },
-                            { labelValue: 'Хакатон' },
-                        ]}
-                    />
+                    <Dropdown placeHolder="Формат:" type="arrow-down" options={FORMATS} />
                 </section>
                 {!isLoading ? (
                     <>

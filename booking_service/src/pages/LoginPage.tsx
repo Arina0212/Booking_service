@@ -3,8 +3,9 @@ import { AppRoute, SingInErrorMessage } from '../const';
 import { FormEvent, useRef, useState } from 'react';
 import { loginAction } from '../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { getError } from '../store/user-process/selectors';
+import { getError, getLoading } from '../store/user-process/selectors';
 import Header from '../components/Header';
+import Spinner from '../components/Spinner';
 
 export default function LoginPage() {
     const [inputType, setInputType] = useState('password');
@@ -13,6 +14,8 @@ export default function LoginPage() {
         setInputType(inputType === 'password' ? 'text' : 'password');
     };
     const error_api = useAppSelector(getError);
+    const isLoading = useAppSelector(getLoading);
+
     const emailRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const [error, setError] = useState('');
@@ -81,7 +84,7 @@ export default function LoginPage() {
                     Забыли пароль?
                 </Link>
 
-                <button className="auth__btn btn_black">Войти</button>
+                <button className="auth__btn btn_black">{isLoading ? <Spinner /> : 'Войти'}</button>
 
                 <p className="auth__text">
                     Нет аккаунта? <Link to={AppRoute.SignIn}>Зарегистрироваться</Link>
