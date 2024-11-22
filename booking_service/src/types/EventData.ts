@@ -6,6 +6,7 @@ export type EventShortData = {
     city: string;
     visit_cost: number;
     format: string;
+    photo_url: string;
 };
 
 export type EventsShortData = EventShortData[];

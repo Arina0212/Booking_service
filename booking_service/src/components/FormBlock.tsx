@@ -33,7 +33,7 @@ const CreateEventForm: React.FC = () => {
         setData((prevState) => ({ ...prevState, description: val }));
     };
 
-    const [fileInfo, setFileInfo] = useState<{ name: string; size: number } | null>(null);
+    const [fileInfo, setFileInfo] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -63,18 +63,18 @@ const CreateEventForm: React.FC = () => {
                     setFileInfo(null);
                 } else {
                     setError(null); // Если все проверки пройдены, сбрасываем ошибку
-                    setFileInfo({ name: file.name, size: file.size });
+                    setFileInfo(file);
                 }
             };
             img.src = URL.createObjectURL(file); // Создаем URL для этого файла
         }
     };
-    const [fileInfoDesc, setFileInfoDesc] = useState<{ name: string; size: number } | null>(null);
+    const [fileInfoDesc, setFileInfoDesc] = useState<File | null>(null);
 
     const handleFileDescChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]; // Получаем загруженный файл
         if (file) {
-            setFileInfoDesc({ name: file.name, size: file.size }); // Сохраняем имя и размер файла
+            setFileInfoDesc(file); // Сохраняем имя и размер файла
         }
     };
 
@@ -659,16 +659,51 @@ const CreateEventForm: React.FC = () => {
     const toggleBlock = (id: number) => {
         setOpenBlockId(openBlockId === id ? null : id);
     };
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault(); // Предотвращаем стандартное поведение формы
 
+        const formData = new FormData();
+
+        // Добавьте данные из состояния data
+        for (const [key, value] of Object.entries(data)) {
+            formData.append(key, value);
+        }
+
+        // Добавьте файлы в formData
+        if (fileInfo) {
+            formData.append('fileInfo', fileInfo); // Добавьте файл, если он существует
+        }
+
+        if (fileInfoDesc) {
+            formData.append('fileInfoDesc', fileInfoDesc); // Добавьте файл описания, если он существует
+        }
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/event/create', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при отправке данных');
+            }
+
+            const result = await response.json(); // Обрабатываем ответ от сервера
+            console.log(result); // Вы можете изменить это на что-то более полезное
+        } catch (error) {
+            console.error(error); // Обработка ошибок
+            setError('Произошла ошибка при отправке данных.');
+        }
+    };
     return (
-        <form className="create">
+        <form className="create" onSubmit={handleSubmit}>
             {blocks.map((block) => (
                 <div className="create__item" key={block.id}>
                     <div onClick={() => toggleBlock(block.id)}>{block.title}</div>
                     {openBlockId === block.id && block.content}
                 </div>
             ))}
-            <div className=" save save_hide">
+            <div className=" save ">
                 <p>Проверьте, что все обязательные поля заполнены</p>
                 <button type="submit" className=" save__btn btn_black">
                     Создать мероприятие

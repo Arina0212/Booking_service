@@ -14,12 +14,12 @@ export enum APIRoute {
 
 export enum AppRoute {
     Main = '/',
-    SignIn = '/signin',
+    SignIn = '/signIn',
     Login = '/login',
-    Logout = '/logout',
     Events = '/events',
-    Lk = 'lk',
+    Lk = '/lk',
     Create = '/create',
+    ChangePass = '/changePassword',
 }
 
 export enum AuthorizationStatus {
@@ -30,7 +30,7 @@ export enum AuthorizationStatus {
 
 export const SingInErrorMessage = {
     Email: 'Введите верный email',
-    Password: 'Пароль должен содежать хотя бы одину букву и одну цифру и быть не короче 8 символов',
+    Password: 'Пароль должен содержать хотя бы одну букву и одну цифру и быть не короче 8 символов',
 };
 
 export const MONTH = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];

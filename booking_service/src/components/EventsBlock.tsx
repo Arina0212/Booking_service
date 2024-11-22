@@ -20,6 +20,7 @@ export default function EventsBlock({ title, events }: EventsBlockProps) {
                         city={event.city}
                         visit_cost={event.visit_cost}
                         format={event.format}
+                        photo_url={event.photo_url}
                     />
                 ))}
             </div>

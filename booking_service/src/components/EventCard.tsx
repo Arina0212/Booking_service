@@ -10,9 +10,10 @@ type EventCardProps = {
     city: string;
     visit_cost: number;
     format: string;
+    photo_url: string;
 };
 
-export default function EventCard({ id, name, start_date, end_date, city, visit_cost, format }: EventCardProps) {
+export default function EventCard({ id, name, start_date, end_date, city, visit_cost, format, photo_url }: EventCardProps) {
     const startDate = humanizeDate(start_date).split('.');
     const startMonth = Number(startDate[1]) - 1;
     const endtDate = humanizeDate(end_date).split('.');
@@ -23,7 +24,7 @@ export default function EventCard({ id, name, start_date, end_date, city, visit_
             {start_date && end_date && (
                 <div className="main__events-content-slide">
                     <Link to={`${AppRoute.Events}/${id}`} className="main__events-content-slide-pic" draggable="false">
-                        <img src="/svg/event/defaultBanner.svg" alt="event" />
+                        <img src={`${photo_url ? photo_url : '/svg/event/defaultBanner.svg'}`} alt="event" />
                         <p>{format}</p>
                     </Link>
                     <Link to={`${AppRoute.Events}/${id}`} className="main__events-content-slide-head">

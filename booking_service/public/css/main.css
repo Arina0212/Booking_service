@@ -954,6 +954,10 @@ input[data-autocompleted] {
     transition: opacity ease-in-out 250ms;
 }
 
+.profile__save p {
+    padding-left: 1.0526vw;
+}
+
 .profile__save-btn {
     width: 16.8421052632vw;
 }
@@ -1277,6 +1281,28 @@ input[data-autocompleted] {
 
 .create__item-content_active {
     grid-template-rows: 1fr;
+}
+
+.save {
+    position: fixed;
+    left: 10.5263157895vw;
+    bottom: 2.6315789474vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5263157895vw;
+    width: 78.2105263158vw;
+    border-radius: 0.7894736842vw;
+    background-color: #FFFFFF;
+    transition: opacity ease-in-out 250ms;
+}
+
+.save p {
+    padding-left: 1.0526vw;
+}
+
+.save__btn {
+    width: 16.8421052632vw;
 }
 
 .hide-on-desktop {

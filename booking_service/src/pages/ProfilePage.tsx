@@ -7,6 +7,8 @@ import { phoneFormater } from '../services/utils/PhoneFormater';
 import { dataFormater, getAltDate, humanizeDate } from '../services/utils/dataFormater';
 import { postProfileDataAction } from '../store/api-actions';
 import Loading from '../components/Loading';
+import { AppRoute } from '../const';
+import { Link } from 'react-router-dom';
 
 export default function ProfilePage() {
     const profileData = useAppSelector(getProfile);
@@ -138,9 +140,9 @@ export default function ProfilePage() {
 
                                 <div className="profile__info-block">
                                     <p className="profile__info-block-text">Пароль</p>
-                                    <button className="btn_black" type="button">
+                                    <Link className="btn_black" to={AppRoute.ChangePass}>
                                         Изменить пароль учётной записи
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
 
