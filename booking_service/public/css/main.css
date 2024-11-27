@@ -1049,6 +1049,12 @@ input::-webkit-calendar-picker-indicator {
     animation: shadowRolling 2s linear infinite;
 }
 
+.show-more-button {
+    color: #B700FF;
+    text-align: end;
+    text-decoration: underline;
+}
+
 @keyframes shadowRolling {
     0% {
         box-shadow: 0 0 rgba(255, 255, 255, 0), 0 0 rgba(255, 255, 255, 0), 0 0 rgba(255, 255, 255, 0), 0 0 rgba(255, 255, 255, 0);

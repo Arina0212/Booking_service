@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { EventsShortData } from '../types/EventData';
 import EventCard from './EventCard';
 import Loading from './Loading';
@@ -8,16 +9,23 @@ interface EventsBlockProps {
     isLoading: boolean | undefined;
 }
 
-export default function EventsBlock({ title, events, isLoading }: EventsBlockProps) {
+export default function EventsBlock({ title, events = [], isLoading }: EventsBlockProps) {
+    const [visibleCount, setVisibleCount] = useState(4); // количество видимых мероприятий
+
+    const handleShowMore = () => {
+        setVisibleCount((prevCount) => prevCount + 4); // увеличиваем количество видимых мероприятий
+    };
+    console.log(events.length);
     return (
         <section className="main__events">
             <h3 className="main__events-head">{title}</h3>
             {!isLoading ? (
                 <>
-                    {events?.length !== 0 ? (
+                    {events.length !== 0 ? (
                         <div className="main__events-content">
-                            {events?.map((event) => (
+                            {events.slice(0, visibleCount).map((event) => (
                                 <EventCard
+                                    key={event.id} // добавляем ключ для компонента
                                     id={event.id}
                                     name={event.name}
                                     start_date={event.start_date}
@@ -33,6 +41,11 @@ export default function EventsBlock({ title, events, isLoading }: EventsBlockPro
                         <div className="main_no_events">
                             <p>Нет мероприятий в данном разделе</p>
                         </div>
+                    )}
+                    {events.length > visibleCount && (
+                        <button onClick={handleShowMore} className="show-more-button">
+                            Показать еще ({events.length - visibleCount})
+                        </button>
                     )}
                 </>
             ) : (
