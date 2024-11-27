@@ -9,7 +9,11 @@ export enum APIRoute {
     Logout = 'auth/logout/',
     ProfileData = 'profile/me/',
     Events = 'event/view/',
+    MyEvents = 'event/view/my/',
+    ParticipateEvents = 'event/view/participate/',
+    OtherEvents = 'event/view/other/',
     Event = 'event/',
+    Cities = 'event/cities/',
 }
 
 export enum AppRoute {
@@ -19,7 +23,7 @@ export enum AppRoute {
     Events = '/events',
     Lk = '/lk',
     Create = '/create',
-    ChangePass = '/changePassword',
+    ChangePass = 'changePassword',
 }
 
 export enum AuthorizationStatus {

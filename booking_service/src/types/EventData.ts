@@ -9,4 +9,7 @@ export type EventShortData = {
     photo_url: string;
 };
 
+export type Cities = { cities: [string] };
+export type TransformedCities = { cities: { labelValue: string }[] };
+
 export type EventsShortData = EventShortData[];

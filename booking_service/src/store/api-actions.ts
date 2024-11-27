@@ -7,7 +7,7 @@ import { dropToken, saveToken } from '../services/token';
 import { SignInData, UserData } from '../types/SignInData';
 import { AuthData, LoginData } from '../types/LoginData';
 import { ProfileData } from '../types/ProfileData';
-import { EventShortData, EventsShortData } from '../types/EventData';
+import { Cities, EventShortData, EventsShortData } from '../types/EventData';
 
 export const loginAction = createAsyncThunk<
     LoginData,
@@ -88,7 +88,7 @@ export const postProfileDataAction = createAsyncThunk<
 >(
     'patient/postProfileData',
     async (
-        { first_name, last_name, patronymic, email, birth_date, city, phone_number, company_name, vk, telegram, whatsapp },
+        { first_name, last_name, patronymic, email, birth_date, city, phone_number, company_name, vk, telegram, whatsapp, photo },
         { dispatch, extra: api },
     ) => {
         const { data } = await api.put<ProfileData>(APIRoute.ProfileData, {
@@ -103,6 +103,7 @@ export const postProfileDataAction = createAsyncThunk<
             vk,
             telegram,
             whatsapp,
+            photo,
         });
         dispatch(fetchProfileData());
         return data;
@@ -132,5 +133,56 @@ export const fetchEventData = createAsyncThunk<
     }
 >('data/fetchEventData', async ({ id }, { extra: api }) => {
     const { data } = await api.get<EventShortData>(`${APIRoute.Event}${id}/view/`);
+    return data;
+});
+
+export const fetchMyEventsData = createAsyncThunk<
+    EventsShortData,
+    undefined,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('data/fetchMyEventsData', async (_arg, { extra: api }) => {
+    const { data } = await api.get<EventsShortData>(APIRoute.MyEvents);
+    return data;
+});
+
+export const fetchParticipateEventsData = createAsyncThunk<
+    EventsShortData,
+    undefined,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('data/fetchParticipateEventsData', async (_arg, { extra: api }) => {
+    const { data } = await api.get<EventsShortData>(APIRoute.ParticipateEvents);
+    return data;
+});
+
+export const fetchOtherEventsData = createAsyncThunk<
+    EventsShortData,
+    undefined,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('data/fetchOtherEventsData', async (_arg, { extra: api }) => {
+    const { data } = await api.get<EventsShortData>(APIRoute.OtherEvents);
+    return data;
+});
+export const fetchCitiesData = createAsyncThunk<
+    Cities,
+    undefined,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('data/fetchCitiesData', async (_arg, { extra: api }) => {
+    const { data } = await api.get<Cities>(APIRoute.Cities);
     return data;
 });

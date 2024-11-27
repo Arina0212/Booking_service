@@ -26,6 +26,6 @@ export function dataFormater(value: string | undefined): string {
 
 export const humanizeDate = (date: Date | string | undefined) => dayjs(date).format('DD.MM.YYYY');
 
-export const getAltDate = (date: string | undefined | Date) => dayjs(date).format('YYYY-MM-DD');
+export const getAltDate = (date: string | undefined | Date) => dayjs(date).format('YYYY-DD-MM');
 
 export const getAltDateFor = (date: string | Date) => dayjs(date).format('MM.DD.YYYY');

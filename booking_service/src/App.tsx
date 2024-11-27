@@ -24,11 +24,14 @@ function App() {
                 <Route path={AppRoute.Login} element={<LoginPage />} />
                 <Route path={AppRoute.SignIn} element={<SignInPage />} />
                 {auth === AuthorizationStatus.Auth && (
-                    <Routes>
-                        <Route path={AppRoute.Lk} element={<ProfilePage />} />
-                        <Route path={AppRoute.ChangePass} element={<ChangePassPage />} />
+                    <>
+                        <Route path={AppRoute.Lk}>
+                            <Route index element={<ProfilePage />} />
+                            <Route path={AppRoute.ChangePass} element={<ChangePassPage />} />
+                        </Route>
+
                         <Route path={AppRoute.Create} element={<CreateEventPage />} />
-                    </Routes>
+                    </>
                 )}
                 {auth !== AuthorizationStatus.Auth && (
                     <>

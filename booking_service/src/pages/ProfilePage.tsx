@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { getLoadingProfile, getProfile } from '../store/user-process/selectors';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { phoneFormater } from '../services/utils/PhoneFormater';
-import { dataFormater, getAltDate, humanizeDate } from '../services/utils/dataFormater';
+import { getAltDate } from '../services/utils/dataFormater';
 import { postProfileDataAction } from '../store/api-actions';
 import Loading from '../components/Loading';
 import { AppRoute } from '../const';
@@ -23,13 +23,14 @@ export default function ProfilePage() {
     const [me, setMe] = useState({
         fio: FIO,
         email: profileData?.email,
-        birth_date: humanizeDate(profileData?.birth_date),
+        birth_date: profileData?.birth_date,
         city: profileData?.city,
         phone_number: phoneFormater(profileData?.phone_number),
         company_name: profileData?.company_name,
         vk: profileData?.vk,
         telegram: profileData?.telegram,
         whatsapp: phoneFormater(profileData?.whatsapp),
+        photo: profileData?.photo,
     });
 
     const dispatch = useAppDispatch();
@@ -61,6 +62,7 @@ export default function ProfilePage() {
                 vk: me.vk,
                 telegram: me.telegram,
                 whatsapp: me.whatsapp.replace(/[^\d]/g, ''),
+                photo: '',
             }),
         );
         setIsEditing(false);
@@ -79,7 +81,15 @@ export default function ProfilePage() {
                         <form onSubmit={handleSubmit}>
                             <div className="profile__info">
                                 <div className="profile__info-pic">
-                                    <img src="/svg/defaultUser2.svg" width={'25.1578947368vw'} height={'25.1578947368vw'} alt="avatar" />
+                                    <img
+                                        src={`${me.photo ? me.photo : '/svg/defaultUser2.svg'}`}
+                                        width={'25.1578947368vw'}
+                                        height={'25.1578947368vw'}
+                                        alt="avatar"
+                                    />
+                                    <button className="profile__info-pic-change">
+                                        <img src="/svg/editIcon.svg" alt="change" />
+                                    </button>
                                 </div>
 
                                 <div className="profile__info-block profile__info-block_span3">
@@ -114,10 +124,11 @@ export default function ProfilePage() {
                                     <div className="profile__info-block-input profile_input_white">
                                         <input
                                             className="input_white-field input_white-field_date"
-                                            type="text"
+                                            type="date"
                                             name="birth_date"
-                                            value={dataFormater(me.birth_date)}
+                                            value={me.birth_date}
                                             onChange={handleChange}
+                                            minLength={10}
                                             placeholder="дд.мм.гггг"
                                         />
                                         <img src="/svg/calendar.svg" alt="" className="input_white-calendar" />
@@ -161,6 +172,7 @@ export default function ProfilePage() {
                                             maxLength={18}
                                             value={phoneFormater(me?.phone_number)}
                                             onChange={handleChange}
+                                            minLength={18}
                                             placeholder="+7 (999) 999 99-99"
                                         />
                                     </div>
@@ -201,6 +213,7 @@ export default function ProfilePage() {
                                             type="tel"
                                             name="whatsapp"
                                             maxLength={18}
+                                            minLength={18}
                                             value={phoneFormater(me?.whatsapp)}
                                             onChange={handleChange}
                                             placeholder="+7 (999) 999 99-99"
