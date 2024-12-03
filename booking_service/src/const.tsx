@@ -24,6 +24,7 @@ export enum AppRoute {
     Lk = '/lk',
     Create = '/create',
     ChangePass = 'changePassword',
+    Teams = '/teams',
 }
 
 export enum AuthorizationStatus {

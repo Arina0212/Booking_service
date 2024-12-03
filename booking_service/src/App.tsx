@@ -10,6 +10,7 @@ import CreateEventPage from './pages/CreateEventPage';
 import ChangePassPage from './pages/ChangePassPage';
 import { getAuthorizationStatus } from './store/user-process/selectors';
 import { useAppSelector } from './hooks';
+import TeamsPage from './pages/TeamsPage';
 
 function App() {
     const auth = useAppSelector(getAuthorizationStatus);
@@ -23,6 +24,7 @@ function App() {
                 </Route>
                 <Route path={AppRoute.Login} element={<LoginPage />} />
                 <Route path={AppRoute.SignIn} element={<SignInPage />} />
+                <Route path={AppRoute.Teams} element={<TeamsPage />} />
                 {auth === AuthorizationStatus.Auth && (
                     <>
                         <Route path={AppRoute.Lk}>

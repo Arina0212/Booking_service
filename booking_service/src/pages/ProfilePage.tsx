@@ -62,13 +62,34 @@ export default function ProfilePage() {
                 vk: me.vk,
                 telegram: me.telegram,
                 whatsapp: me.whatsapp.replace(/[^\d]/g, ''),
-                photo: '',
+                photo: null,
             }),
         );
         setIsEditing(false);
     };
     return (
         <>
+            <dialog className="dialog dialog_change">
+                <form method="dialog" className="dialog__content">
+                    <button className="dialog__content-close" formMethod="dialog">
+                        <img src="../media/closeCross.svg" alt="закрыть" />
+                    </button>
+
+                    <h2 className="dialog__content-title">Смена аватара</h2>
+
+                    <p className="dialog__content-text">Формат: .jpg, .png и .bmp, размер от 400 пикселей в ширину и высоту, вес до 2 MB</p>
+
+                    <div className="dialog__content-upload">
+                        <button className="dialog__content-upload-btn">+</button>
+                        <p>megatz.png</p>
+                        <span>3.2 Мб</span>
+                    </div>
+
+                    <button formMethod="dialog" type="submit" className="dialog__content-btn btn_black">
+                        Изменить аватар
+                    </button>
+                </form>
+            </dialog>
             {!isProfileLoading ? (
                 <>
                     <Header />

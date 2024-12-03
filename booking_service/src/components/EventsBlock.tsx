@@ -15,7 +15,6 @@ export default function EventsBlock({ title, events = [], isLoading }: EventsBlo
     const handleShowMore = () => {
         setVisibleCount((prevCount) => prevCount + 4); // увеличиваем количество видимых мероприятий
     };
-    console.log(events.length);
     return (
         <section className="main__events">
             <h3 className="main__events-head">{title}</h3>

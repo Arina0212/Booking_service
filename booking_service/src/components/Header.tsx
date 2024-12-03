@@ -15,7 +15,7 @@ export default function Header() {
             <Link to={AppRoute.Main} className="header__link header__link_active hide-on-mob">
                 мероприятия
             </Link>
-            <Link to="" className="header__link header__link_mid hide-on-mob">
+            <Link to={AppRoute.Teams} className="header__link header__link_mid hide-on-mob">
                 команды
             </Link>
             <Link to="" className="header__link hide-on-mob">
@@ -49,7 +49,7 @@ export default function Header() {
                 <Link to={AppRoute.Main} className="header__link header__link_active">
                     мероприятия
                 </Link>
-                <Link to="" className="header__link header__link_mid">
+                <Link to={AppRoute.Teams} className="header__link header__link_mid">
                     команды
                 </Link>
                 <Link to="" className="header__link">

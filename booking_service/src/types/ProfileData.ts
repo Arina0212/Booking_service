@@ -10,5 +10,5 @@ export type ProfileData = {
     vk?: string;
     telegram?: string;
     whatsapp?: string;
-    photo: string;
+    photo: string | null;
 };

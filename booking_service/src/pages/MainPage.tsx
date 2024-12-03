@@ -2,8 +2,7 @@ import Header from '../components/Header';
 import EventsBlock from '../components/EventsBlock';
 import Dropdown from '../components/DropDown';
 import * as React from 'react';
-import { useEffect } from 'react';
-import MyDateRangePicker from '../components/DataRangePicker/DataRangePicker';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { parseDate } from '@internationalized/date';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import {
@@ -29,6 +28,7 @@ import { getAuthorizationStatus, getLoadingProfile, getProfile } from '../store/
 import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { Cities, TransformedCities } from '../types/EventData';
+import MyDateRangePicker from '../components/DataRangePicker/DataRangePicker';
 
 export default function MainPage() {
     const auth = useAppSelector(getAuthorizationStatus);
@@ -39,16 +39,15 @@ export default function MainPage() {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(fetchCitiesData());
-        {
-            auth !== AuthorizationStatus.Auth && dispatch(fetchAllEventsData());
-        }
-
-        {
-            auth === AuthorizationStatus.Auth && dispatch(fetchMyEventsData());
+        if (auth === AuthorizationStatus.Auth) {
+            dispatch(fetchMyEventsData());
             dispatch(fetchParticipateEventsData());
             dispatch(fetchOtherEventsData());
+        } else {
+            dispatch(fetchAllEventsData());
         }
     }, [auth, dispatch]);
+
     const profileData = useAppSelector(getProfile);
     const events = useAppSelector(getAllEvents);
     const myEvents = useAppSelector(getMyEvents);
@@ -72,6 +71,29 @@ export default function MainPage() {
     }
 
     const transformedCities = transformCities(originCities);
+    const [search, setSearchTerm] = useState('');
+    const [city, setSelectedCity] = useState('');
+    const [format, setSelectedFormat] = useState('');
+    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const val = e.target?.value;
+        setSearchTerm(val);
+        sendFilters(city, format);
+    };
+
+    const sendFilters = (selectedCity: string, selectedFormat: string) => {
+        const cityToSend = selectedCity === 'все' ? '' : selectedCity;
+        const formatToSend = selectedFormat === 'все' ? '' : selectedFormat;
+
+        const filters = {
+            city: cityToSend,
+            search,
+            format: formatToSend,
+            date_start: value.start,
+            date_end: value.end,
+        };
+        console.log('Отправленные данные фильтрации:', filters);
+        // dispatch(fetchFilteredEvents(filters));
+    };
 
     return (
         <>
@@ -93,14 +115,42 @@ export default function MainPage() {
                             )}
                         <section className="main__filters">
                             <div className="main__filters-input input_white">
-                                <input className="input_white-field" type="text" placeholder="Поиск" />
+                                <input
+                                    className="input_white-field"
+                                    type="text"
+                                    placeholder="Поиск"
+                                    value={search}
+                                    onChange={handleSearchChange}
+                                />
                                 <div className="input_white-search">
                                     <img src="/svg/searchIcon.svg" alt="search" draggable="false" />
                                 </div>
                             </div>
-                            <MyDateRangePicker value={value} onChange={setValue} />
-                            <Dropdown placeHolder="Город:" type="arrow-down" options={transformedCities.cities} />
-                            <Dropdown placeHolder="Формат:" type="arrow-down" options={FORMATS} />
+                            <MyDateRangePicker
+                                value={value}
+                                onChange={(newValue) => {
+                                    setValue(newValue);
+                                    sendFilters(city, format);
+                                }}
+                            />
+                            <Dropdown
+                                placeHolder="Город:"
+                                type="arrow-down"
+                                options={transformedCities.cities}
+                                onChange={(value) => {
+                                    setSelectedCity(value);
+                                    sendFilters(value, format); // Передаем новое значение города
+                                }}
+                            />
+                            <Dropdown
+                                placeHolder="Формат:"
+                                type="arrow-down"
+                                options={FORMATS}
+                                onChange={(value) => {
+                                    setSelectedFormat(value);
+                                    sendFilters(city, value); // Передаем новое значение формата
+                                }}
+                            />
                         </section>
 
                         <>
@@ -108,15 +158,23 @@ export default function MainPage() {
                                 <EventsBlock isLoading={isLoading} title={'Все мероприятия'} events={events} />
                             ) : (
                                 <>
-                                    <EventsBlock isLoading={isMyLoading} title={'Мои мероприятия'} events={myEvents} />
-
-                                    <EventsBlock
-                                        isLoading={isParticipateLoading}
-                                        title={'Мероприятия с моим участием'}
-                                        events={participateEvents}
-                                    />
-
-                                    <EventsBlock isLoading={isOtherLoading} title={'Другие открытые мероприятия'} events={otherEvents} />
+                                    {myEvents && myEvents?.length > 0 && (
+                                        <EventsBlock isLoading={isMyLoading} title={'Мои мероприятия'} events={myEvents} />
+                                    )}
+                                    {participateEvents && participateEvents.length > 0 && (
+                                        <EventsBlock
+                                            isLoading={isParticipateLoading}
+                                            title={'Мероприятия с моим участием'}
+                                            events={participateEvents}
+                                        />
+                                    )}
+                                    {otherEvents && otherEvents.length > 0 && (
+                                        <EventsBlock
+                                            isLoading={isOtherLoading}
+                                            title={'Другие открытые мероприятия'}
+                                            events={otherEvents}
+                                        />
+                                    )}
                                 </>
                             )}
                         </>

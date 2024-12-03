@@ -12,11 +12,10 @@ export default function ChangePassPage() {
     const toggleInput2 = () => {
         setInputType2(inputType2 === 'password' ? 'text' : 'password');
     };
-
     const [inputTypeOld, setInputTypeOld] = useState('password');
 
     const toggleInputOld = () => {
-        setInputTypeOld(inputTypeOld === 'password' ? 'text' : 'password');
+        setInputTypeOld(inputType2 === 'password' ? 'text' : 'password');
     };
 
     const [valueNewPass, setValueNewPass] = useState('');
@@ -30,23 +29,38 @@ export default function ChangePassPage() {
         setValueConfirmNewPass(event.target.value);
     }
 
+    const [valueOldPass, setValueOldPass] = useState('');
+
+    function handleInputOldPass(event: { target: { value: SetStateAction<string> } }) {
+        setValueOldPass(event.target.value);
+    }
+
     return (
         <form className="auth">
             <h1 className="auth__head">Смена пароля</h1>
-
             <div className="auth__input input_white input_pass">
-                <input className="input_white-field input_white-field_pass" type="password" placeholder="Старый пароль" required />
-                {inputTypeOld === 'password' && (
+                <input
+                    className="input_white-field input_white-field_pass"
+                    placeholder="Старый пароль"
+                    id="oldPassword"
+                    ref={passwordRef}
+                    onChange={handleInputOldPass}
+                    type={inputTypeOld}
+                    value={valueOldPass}
+                    required
+                />
+                {inputType === 'password' && (
                     <div onClick={toggleInputOld} className="input_white-show input_white-eye input_white-eye_active">
                         <img src="/svg/showPassIcon.svg" alt="show" draggable="false" />
                     </div>
                 )}
-                {inputTypeOld === 'text' && (
+                {inputType === 'text' && (
                     <div onClick={toggleInputOld} className="input_white-hide input_white-eye">
                         <img src="/svg/hidePassIcon.svg" alt="hide" draggable="false" />
                     </div>
                 )}
             </div>
+
             <div className="auth__input input_white input_pass">
                 <input
                     className="input_white-field input_white-field_pass"

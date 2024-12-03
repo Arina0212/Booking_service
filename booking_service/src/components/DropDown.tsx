@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 export interface IDropdownOption {
-    labelValue: string | number;
+    labelValue: string;
 }
 
 interface IDropdownProps {
@@ -14,15 +14,16 @@ interface IDropdownProps {
     type?: string;
     placeHolder?: string;
     labelName?: string;
+    onChange: (value: string) => void;
 }
 
-function Dropdown({ options, placeHolder, type, tabIndex }: IDropdownProps) {
+function Dropdown({ options, placeHolder, type, tabIndex, onChange }: IDropdownProps) {
     const [isFocused, setIsFocused] = React.useState(false);
     const [selectedItem, setSelectedItem] = React.useState<number | string>(options[0].labelValue);
     const wrapperRef = useRef<any>(null);
 
     useEffect(() => {
-        function handleClickOutside(event: any) {
+        function handleClickOutside(event: MouseEvent) {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
                 setIsFocused(false);
             }
@@ -35,8 +36,9 @@ function Dropdown({ options, placeHolder, type, tabIndex }: IDropdownProps) {
         };
     }, [wrapperRef]);
 
-    const onValueChange = (selectedValue: string | number) => {
+    const onValueChange = (selectedValue: string) => {
         setSelectedItem(selectedValue);
+        onChange(selectedValue);
         setIsFocused(false);
     };
 
@@ -46,12 +48,12 @@ function Dropdown({ options, placeHolder, type, tabIndex }: IDropdownProps) {
 
     return (
         <div ref={wrapperRef} className="relative">
-            <div tabIndex={tabIndex} className=" dropdown-select dropdown-select-selected" onClick={() => setIsFocused(!isFocused)}>
+            <div tabIndex={tabIndex} className="dropdown-select dropdown-select-selected" onClick={() => setIsFocused(!isFocused)}>
                 <div className="dropdown-select-selected">
                     <span>{placeHolder}</span>&nbsp;<p className="dropdown-select-selected-text">{selectedItem}</p>
                 </div>
                 {type === 'arrow-down' && (
-                    <div className={clsx('dropdown-select-caret ', { 'rotate-180 items-center': isFocused })}>
+                    <div className={clsx('dropdown-select-caret', { 'rotate-180 items-center': isFocused })}>
                         <img src="/svg/caret.svg" alt="" />
                     </div>
                 )}
@@ -60,7 +62,7 @@ function Dropdown({ options, placeHolder, type, tabIndex }: IDropdownProps) {
                 <div className="dropdown-menu">
                     <ul className="dropdown-menu-wrapper">
                         {options.map(({ labelValue }) => (
-                            <li key={labelValue} onClick={() => onValueChange(labelValue)} className="dropdown-menu-item ">
+                            <li key={labelValue} onClick={() => onValueChange(labelValue)} className="dropdown-menu-item">
                                 <p className="dropdown-menu-item-text">{labelValue}</p>
                             </li>
                         ))}
