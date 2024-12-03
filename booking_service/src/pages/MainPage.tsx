@@ -29,6 +29,7 @@ import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { Cities, TransformedCities } from '../types/EventData';
 import MyDateRangePicker from '../components/DataRangePicker/DataRangePicker';
+import InvitePage from './InvitePage';
 
 export default function MainPage() {
     const auth = useAppSelector(getAuthorizationStatus);
@@ -179,6 +180,7 @@ export default function MainPage() {
                             )}
                         </>
                     </div>
+                    <InvitePage />
                 </>
             ) : (
                 <Loading />
