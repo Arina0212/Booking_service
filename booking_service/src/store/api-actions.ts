@@ -7,7 +7,7 @@ import { dropToken, saveToken } from '../services/token';
 import { SignInData, UserData } from '../types/SignInData';
 import { AuthData, LoginData } from '../types/LoginData';
 import { ProfileData } from '../types/ProfileData';
-import { Cities, EventShortData, EventsShortData } from '../types/EventData';
+import { Cities, EventPostInputData, EventsShortData, EventViewData } from '../types/EventData';
 
 export const loginAction = createAsyncThunk<
     LoginData,
@@ -124,7 +124,7 @@ export const fetchAllEventsData = createAsyncThunk<
 });
 
 export const fetchEventData = createAsyncThunk<
-    EventShortData,
+    EventViewData,
     { id: number },
     {
         dispatch: AppDispatch;
@@ -132,7 +132,7 @@ export const fetchEventData = createAsyncThunk<
         extra: AxiosInstance;
     }
 >('data/fetchEventData', async ({ id }, { extra: api }) => {
-    const { data } = await api.get<EventShortData>(`${APIRoute.Event}${id}/view/`);
+    const { data } = await api.get<EventViewData>(`${APIRoute.Event}${id}/view/`);
     return data;
 });
 
@@ -184,5 +184,27 @@ export const fetchCitiesData = createAsyncThunk<
     }
 >('data/fetchCitiesData', async (_arg, { extra: api }) => {
     const { data } = await api.get<Cities>(APIRoute.Cities);
+    return data;
+});
+
+export const postEventDataAction = createAsyncThunk<
+    EventPostInputData,
+    EventPostInputData,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('patient/postEventData', async ({ event, photo }, { extra: api }) => {
+    const formData = new FormData();
+    formData.append('event', JSON.stringify(event));
+    formData.append('photo', '');
+
+    const { data } = await api.post<EventPostInputData>(APIRoute.EventCreate, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    console.log(data);
     return data;
 });

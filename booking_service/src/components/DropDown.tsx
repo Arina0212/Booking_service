@@ -50,7 +50,15 @@ function Dropdown({ options, placeHolder, type, tabIndex, onChange }: IDropdownP
         <div ref={wrapperRef} className="relative">
             <div tabIndex={tabIndex} className="dropdown-select dropdown-select-selected" onClick={() => setIsFocused(!isFocused)}>
                 <div className="dropdown-select-selected">
-                    <span>{placeHolder}</span>&nbsp;<p className="dropdown-select-selected-text">{selectedItem}</p>
+                    {selectedItem === '' ? (
+                        <>
+                            <span>{placeHolder}</span> &nbsp;<p className="dropdown-select-selected-text">Онлайн</p>
+                        </>
+                    ) : (
+                        <>
+                            <span>{placeHolder}</span>&nbsp;<p className="dropdown-select-selected-text">{selectedItem}</p>
+                        </>
+                    )}
                 </div>
                 {type === 'arrow-down' && (
                     <div className={clsx('dropdown-select-caret', { 'rotate-180 items-center': isFocused })}>
@@ -63,7 +71,11 @@ function Dropdown({ options, placeHolder, type, tabIndex, onChange }: IDropdownP
                     <ul className="dropdown-menu-wrapper">
                         {options.map(({ labelValue }) => (
                             <li key={labelValue} onClick={() => onValueChange(labelValue)} className="dropdown-menu-item">
-                                <p className="dropdown-menu-item-text">{labelValue}</p>
+                                {labelValue === '' ? (
+                                    <p className="dropdown-menu-item-text">Онлайн</p>
+                                ) : (
+                                    <p className="dropdown-menu-item-text">{labelValue}</p>
+                                )}
                             </li>
                         ))}
                     </ul>

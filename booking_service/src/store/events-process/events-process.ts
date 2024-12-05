@@ -22,6 +22,7 @@ const initialState: EventProcess = {
     otherEvents: [],
     isOtherEventsLoading: true,
     cities: undefined,
+    createOutput: undefined,
 };
 
 export const eventProcess = createSlice({
@@ -68,5 +69,8 @@ export const eventProcess = createSlice({
             .addCase(fetchCitiesData.fulfilled, (state, action) => {
                 state.cities = action.payload;
             });
+        /*.addCase(postEventDataAction.fulfilled, (state, action) => {
+            state.createOutput = action.payload;
+        })*/
     },
 });

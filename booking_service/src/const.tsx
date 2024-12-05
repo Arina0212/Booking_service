@@ -14,6 +14,7 @@ export enum APIRoute {
     OtherEvents = 'event/view/other/',
     Event = 'event/',
     Cities = 'event/cities/',
+    EventCreate = 'event/create/',
 }
 
 export enum AppRoute {

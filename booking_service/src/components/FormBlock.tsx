@@ -1,11 +1,18 @@
 import React, { useRef, useState } from 'react';
 import useAutosizeTextArea from '../hooks/useAutoSize';
 import { FORMATS } from '../const';
+import { useAppDispatch } from '../hooks';
+import { postEventDataAction } from '../store/api-actions';
 
 interface Block {
     id: number;
     title: JSX.Element;
     content: JSX.Element;
+}
+
+interface DateTime {
+    start: string;
+    end: string;
 }
 
 const CreateEventForm: React.FC = () => {
@@ -35,6 +42,7 @@ const CreateEventForm: React.FC = () => {
 
     const [fileInfo, setFileInfo] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
+
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -92,19 +100,50 @@ const CreateEventForm: React.FC = () => {
         setData((prevState) => ({ ...prevState, address: val }));
     };
 
-    const [dateTimes, setDateTimes] = useState<Array<string>>(['']); // Начальное состояние с одним пустым полем
+    const [dateTimes, setDateTimes] = useState<DateTime[]>([]);
+    const [isLimitEnabled, setIsLimitEnabled] = useState<boolean[]>([]);
+    const [participantCounts, setParticipantCounts] = useState<number[]>([]);
 
     const handleAddDateTime = () => {
-        setDateTimes([...dateTimes, '']); // Добавляем новое пустое поле для даты
+        setDateTimes((prev) => [...prev, { start: '', end: '' }]); // Добавляем новый объект с пустыми датами
+        setIsLimitEnabled((prev) => [...prev, false]); // По умолчанию ограничение выключено
     };
 
     const handleRemoveDateTime = (index: number) => {
-        const newDateTimes = dateTimes.filter((_, i) => i !== index); // Удаляем поле по индексу
-        setDateTimes(newDateTimes);
+        setDateTimes((prev) => prev.filter((_, i) => i !== index));
+        setIsLimitEnabled((prev) => prev.filter((_, i) => i !== index));
+        setParticipantCounts((prev) => prev.filter((_, i) => i !== index));
     };
 
-    const handleChangeDateTime = (index: number, value: string) => {
-        setDateTimes((prevDateTimes) => prevDateTimes.map((dt, i) => (i === index ? value : dt)));
+    const handleChangeDateTime = (index: number, key: 'start' | 'end', value: string) => {
+        setDateTimes((prev) => {
+            const newDateTimes = [...prev];
+            newDateTimes[index][key] = value;
+            return newDateTimes;
+        });
+    };
+
+    const handleParticipantCountChange = (index: number, value: number) => {
+        setParticipantCounts((prev) => {
+            const newCounts = [...prev];
+            newCounts[index] = value;
+            return newCounts;
+        });
+    };
+
+    const handleLimitChange = (index: number, value: boolean) => {
+        setIsLimitEnabled((prev) => {
+            const newLimits = [...prev];
+            newLimits[index] = value;
+            return newLimits;
+        });
+    };
+    const handleInputClick = (index: number) => {
+        // Установка фокуса на input при клике на поле
+        const input = document.getElementById(`dateTimeInput${index}`) as HTMLInputElement;
+        if (input) {
+            input.focus();
+        }
     };
 
     const toggleDropdown = () => {
@@ -118,7 +157,7 @@ const CreateEventForm: React.FC = () => {
         setIsDropdownOpen(false);
     };
 
-    const [accessLevel, setAccessLevel] = useState('open');
+    const [accessLevel, setAccessLevel] = useState('');
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAccessLevel(event.target.value);
@@ -434,31 +473,70 @@ const CreateEventForm: React.FC = () => {
                         </p>
 
                         {dateTimes.map((dateTime, index) => (
-                            <div id="createDates" className="create__item-content-dates">
-                                <div key={index} className="create__item-content-dates-date input_white">
+                            <div key={index} id="createDates" className="create__item-content-dates">
+                                <div className="create__item-content-dates_title">
+                                    <p>{index + 1} часть мероприятия</p>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveDateTime(index)}
+                                        className={`create__item-content-dates-remove ${index === 0 ? 'visually-hidden' : ''}`}
+                                    >
+                                        Удалить
+                                    </button>
+                                </div>
+                                <p className="create__item-content-dates_text">Начало:</p>
+                                <div className="create__item-content-dates-date input_white" onClick={() => handleInputClick(index)}>
                                     <input
+                                        id={`dateTimeInputStart${index}`}
                                         className="input_white-field input_white-field_date"
                                         type="datetime-local"
-                                        value={dateTime}
-                                        onChange={(e) => handleChangeDateTime(index, e.target.value)}
+                                        value={dateTime.start}
+                                        onChange={(e) => handleChangeDateTime(index, 'start', e.target.value)}
                                     />
-                                    <img src="/svg/calendar.svg" alt="" className="input_white-calendar" />
                                 </div>
-                                <button
-                                    type="button"
-                                    onClick={() => handleRemoveDateTime(index)}
-                                    className={`create__item-content-dates-remove ${index === 0 && 'visually-hidden'} `}
-                                >
-                                    Удалить
-                                </button>
+                                <p className="create__item-content-dates_text">Конец:</p>
+                                <div className="create__item-content-dates-date input_white" onClick={() => handleInputClick(index)}>
+                                    <input
+                                        id={`dateTimeInputEnd${index}`}
+                                        className="input_white-field input_white-field_date"
+                                        type="datetime-local"
+                                        value={dateTime.end}
+                                        onChange={(e) => handleChangeDateTime(index, 'end', e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="create__item-content-restriction">
+                                    <label className="create__item-content-restriction_check">
+                                        <input
+                                            id={`inviteCheckbox${index}`}
+                                            type="checkbox"
+                                            className="visually-hidden"
+                                            checked={isLimitEnabled[index]}
+                                            onChange={(e) => handleLimitChange(index, e.target.checked)}
+                                        />
+                                        <label htmlFor={`inviteCheckbox${index}`} className="invite__item-team-head-checkbox">
+                                            <img src="/svg/event/checkbox.svg" alt="✓" />
+                                        </label>
+                                        Ограничить количество участников
+                                    </label>
+
+                                    {isLimitEnabled[index] && (
+                                        <div className="create__item-content-participant-limit input_white">
+                                            <input
+                                                type="number"
+                                                className="input_white-field"
+                                                placeholder="Количество"
+                                                value={participantCounts[index] || ''}
+                                                onChange={(e) => handleParticipantCountChange(index, Number(e.target.value))}
+                                                min="1"
+                                            />
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         ))}
 
-                        <button
-                            type="button"
-                            onClick={handleAddDateTime} // Обработчик добавления
-                            className="create__item-content-add"
-                        >
+                        <button type="button" onClick={handleAddDateTime} className="create__item-content-add">
                             Добавить дату и время
                         </button>
                     </div>
@@ -574,8 +652,8 @@ const CreateEventForm: React.FC = () => {
                                 className="visually-hidden"
                                 id="createAccessClosed"
                                 name="createAccess"
-                                value="closed"
-                                checked={accessLevel === 'closed'}
+                                value="close"
+                                checked={accessLevel === 'close'}
                                 onChange={handleRadioChange}
                                 required
                             />
@@ -588,77 +666,13 @@ const CreateEventForm: React.FC = () => {
                 </div>
             ),
         },
-        {
-            id: 9,
-            title: (
-                <div className={`create__item-head ${openBlockId === 9 ? 'create__item-head_active' : ''}`}>
-                    <h1>
-                        Количество участников<span>*</span>
-                    </h1>
-                    <div className="create__item-head-pic">
-                        <img src="/svg/caret.svg" alt="caret" />
-                    </div>
-                </div>
-            ),
-            content: (
-                <div className={`create__item-content ${openBlockId === 9 ? 'create__item-content_active' : ''}`}>
-                    <div className="create__item-content-wrap">
-                        <p className="create__item-content-text">
-                            Если вы не можете вместить большее количество людей, чем подразумевает площадка,
-                            <br />
-                            то поставьте ограничение на участников
-                        </p>
-                        <div className="create__item-content-radios">
-                            <input
-                                type="radio"
-                                className="visually-hidden"
-                                id="createMembersUnlimited"
-                                name="createMembers"
-                                value="unlimited"
-                                required
-                            />
-                            <label htmlFor="createMembersUnlimited" className="create__item-content-radios-btn">
-                                <span></span>
-                                Неограниченно
-                            </label>
-                            <input
-                                type="radio"
-                                className="visually-hidden"
-                                id="createMembersLimited"
-                                name="createMembers"
-                                value="limited"
-                                required
-                            />
-                            <label form="createMembersLimited" className=" create__item-content-radios-btn">
-                                <span></span>
-                                Ограниченно
-                            </label>
-                        </div>
-                        <div id=" createMembersLimitedAmount" className=" create__item-content-hidden">
-                            <div className=" create__item-content-wrap">
-                                <div className=" create__item-content-inputs">
-                                    <div className=" input_white">
-                                        <input
-                                            className=" input_white-field"
-                                            name="countPeople"
-                                            type=" text"
-                                            placeholder=" Введите количество"
-                                        />
-                                    </div>
-                                    <p>19.10.23 18:00 – 19.10.23 18:00</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            ),
-        },
     ];
 
     // Функция для переключения открытого блока
     const toggleBlock = (id: number) => {
         setOpenBlockId(openBlockId === id ? null : id);
     };
+    const dispatch = useAppDispatch();
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault(); // Предотвращаем стандартное поведение формы
 
@@ -677,23 +691,49 @@ const CreateEventForm: React.FC = () => {
         if (fileInfoDesc) {
             formData.append('fileInfoDesc', fileInfoDesc); // Добавьте файл описания, если он существует
         }
-
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/event/create', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (!response.ok) {
-                throw new Error('Ошибка при отправке данных');
-            }
-
-            const result = await response.json(); // Обрабатываем ответ от сервера
-            console.log(result); // Вы можете изменить это на что-то более полезное
-        } catch (error) {
-            console.error(error); // Обработка ошибок
-            setError('Произошла ошибка при отправке данных.');
+        if (selectedFormat) {
+            formData.append('format', selectedFormat);
         }
+        const event_dates = dateTimes.map((dateTime, index) => {
+            const startDate = new Date(dateTime.start);
+            const endDate = new Date(dateTime.end);
+
+            // Получаем дату в формате YYYY-MM-DD
+            const event_date = startDate.toISOString().split('T')[0];
+
+            // Получаем время в формате HH:MM
+            const start_time = startDate.toTimeString().split(' ')[0].slice(0, 5);
+            const end_time = endDate.toTimeString().split(' ')[0].slice(0, 5);
+
+            return {
+                event_date: event_date,
+                event_times: [
+                    {
+                        start_time: start_time,
+                        end_time: end_time,
+                        seats_number: participantCounts[index], // Указать логику для количества мест
+                        description: '', // Указать описание, если передается
+                    },
+                ],
+            };
+        });
+        const customField = [
+            {
+                title: data.name,
+            },
+        ];
+        const eventFullData = {
+            event_dates: event_dates,
+            custom_fields: customField,
+            visit_cost: Number(data.payCount),
+            city: data.city,
+            name: data.name,
+            status: accessLevel,
+            address: data.address,
+            format: selectedFormat ? selectedFormat : '',
+            description: data.description,
+        };
+        dispatch(postEventDataAction({ event: eventFullData, photo: fileInfo }));
     };
     return (
         <form className="create" onSubmit={handleSubmit}>

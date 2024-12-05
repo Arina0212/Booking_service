@@ -33,6 +33,8 @@ export default function EventsBlock({ title, events = [], isLoading }: EventsBlo
                                     visit_cost={event.visit_cost}
                                     format={event.format}
                                     photo_url={event.photo_url}
+                                    start_time={event.start_time}
+                                    end_time={event.end_time}
                                 />
                             ))}
                         </div>

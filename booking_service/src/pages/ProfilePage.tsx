@@ -152,7 +152,7 @@ export default function ProfilePage() {
                                             minLength={10}
                                             placeholder="дд.мм.гггг"
                                         />
-                                        <img src="/svg/calendar.svg" alt="" className="input_white-calendar" />
+                                        {/*<img src="/svg/calendar.svg" alt="" className="input_white-calendar" />*/}
                                     </div>
                                 </div>
 

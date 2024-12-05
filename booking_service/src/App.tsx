@@ -1,6 +1,6 @@
 import { HelmetProvider } from 'react-helmet-async';
 import { Route, Routes } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from './const';
+import { AppRoute } from './const';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import ProfilePage from './pages/ProfilePage';
@@ -25,23 +25,23 @@ function App() {
                 <Route path={AppRoute.Login} element={<LoginPage />} />
                 <Route path={AppRoute.SignIn} element={<SignInPage />} />
                 <Route path={AppRoute.Teams} element={<TeamsPage />} />
-                {auth === AuthorizationStatus.Auth && (
-                    <>
-                        <Route path={AppRoute.Lk}>
-                            <Route index element={<ProfilePage />} />
-                            <Route path={AppRoute.ChangePass} element={<ChangePassPage />} />
-                        </Route>
+                {/*{auth === AuthorizationStatus.Auth && (
+                    <>*/}
+                <Route path={AppRoute.Lk}>
+                    <Route index element={<ProfilePage />} />
+                    <Route path={AppRoute.ChangePass} element={<ChangePassPage />} />
+                </Route>
 
-                        <Route path={AppRoute.Create} element={<CreateEventPage />} />
-                    </>
-                )}
-                {auth !== AuthorizationStatus.Auth && (
+                <Route path={AppRoute.Create} element={<CreateEventPage />} />
+                {/*</>
+                )}*/}
+                {/*{auth !== AuthorizationStatus.Auth && (
                     <>
                         <Route path={AppRoute.Lk} element={<MainPage />} />
                         <Route path={AppRoute.ChangePass} element={<MainPage />} />
                         <Route path={AppRoute.Create} element={<MainPage />} />
                     </>
-                )}
+                )}*/}
             </Routes>
         </HelmetProvider>
     );

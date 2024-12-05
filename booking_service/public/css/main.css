@@ -139,6 +139,8 @@ input[data-autocompleted] {
     background: none;
     border: none;
     outline: none;
+    width: -webkit-fill-available;
+    right: 1.5789473684vw;
 }
 
 .input_white-field::placeholder {
@@ -644,7 +646,7 @@ input[data-autocompleted] {
 
 .event__card-pic img {
     width: 100%;
-    height: 100%;
+    height: 17.1579vw;
     object-fit: cover;
     object-position: center;
 }
@@ -751,6 +753,11 @@ input[data-autocompleted] {
 
 .event__card-btn {
     grid-column: 3/4;
+}
+
+.disabled {
+    opacity: 40%;
+    pointer-events: none;
 }
 
 .event__desc {
@@ -1023,14 +1030,16 @@ input[data-autocompleted] {
     height: 0.9473684211vw;
 }
 
+/*
 input::-webkit-calendar-picker-indicator {
     opacity: 0;
     display: none;
 }
+*/
 
-.input_white-field_date {
+/*.input_white-field_date {
     left: 2.7894736842vw;
-}
+}*/
 
 .loadding {
     position: absolute;
@@ -1109,6 +1118,7 @@ input::-webkit-calendar-picker-indicator {
     display: grid;
     gap: 2.6315789474vw;
     padding: 5.7894736842vw 10.5263157895vw;
+    margin-bottom: 16.6316vw;
 }
 
 .create__item {
@@ -1184,9 +1194,18 @@ input::-webkit-calendar-picker-indicator {
 .create__item-content-dates {
     margin-top: 1.5789473684vw;
     display: grid;
-    grid-template-columns: 21.0526315789vw 5.2631578947vw;
+    grid-template-columns: 4vw 16.6316vw 4vw 16.6316vw;
     gap: 1.0526315789vw 1.5789473684vw;
+    align-items: center;
 }
+
+.create__item-content-dates_title {
+    grid-column: 1/5;
+    display: flex;
+    flex-direction: row;
+    gap: 1.5789vw;
+}
+
 
 .create__item-content-dates-remove {
     color: #FF0000;
@@ -1459,27 +1478,57 @@ input::-webkit-calendar-picker-indicator {
 
 .invite__item-team-head-checkbox {
     display: block;
-    content: "&#x2713";
     width: 0.9473684211vw;
     height: 0.9473684211vw;
-    border: #ACB6BF 0.1052631579vw solid;
+    border: #000000 0.1579vw solid;
     border-radius: 0.3157894737vw;
     overflow: hidden;
     cursor: pointer;
+}
+
+.create__item-content-restriction {
+    margin-top: 1.1053vw;
+    grid-column: 1/5;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+/ / Yeah, yeah everybody write about it
+}
+
+input[type='number'],
+input[type="number"]:hover,
+input[type="number"]:focus {
+    appearance: none;
+    -moz-appearance: textfield;
+}
+
+.create__item-content-participant-limit {
+    width: 16.6316vw;
+    margin-top: 1.0526vw;
 }
 
 .invite__item-team-head-checkbox img {
     display: none;
 }
 
-.invite__item-team-head input:checked + label {
+/* Применение стилей для label при выбранном состоянии чекбокса */
+input:checked + label {
     border: none;
 }
 
-.invite__item-team-head input:checked + label img {
+input:checked + label img {
     display: block;
     width: 0.9473684211vw;
     height: 0.9473684211vw;
+}
+
+.create__item-content-restriction_check {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.7895vw;
 }
 
 .invite__item-team-head h1 {

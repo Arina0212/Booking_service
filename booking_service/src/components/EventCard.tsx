@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { humanizeDate } from '../services/utils/dataFormater';
+import { humanizeDate, TimeComponent } from '../services/utils/dataFormater';
 import { AppRoute, MONTH } from '../const';
 
 type EventCardProps = {
@@ -11,9 +11,22 @@ type EventCardProps = {
     visit_cost: number;
     format: string;
     photo_url: string;
+    start_time: string;
+    end_time: string;
 };
 
-export default function EventCard({ id, name, start_date, end_date, city, visit_cost, format, photo_url }: EventCardProps) {
+export default function EventCard({
+    id,
+    name,
+    start_date,
+    end_date,
+    city,
+    visit_cost,
+    format,
+    photo_url,
+    start_time,
+    end_time,
+}: EventCardProps) {
     const startDate = humanizeDate(start_date).split('.');
     const startMonth = Number(startDate[1]) - 1;
     const endtDate = humanizeDate(end_date).split('.');
@@ -35,17 +48,17 @@ export default function EventCard({ id, name, start_date, end_date, city, visit_
                             <span>Начало</span>
                             <h4>{startDate[0]}</h4>
                             <p>{MONTH[startMonth]}</p>
-                            <p>18:00</p>
+                            <p>{TimeComponent(start_time)}</p>
                         </div>
                         <div className="main__events-content-slide-dates-date">
                             <span>Конец</span>
                             <h4>{endtDate[0]}</h4>
                             <p>{MONTH[endMonth]}</p>
-                            <p>18:00</p>
+                            <p>{TimeComponent(end_time)}</p>
                         </div>
                     </div>
                     <div className="main__events-content-slide-info">
-                        <p>{city}</p>
+                        {city === '' ? <p>Онлайн</p> : <p>{city}</p>}
                         {visit_cost === 0 && <span className="main__events-content-slide-info-price_free">Бесплатно</span>}
                         {visit_cost > 0 && <span className="main__events-content-slide-info-price">{visit_cost}₽</span>}
                     </div>
