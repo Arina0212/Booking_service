@@ -8,6 +8,7 @@ import { getEvent, getLoadingEvent } from '../store/events-process/selectors';
 import Loading from '../components/Loading';
 import CopyButtonWithFeedback from '../components/CopyTextButton';
 import { phoneFormater } from '../services/utils/PhoneFormater';
+import { formatDate, TimeComponent } from '../services/utils/dataFormater';
 
 export default function EventPage() {
     const dispatch = useAppDispatch();
@@ -28,11 +29,11 @@ export default function EventPage() {
                     <main className="event">
                         <section className="event__card">
                             <div className="event__card-pic">
-                                <img src="/svg/event/defaultBanner.svg" alt="event" />
+                                <img src={`${event?.photo_url ? event?.photo_url : '/svg/event/defaultBanner.svg'}`} alt="event" />
                             </div>
 
                             <div className="event__card-tags">
-                                <div className="event__card-tags-tag">Питч</div>
+                                <div className="event__card-tags-tag">{event?.format}</div>
                                 <div className="event__card-tags-tag event__card-tags-tag_closed">Завершено</div>
                             </div>
 
@@ -54,46 +55,37 @@ export default function EventPage() {
                                     </div>
 
                                     <p className="event__card-info-item-text event__card-info-item-text_prpl">
-                                        Екатеринбург,Точка кипения УрФУ Екатеринбург
+                                        {event?.city !== '' ? `${event?.city}, ${event?.address}` : 'Онлайн'}
                                     </p>
                                 </div>
-                                <div className="event__card-info-item">
-                                    <div className="event__card-info-item-pic">
-                                        <img src="/svg/event/clockIcon.svg" alt="time" />
+                                {event?.time_slots_descriptions.map((timeSlot, index) => (
+                                    <div className="event__card-info-item" key={index}>
+                                        <div className="event__card-info-item-pic">
+                                            <img src="/svg/event/clockIcon.svg" alt="time" />
+                                        </div>
+
+                                        <p className="event__card-info-item-text">{`${formatDate(timeSlot.date)} ${TimeComponent(timeSlot.start_time)} - ${formatDate(timeSlot.date)} ${TimeComponent(timeSlot.end_time)}`}</p>
+
+                                        <div className="event__card-info-item-ppl">
+                                            <img src="/svg/event/pplIcon.svg" alt="ppl" />
+                                        </div>
+
+                                        <Link to={''} className="event__card-info-item-amount">
+                                            {timeSlot.bookings_count}
+                                            {timeSlot.seats_number !== null && timeSlot.seats_number !== 0
+                                                ? ` / ${timeSlot.seats_number}`
+                                                : ''}
+                                        </Link>
                                     </div>
+                                ))}
 
-                                    <p className="event__card-info-item-text">19 октября 18:00 – 20 октября 18:00</p>
-
-                                    <div className="event__card-info-item-ppl">
-                                        <img src="/svg/event/pplIcon.svg" alt="ppl" />
-                                    </div>
-
-                                    <a href="" className="event__card-info-item-amount">
-                                        363
-                                    </a>
-                                </div>
-                                <div className="event__card-info-item">
-                                    <div className="event__card-info-item-pic">
-                                        <img src="/svg/event/clockIcon.svg" alt="time" />
-                                    </div>
-
-                                    <p className="event__card-info-item-text">19 октября 18:00 – 20 октября 18:00</p>
-
-                                    <div className="event__card-info-item-ppl">
-                                        <img src="/svg/event/pplIcon.svg" alt="ppl" />
-                                    </div>
-
-                                    <a href="" className="event__card-info-item-amount">
-                                        1234
-                                    </a>
-                                </div>
                                 <div className="event__card-info-item">
                                     <div className="event__card-info-item-pic">
                                         <img src="/svg/event/saleIcon.svg" alt="price" />
                                     </div>
 
                                     <p className="event__card-info-item-text">
-                                        Бесплатно, <span>закрытый доступ</span>
+                                        {event?.visit_cost === 0 ? 'Бесплатно' : `${event?.visit_cost} ₽`}, <span>закрытый доступ</span>
                                     </p>
                                 </div>
                             </div>
@@ -106,7 +98,7 @@ export default function EventPage() {
                         <section className="event__desc">
                             <h2 className="event__desc-head">Описание</h2>
 
-                            <p className="event__desc-text">Какое-то описание</p>
+                            <p className="event__desc-text">{event?.description}</p>
 
                             <a href="path_to_file" download="proposed_file_name" className="event__desc-download">
                                 <div className="event__desc-download-pic">
@@ -129,28 +121,44 @@ export default function EventPage() {
                             <h2 className="event__host-head">Организатор</h2>
 
                             <div className="event__host-pic">
-                                <img src="/svg/defaultUser1.svg" alt="host" />
+                                <img src={`${event?.creator.photo_url ? event?.creator.photo_url : '/svg/defaultUser1.svg'}`} alt="host" />
                             </div>
-
-                            <span className="event__host-subhead">Компания:</span>
-                            <p className="event__host-text">ООО “ЕРАЛАШОВСКИЕ”</p>
+                            {event?.creator.company !== '' && (
+                                <>
+                                    <span className="event__host-subhead">Компания:</span>
+                                    <p className="event__host-text">{event?.creator.company}</p>
+                                </>
+                            )}
 
                             <span className="event__host-subhead">ФИО:</span>
-                            <p className="event__host-text">Сергеев Сергей Савельевич</p>
+                            <p className="event__host-text">{`${event?.creator.last_name} ${event?.creator.first_name} ${event?.creator.patronymic}`}</p>
 
                             <span className="event__host-subhead">Контакты:</span>
-                            <div className="event__host-contact">
-                                <img src="/svg/event/whatsappIcon.svg" alt="whatsapp" />
-                                <CopyButtonWithFeedback textToCopy={phoneFormater('+79022721339')} />
-                            </div>
-                            <div className="event__host-contact">
-                                <img src="/svg/event/vkIcon.svg" alt="vk" />
-                                <CopyButtonWithFeedback textToCopy="@ruslikut" />
-                            </div>
-                            <div className="event__host-contact">
-                                <img src="/svg/event/tgIcon.svg" alt="tg" />
-                                <CopyButtonWithFeedback textToCopy="@matelr" />
-                            </div>
+                            {!!event?.creator.contacts.phone_number && (
+                                <div className="event__host-contact">
+                                    <img src="/svg/event/whatsappIcon.svg" alt="phone" />
+                                    <CopyButtonWithFeedback textToCopy={phoneFormater(event?.creator.contacts.phone_number)} />
+                                </div>
+                            )}
+                            {!!event?.creator.contacts.whatsapp &&
+                                event?.creator.contacts.phone_number !== event?.creator.contacts.whatsapp && (
+                                    <div className="event__host-contact">
+                                        <img src="/svg/event/whatsappIcon.svg" alt="whatsapp" />
+                                        <CopyButtonWithFeedback textToCopy={phoneFormater(event?.creator.contacts.whatsapp)} />
+                                    </div>
+                                )}
+                            {!!event?.creator.contacts.vk && (
+                                <div className="event__host-contact">
+                                    <img src="/svg/event/vkIcon.svg" alt="vk" />
+                                    <CopyButtonWithFeedback textToCopy={event?.creator.contacts.vk} />
+                                </div>
+                            )}
+                            {!!event?.creator.contacts.telegram && (
+                                <div className="event__host-contact">
+                                    <img src="/svg/event/tgIcon.svg" alt="tg" />
+                                    <CopyButtonWithFeedback textToCopy={event?.creator.contacts.telegram} />
+                                </div>
+                            )}
                             <div className="event__host-contact">
                                 <img src="/svg/event/mailIcon.svg" alt="mail" />
                                 <CopyButtonWithFeedback textToCopy="utenkov2003@mail.ru" />

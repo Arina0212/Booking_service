@@ -139,7 +139,6 @@ input[data-autocompleted] {
     background: none;
     border: none;
     outline: none;
-    width: -webkit-fill-available;
     right: 1.5789473684vw;
 }
 

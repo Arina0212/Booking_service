@@ -24,8 +24,17 @@ export function dataFormater(value: string | undefined): string {
     return formattedValue;
 }
 
+export function TimeComponent(time: string) {
+    return time.substring(0, 5);
+}
+
+export function formatDate(dateString: string) {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU', options);
+}
 export const humanizeDate = (date: Date | string | undefined) => dayjs(date).format('DD.MM.YYYY');
 
 export const getAltDate = (date: string | undefined | Date) => dayjs(date).format('YYYY-DD-MM');
 
-export const getAltDateFor = (date: string | Date) => dayjs(date).format('MM.DD.YYYY');
+export const getAltDateFor = (date: string | Date) => dayjs(date).format('DD.MMMM.YYYY');
