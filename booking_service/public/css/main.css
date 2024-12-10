@@ -668,6 +668,35 @@ input[data-autocompleted] {
     background-color: rgba(255, 0, 0, 0.1019607843);
 }
 
+.event__card-tags-tag_goes {
+    color: #FF9D00;
+    background-color: rgba(255, 157, 0, 0.1019607843);
+}
+
+.event__card_main-tags-tag_closed {
+    position: absolute;
+    left: 10.6421vw;
+    top: 1.0526vw;
+    color: #FF0000;
+    background-color: #FFE6E6;
+}
+
+.event__card_main-tags-tag_goes {
+    position: absolute;
+    left: 12.9421vw;
+    top: 1.0526vw;
+    color: #FF9D00;
+    background-color: #FFF6E6;
+}
+
+.event__card_main-tags {
+    position: absolute;
+}
+
+.event_closed {
+    opacity: 50%;
+}
+
 .event__card-links {
     justify-self: end;
     display: flex;
@@ -1682,7 +1711,7 @@ input:checked + label img {
 }
 
 .dialog {
-    top: 50%;
+    top: 35%;
     left: 50%;
     translate: -50% -50%;
     padding: 0;
@@ -1701,7 +1730,7 @@ input:checked + label img {
     width: 29.2631578947vw;
 }
 
-.dialog_change {
+.dialog_change, .dialog_pass, .dialog_request, .dialog_gratz, .dialog_end {
     width: 23.1578947368vw;
 }
 
@@ -1731,12 +1760,20 @@ input:checked + label img {
     font-weight: 700;
     font-size: 1.6842105263vw;
     text-align: center;
+    margin-bottom: 2.6315789474vw;
+}
+
+.dialog__content-title_no-margin {
+    margin-bottom: 0;
+}
+
+.dialog__content-title_red {
+    color: #FF0000;
 }
 
 .dialog__content-dropdown {
     width: 100%;
     height: 3.1578947368vw;
-    margin-top: 2.6315789474vw;
 }
 
 .dialog__content-members {
@@ -1808,10 +1845,6 @@ input:checked + label img {
     height: 100%;
 }
 
-.dialog__content-text {
-    margin-top: 2.6315789474vw;
-}
-
 .dialog__content-upload {
     display: grid;
     grid-template-columns: 3.1578947368vw 1fr;
@@ -1848,6 +1881,14 @@ input:checked + label img {
 
 .dialog__content-btn {
     margin-top: 2.6315789474vw;
+}
+
+.dialog__content-gap {
+    display: grid;
+}
+
+.dialog__content-gap_30 {
+    gap: 1.5789473684vw;
 }
 
 .hide-on-desktop {
@@ -2034,7 +2075,7 @@ input:checked + label img {
         left: 4.6875vw;
         top: 50%;
         transform: translateY(-50%);
-        width: 75%;
+        width: 80%;
         background: none;
         border: none;
         outline: none;

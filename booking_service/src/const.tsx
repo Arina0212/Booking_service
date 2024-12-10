@@ -15,6 +15,7 @@ export enum APIRoute {
     Event = 'event/',
     Cities = 'event/cities/',
     EventCreate = 'event/create/',
+    Filters = 'event/filter',
 }
 
 export enum AppRoute {

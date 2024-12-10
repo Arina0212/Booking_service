@@ -9,18 +9,24 @@ export type EventShortData = {
     visit_cost: number;
     format: string;
     photo_url: string;
-};
-
-export type EventTime = {
-    start_time: string;
-    end_time: string;
-    seats_number: number;
-    description: string;
+    state: string;
 };
 
 export type EventDate = {
-    event_date: string;
-    event_times: EventTime[];
+    start_date: string;
+    end_date: string;
+    start_time: string;
+    end_time: string;
+    seats_number: number;
+};
+
+export type EventTimeSlots = {
+    start_date: string;
+    end_date: string;
+    start_time: string;
+    end_time: string;
+    seats_number: number | null;
+    bookings_count: number;
 };
 export type EventCustomDate = {
     title: string;
@@ -29,6 +35,7 @@ export type EventCustomDate = {
 export type EventPostInputData = {
     event: EventFullData;
     photo: File | null;
+    schedule: File | null;
 };
 export type EventPostOutputData = {
     msg: string;
@@ -37,7 +44,7 @@ export type EventPostOutputData = {
 };
 
 export type EventFullData = {
-    event_dates: EventDate[];
+    event_dates_times: EventDate[];
     name: string;
     custom_fields: EventCustomDate[];
     city: string;
@@ -59,8 +66,11 @@ export type EventViewData = {
     city: string;
     address: string;
     visit_cost: number;
+    status: string;
     format: string;
+    state: string;
     photo_url: string | null;
+    schedule_url: string | null;
     creator: {
         first_name: string;
         last_name: string;
@@ -68,6 +78,7 @@ export type EventViewData = {
         company: string;
         photo_url: string | null;
         contacts: {
+            email: string;
             phone_number: string;
             vk: string;
             telegram: string;
@@ -76,14 +87,22 @@ export type EventViewData = {
     };
     time_slots_descriptions: [
         {
-            date: string;
+            start_date: string;
+            end_date: string;
             start_time: string;
             end_time: string;
-            description: string;
             seats_number: number | null;
             bookings_count: number;
         },
     ];
+};
+
+export type FiltersData = {
+    city: string | null;
+    search: string | null;
+    date_start: string | null;
+    date_end: string | null;
+    format: string | null;
 };
 
 export type Cities = { cities: [string] };

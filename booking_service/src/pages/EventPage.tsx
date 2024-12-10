@@ -2,13 +2,15 @@ import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../const';
 import Header from '../components/Header';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchEventData } from '../store/api-actions';
 import { getEvent, getLoadingEvent } from '../store/events-process/selectors';
 import Loading from '../components/Loading';
 import CopyButtonWithFeedback from '../components/CopyTextButton';
 import { phoneFormater } from '../services/utils/PhoneFormater';
 import { formatDate, TimeComponent } from '../services/utils/dataFormater';
+import { getProfile } from '../store/user-process/selectors';
+import RegistrationForEvent from '../components/dialogs/RegistrationForEvent';
 
 export default function EventPage() {
     const dispatch = useAppDispatch();
@@ -20,9 +22,15 @@ export default function EventPage() {
 
     const event = useAppSelector(getEvent);
     const isLoading = useAppSelector(getLoadingEvent);
+    const me = useAppSelector(getProfile);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    const openDialog = () => setIsDialogOpen(true);
+    const closeDialog = () => setIsDialogOpen(false);
 
     return (
         <>
+            <RegistrationForEvent isOpen={isDialogOpen} onClose={closeDialog} timeSlotsDescriptions={event?.time_slots_descriptions} />
             {!isLoading ? (
                 <>
                     <Header />
@@ -34,17 +42,23 @@ export default function EventPage() {
 
                             <div className="event__card-tags">
                                 <div className="event__card-tags-tag">{event?.format}</div>
-                                <div className="event__card-tags-tag event__card-tags-tag_closed">Завершено</div>
+                                {event?.state === 'Завершено' && (
+                                    <div className="event__card-tags-tag event__card-tags-tag_closed">{event?.state}</div>
+                                )}
+                                {event?.state === 'Идёт' && (
+                                    <div className="event__card-tags-tag  event__card-tags-tag_goes">{event?.state}</div>
+                                )}
                             </div>
-
-                            <div className="event__card-links">
-                                <Link to={AppRoute.Main} className="event__card-links-link">
-                                    Создать копию
-                                </Link>
-                                <Link to={AppRoute.Main} className="event__card-links-link">
-                                    Редактировать
-                                </Link>
-                            </div>
+                            {me?.email === event?.creator.contacts.email && (
+                                <div className="event__card-links">
+                                    <Link to={AppRoute.Main} className="event__card-links-link">
+                                        Создать копию
+                                    </Link>
+                                    <Link to={AppRoute.Main} className="event__card-links-link">
+                                        Редактировать
+                                    </Link>
+                                </div>
+                            )}
 
                             <h1 className="event__card-title">{event?.name}</h1>
 
@@ -64,7 +78,7 @@ export default function EventPage() {
                                             <img src="/svg/event/clockIcon.svg" alt="time" />
                                         </div>
 
-                                        <p className="event__card-info-item-text">{`${formatDate(timeSlot.date)} ${TimeComponent(timeSlot.start_time)} - ${formatDate(timeSlot.date)} ${TimeComponent(timeSlot.end_time)}`}</p>
+                                        <p className="event__card-info-item-text">{`${formatDate(timeSlot.start_date)} ${TimeComponent(timeSlot.start_time)} - ${formatDate(timeSlot.end_date)} ${TimeComponent(timeSlot.end_time)}`}</p>
 
                                         <div className="event__card-info-item-ppl">
                                             <img src="/svg/event/pplIcon.svg" alt="ppl" />
@@ -85,14 +99,20 @@ export default function EventPage() {
                                     </div>
 
                                     <p className="event__card-info-item-text">
-                                        {event?.visit_cost === 0 ? 'Бесплатно' : `${event?.visit_cost} ₽`}, <span>закрытый доступ</span>
+                                        {event?.visit_cost === 0 ? 'Бесплатно' : `${event?.visit_cost} ₽`},{' '}
+                                        <span>{event?.status === 'open' ? 'открытый доступ' : 'закрытый доступ'}</span>
                                     </p>
                                 </div>
                             </div>
-
-                            <a href="" className="event__card-btn btn_black">
-                                Подать заявку
-                            </a>
+                            {me?.email !== event?.creator.contacts.email ? (
+                                <button onClick={openDialog} className="event__card-btn btn_black">
+                                    Подать заявку
+                                </button>
+                            ) : (
+                                <button onClick={openDialog} className="event__card-btn btn_black">
+                                    Пригласить людей
+                                </button>
+                            )}
                         </section>
 
                         <section className="event__desc">
@@ -111,10 +131,6 @@ export default function EventPage() {
 
                                 <span>3.2 Мб</span>
                             </a>
-
-                            <h2 className="event__desc-head">Другие поля</h2>
-
-                            <p className="event__desc-text">Здесь свой текст, который захочет создатель меро</p>
                         </section>
 
                         <section className="event__host">
@@ -159,10 +175,12 @@ export default function EventPage() {
                                     <CopyButtonWithFeedback textToCopy={event?.creator.contacts.telegram} />
                                 </div>
                             )}
-                            <div className="event__host-contact">
-                                <img src="/svg/event/mailIcon.svg" alt="mail" />
-                                <CopyButtonWithFeedback textToCopy="utenkov2003@mail.ru" />
-                            </div>
+                            {!!event?.creator.contacts.email && (
+                                <div className="event__host-contact">
+                                    <img src="/svg/event/mailIcon.svg" alt="mail" />
+                                    <CopyButtonWithFeedback textToCopy={event?.creator.contacts.email} />
+                                </div>
+                            )}
                         </section>
                     </main>
                 </>

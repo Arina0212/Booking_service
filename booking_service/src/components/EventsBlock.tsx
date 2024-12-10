@@ -10,10 +10,10 @@ interface EventsBlockProps {
 }
 
 export default function EventsBlock({ title, events = [], isLoading }: EventsBlockProps) {
-    const [visibleCount, setVisibleCount] = useState(4); // количество видимых мероприятий
+    const [visibleCount, setVisibleCount] = useState(4);
 
     const handleShowMore = () => {
-        setVisibleCount((prevCount) => prevCount + 4); // увеличиваем количество видимых мероприятий
+        setVisibleCount((prevCount) => prevCount + 4);
     };
     return (
         <section className="main__events">
@@ -35,6 +35,7 @@ export default function EventsBlock({ title, events = [], isLoading }: EventsBlo
                                     photo_url={event.photo_url}
                                     start_time={event.start_time}
                                     end_time={event.end_time}
+                                    state={event.state}
                                 />
                             ))}
                         </div>

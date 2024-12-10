@@ -33,8 +33,9 @@ export function formatDate(dateString: string) {
     const date = new Date(dateString);
     return date.toLocaleDateString('ru-RU', options);
 }
-export const humanizeDate = (date: Date | string | undefined) => dayjs(date).format('DD.MM.YYYY');
 
-export const getAltDate = (date: string | undefined | Date) => dayjs(date).format('YYYY-DD-MM');
+export const humanizeDate = (date: Date | null | string | undefined) => dayjs(date).format('DD.MM.YYYY');
+
+export const getAltDate = (date: string | null | undefined | Date) => dayjs(date).format('YYYY-MM-DD');
 
 export const getAltDateFor = (date: string | Date) => dayjs(date).format('DD.MMMM.YYYY');

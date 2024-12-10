@@ -694,27 +694,23 @@ const CreateEventForm: React.FC = () => {
         if (selectedFormat) {
             formData.append('format', selectedFormat);
         }
-        const event_dates = dateTimes.map((dateTime, index) => {
+        const event_dates_times = dateTimes.map((dateTime, index) => {
             const startDate = new Date(dateTime.start);
             const endDate = new Date(dateTime.end);
 
             // Получаем дату в формате YYYY-MM-DD
-            const event_date = startDate.toISOString().split('T')[0];
-
+            const start_date = startDate.toISOString().split('T')[0];
+            const end_date = endDate.toISOString().split('T')[0];
             // Получаем время в формате HH:MM
             const start_time = startDate.toTimeString().split(' ')[0].slice(0, 5);
             const end_time = endDate.toTimeString().split(' ')[0].slice(0, 5);
 
             return {
-                event_date: event_date,
-                event_times: [
-                    {
-                        start_time: start_time,
-                        end_time: end_time,
-                        seats_number: participantCounts[index], // Указать логику для количества мест
-                        description: '', // Указать описание, если передается
-                    },
-                ],
+                start_date: start_date,
+                end_date: end_date,
+                start_time: start_time,
+                end_time: end_time,
+                seats_number: participantCounts[index],
             };
         });
         const customField = [
@@ -723,7 +719,7 @@ const CreateEventForm: React.FC = () => {
             },
         ];
         const eventFullData = {
-            event_dates: event_dates,
+            event_dates_times,
             custom_fields: customField,
             visit_cost: Number(data.payCount),
             city: data.city,
@@ -733,7 +729,7 @@ const CreateEventForm: React.FC = () => {
             format: selectedFormat ? selectedFormat : '',
             description: data.description,
         };
-        dispatch(postEventDataAction({ event: eventFullData, photo: fileInfo }));
+        dispatch(postEventDataAction({ event: eventFullData, photo: fileInfo, schedule: null }));
     };
     return (
         <form className="create" onSubmit={handleSubmit}>

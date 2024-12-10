@@ -7,7 +7,7 @@ import { dropToken, saveToken } from '../services/token';
 import { SignInData, UserData } from '../types/SignInData';
 import { AuthData, LoginData } from '../types/LoginData';
 import { ProfileData } from '../types/ProfileData';
-import { Cities, EventPostInputData, EventsShortData, EventViewData } from '../types/EventData';
+import { Cities, EventPostInputData, EventShortData, EventsShortData, EventViewData, FiltersData } from '../types/EventData';
 
 export const loginAction = createAsyncThunk<
     LoginData,
@@ -195,7 +195,7 @@ export const postEventDataAction = createAsyncThunk<
         state: State;
         extra: AxiosInstance;
     }
->('patient/postEventData', async ({ event, photo }, { extra: api }) => {
+>('patient/postEventData', async ({ event, photo, schedule }, { extra: api }) => {
     const formData = new FormData();
     formData.append('event', JSON.stringify(event));
     formData.append('photo', '');
@@ -206,5 +206,24 @@ export const postEventDataAction = createAsyncThunk<
         },
     });
     console.log(data);
+    return data;
+});
+
+export const postFiltersAction = createAsyncThunk<
+    EventShortData,
+    FiltersData,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('patient/postFiltersData', async ({ search, city, format, date_start, date_end }, { extra: api }) => {
+    const { data } = await api.post<EventShortData>(APIRoute.Filters, {
+        search,
+        city,
+        format,
+        date_start,
+        date_end,
+    });
     return data;
 });

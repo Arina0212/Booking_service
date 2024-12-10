@@ -3,7 +3,6 @@ import EventsBlock from '../components/EventsBlock';
 import Dropdown from '../components/DropDown';
 import * as React from 'react';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { parseDate } from '@internationalized/date';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import {
     fetchAllEventsData,
@@ -11,6 +10,7 @@ import {
     fetchMyEventsData,
     fetchOtherEventsData,
     fetchParticipateEventsData,
+    postFiltersAction,
 } from '../store/api-actions';
 import {
     getAllEvents,
@@ -28,14 +28,26 @@ import { getAuthorizationStatus, getLoadingProfile, getProfile } from '../store/
 import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { Cities, TransformedCities } from '../types/EventData';
-import MyDateRangePicker from '../components/DataRangePicker/DataRangePicker';
+import DateRangePicker from '../components/DataRangePicker/DataRangePicker';
+import { getAltDate } from '../services/utils/dataFormater';
+
+interface DateRange {
+    start: Date | null;
+    end: Date | null;
+}
 
 export default function MainPage() {
     const auth = useAppSelector(getAuthorizationStatus);
-    let [value, setValue] = React.useState({
-        start: parseDate(new Date().toISOString().split('T')[0]),
-        end: parseDate(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]),
-    });
+    const [dateRange, setDateRange] = useState<DateRange>({ start: null, end: null });
+
+    const handleDateChange = (range: DateRange) => {
+        setDateRange(range);
+    };
+    useEffect(() => {
+        if (dateRange.end !== null) {
+            sendFilters(city, format);
+        }
+    }, [dateRange.end]);
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(fetchCitiesData());
@@ -71,28 +83,28 @@ export default function MainPage() {
     }
 
     const transformedCities = transformCities(originCities);
-    const [search, setSearchTerm] = useState('');
-    const [city, setSelectedCity] = useState('');
-    const [format, setSelectedFormat] = useState('');
+    const [search, setSearchTerm] = useState<string | null>(null);
+    const [city, setSelectedCity] = useState<string | null>(null);
+    const [format, setSelectedFormat] = useState<string | null>(null);
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         const val = e.target?.value;
         setSearchTerm(val);
         sendFilters(city, format);
     };
 
-    const sendFilters = (selectedCity: string, selectedFormat: string) => {
-        const cityToSend = selectedCity === 'все' ? '' : selectedCity;
-        const formatToSend = selectedFormat === 'все' ? '' : selectedFormat;
+    const sendFilters = (selectedCity: string | null, selectedFormat: string | null) => {
+        const cityToSend = selectedCity === 'все' ? null : selectedCity;
+        const formatToSend = selectedFormat === 'все' ? null : selectedFormat;
 
         const filters = {
             city: cityToSend,
             search,
+            date_start: dateRange.start ? getAltDate(dateRange.start) : null,
+            date_end: dateRange.end ? getAltDate(dateRange.end) : null,
             format: formatToSend,
-            date_start: value.start,
-            date_end: value.end,
         };
-        console.log('Отправленные данные фильтрации:', filters);
-        // dispatch(fetchFilteredEvents(filters));
+
+        dispatch(postFiltersAction(filters));
     };
 
     return (
@@ -119,27 +131,22 @@ export default function MainPage() {
                                     className="input_white-field"
                                     type="text"
                                     placeholder="Поиск"
-                                    value={search}
+                                    value={search ? search : ''}
                                     onChange={handleSearchChange}
                                 />
                                 <div className="input_white-search">
                                     <img src="/svg/searchIcon.svg" alt="search" draggable="false" />
                                 </div>
                             </div>
-                            <MyDateRangePicker
-                                value={value}
-                                onChange={(newValue) => {
-                                    setValue(newValue);
-                                    sendFilters(city, format);
-                                }}
-                            />
+
+                            <DateRangePicker initialRange={dateRange} onDateChange={handleDateChange} />
                             <Dropdown
                                 placeHolder="Город:"
                                 type="arrow-down"
                                 options={transformedCities.cities}
                                 onChange={(value) => {
                                     setSelectedCity(value);
-                                    sendFilters(value, format); // Передаем новое значение города
+                                    sendFilters(value, format);
                                 }}
                             />
                             <Dropdown
@@ -148,7 +155,7 @@ export default function MainPage() {
                                 options={FORMATS}
                                 onChange={(value) => {
                                     setSelectedFormat(value);
-                                    sendFilters(city, value); // Передаем новое значение формата
+                                    sendFilters(city, value);
                                 }}
                             />
                         </section>

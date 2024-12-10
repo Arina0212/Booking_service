@@ -13,6 +13,7 @@ type EventCardProps = {
     photo_url: string;
     start_time: string;
     end_time: string;
+    state: string;
 };
 
 export default function EventCard({
@@ -26,6 +27,7 @@ export default function EventCard({
     photo_url,
     start_time,
     end_time,
+    state,
 }: EventCardProps) {
     const startDate = humanizeDate(start_date).split('.');
     const startMonth = Number(startDate[1]) - 1;
@@ -35,11 +37,15 @@ export default function EventCard({
     return (
         <>
             {start_date && end_date && (
-                <div className="main__events-content-slide">
+                <div className={`main__events-content-slide ${state === 'Завершено' ? 'event_closed' : ''}`}>
                     <Link to={`${AppRoute.Events}/${id}`} className="main__events-content-slide-pic" draggable="false">
                         <img src={`${photo_url ? photo_url : '/svg/event/defaultBanner.svg'}`} alt="event" />
                         <p>{format}</p>
                     </Link>
+                    <div className="event__card_main-tags">
+                        {state === 'Завершено' && <div className="event__card-tags-tag event__card_main-tags-tag_closed">{state}</div>}
+                        {state === 'Идёт' && <div className="event__card-tags-tag  event__card_main-tags-tag_goes">{state}</div>}
+                    </div>
                     <Link to={`${AppRoute.Events}/${id}`} className="main__events-content-slide-head">
                         {name}
                     </Link>
