@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react';
 import useAutosizeTextArea from '../hooks/useAutoSize';
-import { FORMATS } from '../const';
-import { useAppDispatch } from '../hooks';
+import { AppRoute, FORMATS } from '../const';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { postEventDataAction } from '../store/api-actions';
+import { useNavigate } from 'react-router-dom';
+import { geOutputMessage, getLoadingOutputMessage } from '../store/events-process/selectors';
 
 interface Block {
     id: number;
@@ -673,6 +675,9 @@ const CreateEventForm: React.FC = () => {
         setOpenBlockId(openBlockId === id ? null : id);
     };
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const message = useAppSelector(geOutputMessage);
+    const isLoadongMessage = useAppSelector(getLoadingOutputMessage);
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault(); // Предотвращаем стандартное поведение формы
 
@@ -718,6 +723,7 @@ const CreateEventForm: React.FC = () => {
                 title: data.name,
             },
         ];
+
         const eventFullData = {
             event_dates_times,
             custom_fields: customField,
@@ -730,7 +736,13 @@ const CreateEventForm: React.FC = () => {
             description: data.description,
         };
         dispatch(postEventDataAction({ event: eventFullData, photo: fileInfo, schedule: null }));
+        console.log('===========', message);
+        if (isLoadongMessage === false) {
+            console.log('===========', message);
+            navigate(AppRoute.Invite);
+        }
     };
+
     return (
         <form className="create" onSubmit={handleSubmit}>
             {blocks.map((block) => (

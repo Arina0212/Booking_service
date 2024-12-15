@@ -1,6 +1,6 @@
 import { State } from '../../types/state';
 import { NameSpace } from '../../const';
-import { Cities, EventsShortData, EventViewData } from '../../types/EventData';
+import { Cities, EventPostOutputData, EventsShortData, EventViewData, RegisterForEventOutput } from '../../types/EventData';
 
 export const getAllEvents = (state: Pick<State, NameSpace.Event>): EventsShortData | undefined => state[NameSpace.Event].allEvents;
 export const getLoadingAllEvents = (state: Pick<State, NameSpace.Event>): boolean | undefined => state[NameSpace.Event].isEventsLoading;
@@ -17,3 +17,11 @@ export const getOtherEvents = (state: Pick<State, NameSpace.Event>): EventsShort
 export const getLoadingOtherEvents = (state: Pick<State, NameSpace.Event>): boolean | undefined =>
     state[NameSpace.Event].isOtherEventsLoading;
 export const getCities = (state: Pick<State, NameSpace.Event>): Cities | undefined => state[NameSpace.Event].cities;
+export const geOutputMessage = (state: Pick<State, NameSpace.Event>): EventPostOutputData | undefined =>
+    state[NameSpace.Event].createOutput;
+export const getLoadingOutputMessage = (state: Pick<State, NameSpace.Event>): boolean | undefined =>
+    state[NameSpace.Event].isCreateOutputLoading;
+export const getLoadingRegisterForEvent = (state: Pick<State, NameSpace.Event>): boolean | undefined =>
+    state[NameSpace.Event].isRegisterForEventLoading;
+export const getRegisterForEventMessedge = (state: Pick<State, NameSpace.Event>): RegisterForEventOutput | undefined =>
+    state[NameSpace.Event].registerForEvent;

@@ -1,20 +1,21 @@
 import { Link, useParams } from 'react-router-dom';
-import { AppRoute } from '../const';
+import { AppRoute, AuthorizationStatus } from '../const';
 import Header from '../components/Header';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useEffect, useState } from 'react';
 import { fetchEventData } from '../store/api-actions';
-import { getEvent, getLoadingEvent } from '../store/events-process/selectors';
+import { getEvent, getLoadingEvent, getLoadingRegisterForEvent, getRegisterForEventMessedge } from '../store/events-process/selectors';
 import Loading from '../components/Loading';
 import CopyButtonWithFeedback from '../components/CopyTextButton';
 import { phoneFormater } from '../services/utils/PhoneFormater';
 import { formatDate, TimeComponent } from '../services/utils/dataFormater';
-import { getProfile } from '../store/user-process/selectors';
+import { getAuthorizationStatus, getProfile } from '../store/user-process/selectors';
 import RegistrationForEvent from '../components/dialogs/RegistrationForEvent';
 
 export default function EventPage() {
     const dispatch = useAppDispatch();
     const urlParams = useParams();
+    const auth = useAppSelector(getAuthorizationStatus);
 
     useEffect(() => {
         dispatch(fetchEventData({ id: Number(urlParams.id) }));
@@ -24,13 +25,20 @@ export default function EventPage() {
     const isLoading = useAppSelector(getLoadingEvent);
     const me = useAppSelector(getProfile);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+    const isLoadingRegister = useAppSelector(getLoadingRegisterForEvent);
+    const getMessage = useAppSelector(getRegisterForEventMessedge);
     const openDialog = () => setIsDialogOpen(true);
     const closeDialog = () => setIsDialogOpen(false);
 
     return (
         <>
-            <RegistrationForEvent isOpen={isDialogOpen} onClose={closeDialog} timeSlotsDescriptions={event?.time_slots_descriptions} />
+            <RegistrationForEvent
+                isOpen={isDialogOpen}
+                onClose={closeDialog}
+                isLoading={isLoadingRegister}
+                message={getMessage}
+                timeSlotsDescriptions={event?.time_slots_descriptions}
+            />
             {!isLoading ? (
                 <>
                     <Header />
@@ -104,14 +112,20 @@ export default function EventPage() {
                                     </p>
                                 </div>
                             </div>
-                            {me?.email !== event?.creator.contacts.email ? (
-                                <button onClick={openDialog} className="event__card-btn btn_black">
-                                    Подать заявку
-                                </button>
+                            {auth === AuthorizationStatus.Auth ? (
+                                <>
+                                    {me?.email !== event?.creator.contacts.email ? (
+                                        <button onClick={openDialog} className="event__card-btn btn_black">
+                                            Подать заявку
+                                        </button>
+                                    ) : (
+                                        <Link to={AppRoute.Invite} className="event__card-btn btn_black">
+                                            Пригласить людей
+                                        </Link>
+                                    )}
+                                </>
                             ) : (
-                                <button onClick={openDialog} className="event__card-btn btn_black">
-                                    Пригласить людей
-                                </button>
+                                <p className="event__text_desc">Что-бы зарегистрироваться на мероприятие необходимо войти в аккаунт</p>
                             )}
                         </section>
 

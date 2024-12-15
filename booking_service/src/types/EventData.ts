@@ -21,6 +21,7 @@ export type EventDate = {
 };
 
 export type EventTimeSlots = {
+    id: number;
     start_date: string;
     end_date: string;
     start_time: string;
@@ -87,6 +88,7 @@ export type EventViewData = {
     };
     time_slots_descriptions: [
         {
+            id: number;
             start_date: string;
             end_date: string;
             start_time: string;
@@ -103,6 +105,15 @@ export type FiltersData = {
     date_start: string | null;
     date_end: string | null;
     format: string | null;
+};
+
+export type RegisterForEvent = {
+    event_id: number;
+    custom_fields: EventCustomDate[] | null;
+    event_date_time_id: number;
+};
+export type RegisterForEventOutput = {
+    message: string;
 };
 
 export type Cities = { cities: [string] };

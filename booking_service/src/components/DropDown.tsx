@@ -15,6 +15,7 @@ interface IDropdownProps {
     placeHolder?: string;
     labelName?: string;
     onChange: (value: string) => void;
+    isFirstValue?: boolean;
 }
 
 function Dropdown({ options, placeHolder, type, tabIndex, onChange }: IDropdownProps) {

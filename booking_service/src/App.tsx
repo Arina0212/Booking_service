@@ -11,12 +11,16 @@ import ChangePassPage from './pages/ChangePassPage';
 import { getAuthorizationStatus } from './store/user-process/selectors';
 import { useAppSelector } from './hooks';
 import TeamsPage from './pages/TeamsPage';
+import InvitePage from './pages/InvitePage';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/ReactToastify.min.css';
 
 function App() {
     const auth = useAppSelector(getAuthorizationStatus);
 
     return (
         <HelmetProvider>
+            <ToastContainer position="top-right" />
             <Routes>
                 <Route path={AppRoute.Main} element={<MainPage />} />
                 <Route path={AppRoute.Events}>
@@ -33,6 +37,7 @@ function App() {
                 </Route>
 
                 <Route path={AppRoute.Create} element={<CreateEventPage />} />
+                <Route path={AppRoute.Invite} element={<InvitePage />} />
                 {/*</>
                 )}*/}
                 {/*{auth !== AuthorizationStatus.Auth && (

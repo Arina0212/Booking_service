@@ -1,6 +1,11 @@
 import Header from '../components/Header';
+import { useAppSelector } from '../hooks';
+import { geOutputMessage } from '../store/events-process/selectors';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../const';
 
 export default function InvitePage() {
+    const message = useAppSelector(geOutputMessage);
     return (
         <>
             <Header />
@@ -8,7 +13,7 @@ export default function InvitePage() {
                 <h1 className="invite__head">Хотите пригласить людей на мероприятие?</h1>
 
                 <div className="invite__item">
-                    <h2 className="invite__item-head">Ссылка на подключение</h2>
+                    <h2 className="invite__item-head">Ссылка на мероприятие</h2>
                     <p className="invite__item-text">
                         Пришлите им ссылку, чтобы они смогли присоединиться к мероприятию и узнать все подробности о нём
                     </p>
@@ -140,10 +145,10 @@ export default function InvitePage() {
                 </div>
 
                 <div className="save save_hide">
-                    <p>Если не хотите приглашать людей, просто нажмите далее</p>
-                    <button type="submit" className="save__btn btn_black">
-                        Далее
-                    </button>
+                    <p>Если не хотите приглашать людей, просто нажмите "К мероприятию"</p>
+                    <Link to={`${AppRoute.Events}/${message?.event_id}`} className="save__btn btn_black">
+                        К мероприятию
+                    </Link>
                 </div>
             </section>
         </>

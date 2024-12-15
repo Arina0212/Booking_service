@@ -7,7 +7,17 @@ import { dropToken, saveToken } from '../services/token';
 import { SignInData, UserData } from '../types/SignInData';
 import { AuthData, LoginData } from '../types/LoginData';
 import { ProfileData } from '../types/ProfileData';
-import { Cities, EventPostInputData, EventShortData, EventsShortData, EventViewData, FiltersData } from '../types/EventData';
+import {
+    Cities,
+    EventPostInputData,
+    EventPostOutputData,
+    EventShortData,
+    EventsShortData,
+    EventViewData,
+    FiltersData,
+    RegisterForEvent,
+    RegisterForEventOutput,
+} from '../types/EventData';
 
 export const loginAction = createAsyncThunk<
     LoginData,
@@ -188,7 +198,7 @@ export const fetchCitiesData = createAsyncThunk<
 });
 
 export const postEventDataAction = createAsyncThunk<
-    EventPostInputData,
+    EventPostOutputData,
     EventPostInputData,
     {
         dispatch: AppDispatch;
@@ -200,7 +210,7 @@ export const postEventDataAction = createAsyncThunk<
     formData.append('event', JSON.stringify(event));
     formData.append('photo', '');
 
-    const { data } = await api.post<EventPostInputData>(APIRoute.EventCreate, formData, {
+    const { data } = await api.post<EventPostOutputData>(APIRoute.EventCreate, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
@@ -225,5 +235,21 @@ export const postFiltersAction = createAsyncThunk<
         date_start,
         date_end,
     });
+    return data;
+});
+
+export const registerForEvent = createAsyncThunk<
+    RegisterForEventOutput,
+    RegisterForEvent,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('patient/registerForEventData', async ({ event_date_time_id, event_id }, { dispatch, extra: api }) => {
+    const { data } = await api.post<RegisterForEventOutput>(`${APIRoute.Regist}${event_id}/`, {
+        event_date_time_id,
+    });
+    dispatch(fetchEventData({ id: event_id }));
     return data;
 });

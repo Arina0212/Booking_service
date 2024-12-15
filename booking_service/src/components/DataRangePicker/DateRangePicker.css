@@ -1,0 +1,48 @@
+.date-range-picker {
+    position: relative;
+}
+
+input {
+    width: 200px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.calendar {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.header-calendar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.day {
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.day:hover {
+    background: #f0f0f0;
+}
+
+.empty-day {
+    padding: 10px;
+}
+
+.days-of-week {
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
+}

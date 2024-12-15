@@ -8,6 +8,8 @@ import {
     fetchMyEventsData,
     fetchOtherEventsData,
     fetchParticipateEventsData,
+    postEventDataAction,
+    registerForEvent,
 } from '../api-actions';
 
 const initialState: EventProcess = {
@@ -23,6 +25,9 @@ const initialState: EventProcess = {
     isOtherEventsLoading: true,
     cities: undefined,
     createOutput: undefined,
+    isCreateOutputLoading: true,
+    isRegisterForEventLoading: true,
+    registerForEvent: undefined,
 };
 
 export const eventProcess = createSlice({
@@ -68,9 +73,20 @@ export const eventProcess = createSlice({
             })
             .addCase(fetchCitiesData.fulfilled, (state, action) => {
                 state.cities = action.payload;
+            })
+            .addCase(postEventDataAction.pending, (state) => {
+                state.isCreateOutputLoading = true;
+            })
+            .addCase(postEventDataAction.fulfilled, (state, action) => {
+                state.createOutput = action.payload;
+                state.isCreateOutputLoading = false;
+            })
+            .addCase(registerForEvent.pending, (state) => {
+                state.isRegisterForEventLoading = true;
+            })
+            .addCase(registerForEvent.fulfilled, (state, action) => {
+                state.registerForEvent = action.payload;
+                state.isRegisterForEventLoading = false;
             });
-        /*.addCase(postEventDataAction.fulfilled, (state, action) => {
-            state.createOutput = action.payload;
-        })*/
     },
 });
