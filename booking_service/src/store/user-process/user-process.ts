@@ -18,12 +18,6 @@ export const userProcess = createSlice({
     reducers: {},
     extraReducers(builder) {
         builder
-            // .addCase(checkAuthAction.fulfilled, (state) => {
-            //   state.authorizationStatus = AuthorizationStatus.Auth;
-            // })
-            // .addCase(checkAuthAction.rejected, (state) => {
-            //   state.authorizationStatus = AuthorizationStatus.NoAuth;
-            // })
             .addCase(loginAction.fulfilled, (state, action) => {
                 state.error = action.payload.error;
                 if (state.error === undefined) {
@@ -35,6 +29,9 @@ export const userProcess = createSlice({
             })
             .addCase(loginAction.pending, (state) => {
                 state.isLoading = true;
+            })
+            .addCase(loginAction.rejected, (state) => {
+                state.isLoading = false;
             })
             .addCase(SignInAction.pending, (state) => {
                 state.isLoading = true;
@@ -50,9 +47,6 @@ export const userProcess = createSlice({
                     state.authorizationStatus = AuthorizationStatus.NoAuth;
                 }
                 state.isLoading = false;
-            })
-            .addCase(loginAction.rejected, (state) => {
-                state.authorizationStatus = AuthorizationStatus.NoAuth;
             })
             .addCase(logoutAction.fulfilled, (state) => {
                 state.authorizationStatus = AuthorizationStatus.NoAuth;

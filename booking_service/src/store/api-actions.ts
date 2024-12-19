@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
-import { AxiosInstance } from 'axios';
+import { AxiosError, AxiosInstance } from 'axios';
 import { redirectToRoute } from './action';
 import { APIRoute, AppRoute } from '../const';
 import { dropToken, saveToken } from '../services/token';
@@ -11,14 +11,19 @@ import {
     Cities,
     EventPostInputData,
     EventPostOutputData,
-    EventShortData,
     EventsShortData,
     EventViewData,
     FiltersData,
+    InfoForRegister,
+    OnlineLink,
+    OnlineLinkOutput,
     RegisterForEvent,
     RegisterForEventOutput,
 } from '../types/EventData';
+import { toast } from 'react-toastify';
+import 'react-toastify/ReactToastify.min.css';
 
+//Вход
 export const loginAction = createAsyncThunk<
     LoginData,
     AuthData,
@@ -28,16 +33,21 @@ export const loginAction = createAsyncThunk<
         extra: AxiosInstance;
     }
 >('auth/login', async ({ email, password }: AuthData, { dispatch, extra: api }): Promise<LoginData> => {
-    const { data } = await api.post<LoginData>(APIRoute.Login, { email, password });
-    saveToken(data.access_token);
-    if (data.error === undefined) {
-        dispatch(redirectToRoute(AppRoute.Main));
-    } else {
+    try {
+        const { data } = await api.post<LoginData>(APIRoute.Login, { email, password });
+        saveToken(data.access_token);
+        if (data.error === undefined) {
+            dispatch(redirectToRoute(AppRoute.Main));
+        }
+        dispatch(fetchProfileData());
+        return data;
+    } catch (error) {
+        toast.error('Неверный логин или пароль');
+        throw error; // Это обеспечит, что состояние будет обновлено на "ошибка" в redux
     }
-    dispatch(fetchProfileData());
-    return data;
 });
 
+//Выход
 export const logoutAction = createAsyncThunk<
     void,
     undefined,
@@ -52,6 +62,7 @@ export const logoutAction = createAsyncThunk<
     dispatch(redirectToRoute(AppRoute.Main));
 });
 
+//Регистрация
 export const SignInAction = createAsyncThunk<
     UserData,
     SignInData,
@@ -74,6 +85,7 @@ export const SignInAction = createAsyncThunk<
     return data;
 });
 
+//Получение информации о профиле
 export const fetchProfileData = createAsyncThunk<
     ProfileData,
     undefined,
@@ -87,6 +99,7 @@ export const fetchProfileData = createAsyncThunk<
     return data;
 });
 
+//Редактирование профиля
 export const postProfileDataAction = createAsyncThunk<
     ProfileData,
     ProfileData,
@@ -120,6 +133,7 @@ export const postProfileDataAction = createAsyncThunk<
     },
 );
 
+//Получение списка всех мероприятий
 export const fetchAllEventsData = createAsyncThunk<
     EventsShortData,
     undefined,
@@ -133,6 +147,7 @@ export const fetchAllEventsData = createAsyncThunk<
     return data;
 });
 
+//Получение информации о мероприятии
 export const fetchEventData = createAsyncThunk<
     EventViewData,
     { id: number },
@@ -146,6 +161,7 @@ export const fetchEventData = createAsyncThunk<
     return data;
 });
 
+//Получение моих мероприятий
 export const fetchMyEventsData = createAsyncThunk<
     EventsShortData,
     undefined,
@@ -159,6 +175,7 @@ export const fetchMyEventsData = createAsyncThunk<
     return data;
 });
 
+//Получение мероприятий с моим участием
 export const fetchParticipateEventsData = createAsyncThunk<
     EventsShortData,
     undefined,
@@ -172,6 +189,7 @@ export const fetchParticipateEventsData = createAsyncThunk<
     return data;
 });
 
+//Получение Других открытых мероприятий
 export const fetchOtherEventsData = createAsyncThunk<
     EventsShortData,
     undefined,
@@ -184,6 +202,8 @@ export const fetchOtherEventsData = createAsyncThunk<
     const { data } = await api.get<EventsShortData>(APIRoute.OtherEvents);
     return data;
 });
+
+//Получение списка городов
 export const fetchCitiesData = createAsyncThunk<
     Cities,
     undefined,
@@ -197,6 +217,7 @@ export const fetchCitiesData = createAsyncThunk<
     return data;
 });
 
+//Создание мероприятия
 export const postEventDataAction = createAsyncThunk<
     EventPostOutputData,
     EventPostInputData,
@@ -205,22 +226,58 @@ export const postEventDataAction = createAsyncThunk<
         state: State;
         extra: AxiosInstance;
     }
->('patient/postEventData', async ({ event, photo, schedule }, { extra: api }) => {
+>('patient/postEventData', async ({ event, photo, schedule }, { dispatch, extra: api }) => {
     const formData = new FormData();
     formData.append('event', JSON.stringify(event));
-    formData.append('photo', '');
+    if (photo) {
+        formData.append('photo', photo);
+    } else {
+        console.warn('Photo is null, not appending it to FormData');
+    }
+    if (schedule) {
+        formData.append('schedule', schedule);
+    } else {
+        console.warn('Photo is null, not appending it to FormData');
+    }
 
     const { data } = await api.post<EventPostOutputData>(APIRoute.EventCreate, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
     });
-    console.log(data);
+    dispatch(redirectToRoute(AppRoute.Invite));
+    toast.success('Мероприятие было успешно создано');
     return data;
 });
 
+//Получение информации о мероприятии для подачи заявки
+export const getInfoRegisterForEvent = createAsyncThunk<
+    InfoForRegister,
+    { id: number },
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('patient/getInfoRegisterForEventData', async ({ id }, { extra: api }) => {
+    try {
+        const { data } = await api.get<InfoForRegister>(`${APIRoute.Regist}${id}/`);
+
+        return data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            const errorMessage = error.response?.data?.message || 'Произошла ошибка при получении информации для записи на мероприятие';
+            console.warn(errorMessage);
+        } else {
+            console.warn('Произошла ошибка');
+        }
+        throw error;
+    }
+});
+
+//Фильтрация мероприятий
 export const postFiltersAction = createAsyncThunk<
-    EventShortData,
+    EventsShortData,
     FiltersData,
     {
         dispatch: AppDispatch;
@@ -228,7 +285,7 @@ export const postFiltersAction = createAsyncThunk<
         extra: AxiosInstance;
     }
 >('patient/postFiltersData', async ({ search, city, format, date_start, date_end }, { extra: api }) => {
-    const { data } = await api.post<EventShortData>(APIRoute.Filters, {
+    const { data } = await api.post<EventsShortData>(APIRoute.Filters, {
         search,
         city,
         format,
@@ -238,6 +295,7 @@ export const postFiltersAction = createAsyncThunk<
     return data;
 });
 
+//Подача заявки на мероприятие
 export const registerForEvent = createAsyncThunk<
     RegisterForEventOutput,
     RegisterForEvent,
@@ -246,10 +304,80 @@ export const registerForEvent = createAsyncThunk<
         state: State;
         extra: AxiosInstance;
     }
->('patient/registerForEventData', async ({ event_date_time_id, event_id }, { dispatch, extra: api }) => {
-    const { data } = await api.post<RegisterForEventOutput>(`${APIRoute.Regist}${event_id}/`, {
-        event_date_time_id,
-    });
-    dispatch(fetchEventData({ id: event_id }));
-    return data;
+>('patient/registerForEventData', async ({ event_date_time_id, custom_fields, event_id }, { dispatch, extra: api }) => {
+    try {
+        const { data } = await api.post<RegisterForEventOutput>(`${APIRoute.Regist}${event_id}/`, {
+            event_date_time_id,
+            custom_fields,
+        });
+
+        toast.success('Успешная запись на мероприятие');
+
+        dispatch(fetchEventData({ id: event_id }));
+        return data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            const errorMessage = error.response?.data?.message || 'Произошла ошибка при записи на мероприятие';
+            toast.error(errorMessage);
+        } else {
+            toast.error('Что-то пошло не так попробуйте позже');
+        }
+        throw error;
+    }
+});
+
+//Отправка приглашения на мероприятие на введенные почты
+/*export const sendOnEmails = createAsyncThunk<
+    OnlineLinkOutput,
+    InviteByEmails,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('patient/sendOnEmailsData', async ({ online_link, event_id }, { dispatch, extra: api }) => {
+    try {
+        const { data } = await api.post<OnlineLinkOutput>(`${APIRoute.OnlineLink}/${event_id}/`, {
+            online_link,
+        });
+        toast.success('Ссылка на подключение к мероприятию успешно добавлена');
+        dispatch(fetchEventData({ id: event_id }));
+        return data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            const errorMessage = error.response?.data?.message || 'Произошла ошибка при добавлении ссылки';
+            toast.error(errorMessage);
+        } else {
+            toast.error('Что-то пошло не так попробуйте позже');
+        }
+        throw error;
+    }
+});*/
+
+//Сохранение ссылки на онлайн мероприятие
+export const postOnlineLink = createAsyncThunk<
+    OnlineLinkOutput,
+    OnlineLink,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('patient/postOnlineLinkData', async ({ online_link, event_id }, { dispatch, extra: api }) => {
+    try {
+        const { data } = await api.put<OnlineLinkOutput>(`${APIRoute.OnlineLink}/${event_id}/`, {
+            online_link,
+        });
+        toast.success('Ссылка на подключение к мероприятию успешно добавлена');
+        dispatch(fetchEventData({ id: event_id }));
+        return data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            const errorMessage = error.response?.data?.message || 'Произошла ошибка при добавлении ссылки';
+            toast.error(errorMessage);
+        } else {
+            toast.error('Что-то пошло не так попробуйте позже');
+        }
+        throw error;
+    }
 });

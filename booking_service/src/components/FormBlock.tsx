@@ -64,19 +64,8 @@ const CreateEventForm: React.FC = () => {
                 setFileInfo(null);
                 return;
             }
-
-            // Проверка разрешения изображения
-            const img = new Image();
-            img.onload = () => {
-                if (img.width < 400 || img.height < 400) {
-                    setError('Минимальное разрешение изображения: 400x400 пикселей.');
-                    setFileInfo(null);
-                } else {
-                    setError(null); // Если все проверки пройдены, сбрасываем ошибку
-                    setFileInfo(file);
-                }
-            };
-            img.src = URL.createObjectURL(file); // Создаем URL для этого файла
+            setError('');
+            setFileInfo(file);
         }
     };
     const [fileInfoDesc, setFileInfoDesc] = useState<File | null>(null);
@@ -171,6 +160,24 @@ const CreateEventForm: React.FC = () => {
     const handlePaymentCountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setData((prevState) => ({ ...prevState, payCount: event.target.value }));
     };
+
+    const [customFields, setCustomFields] = useState<{ title: string }[]>([]); // Используем массив объектов
+    console.log(customFields);
+    const handleFieldChange = (index: number, value: string) => {
+        const newFields = [...customFields];
+        newFields[index] = { title: value }; // Заполняем поле в объекте
+        setCustomFields(newFields);
+    };
+
+    const addField = () => {
+        setCustomFields([...customFields, { title: '' }]); // Добавляем новый объект с пустым названием
+    };
+
+    const removeField = (index: number) => {
+        const newFields = customFields.filter((_, i) => i !== index);
+        setCustomFields(newFields); // Удаляем поле по индексу
+    };
+
     // Состояние для управления открытыми блоками
     const [openBlockId, setOpenBlockId] = useState<number | null>(null);
 
@@ -668,6 +675,46 @@ const CreateEventForm: React.FC = () => {
                 </div>
             ),
         },
+        {
+            id: 9,
+            title: (
+                <div className={`create__item-head ${openBlockId === 8 ? 'create__item-head_active' : ''}`}>
+                    <h1>
+                        Дополнительные поля<span></span>
+                    </h1>
+                    <div className="create__item-head-pic">
+                        <img src="/svg/caret.svg" alt="caret" />
+                    </div>
+                </div>
+            ),
+            content: (
+                <div className={`create__item-content ${openBlockId === 9 ? 'create__item-content_active' : ''}`}>
+                    <div className="create__item-content-wrap">
+                        <p className="create__item-content-text">Добавьте свои поля для сбора дополнительной информации от участников</p>
+                        {customFields.map((field, index) => (
+                            <div className="create__item-custom" key={index}>
+                                <div className="create__item-content-input_short input_white">
+                                    <input
+                                        className="input_white-field"
+                                        name={`customFields_${index}`}
+                                        type="text"
+                                        placeholder="Введите название поля"
+                                        value={field.title}
+                                        onChange={(e) => handleFieldChange(index, e.target.value)}
+                                    />
+                                </div>
+                                <button type="button" className="create__item-content-dates-remove" onClick={() => removeField(index)}>
+                                    Удалить
+                                </button>
+                            </div>
+                        ))}
+                        <button type="button" className="create__item-content-add" onClick={addField}>
+                            Добавить дополнительное поле
+                        </button>
+                    </div>
+                </div>
+            ),
+        },
     ];
 
     // Функция для переключения открытого блока
@@ -718,15 +765,10 @@ const CreateEventForm: React.FC = () => {
                 seats_number: participantCounts[index],
             };
         });
-        const customField = [
-            {
-                title: data.name,
-            },
-        ];
 
         const eventFullData = {
             event_dates_times,
-            custom_fields: customField,
+            custom_fields: customFields,
             visit_cost: Number(data.payCount),
             city: data.city,
             name: data.name,
@@ -735,10 +777,8 @@ const CreateEventForm: React.FC = () => {
             format: selectedFormat ? selectedFormat : '',
             description: data.description,
         };
-        dispatch(postEventDataAction({ event: eventFullData, photo: fileInfo, schedule: null }));
-        console.log('===========', message);
+        dispatch(postEventDataAction({ event: eventFullData, photo: fileInfo, schedule: fileInfoDesc }));
         if (isLoadongMessage === false) {
-            console.log('===========', message);
             navigate(AppRoute.Invite);
         }
     };

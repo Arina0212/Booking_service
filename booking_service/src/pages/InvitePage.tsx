@@ -1,11 +1,22 @@
 import Header from '../components/Header';
 import { useAppSelector } from '../hooks';
 import { geOutputMessage } from '../store/events-process/selectors';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AppRoute } from '../const';
+import 'react-toastify/ReactToastify.min.css';
+import InviteComponent from '../components/AddEmails';
+import CopyButtonWithFeedback from '../components/CopyTextButton';
+import React from 'react';
 
 export default function InvitePage() {
     const message = useAppSelector(geOutputMessage);
+    const location = useLocation();
+    console.log(location); // Посмотрите, что выводится в консоль
+    const previousUrl = location.hash;
+    const match = previousUrl.match(/(\d+)$/);
+
+    const lastNumber = match ? match[0] : null;
+    console.log('previousUrl', location, previousUrl);
     return (
         <>
             <Header />
@@ -17,10 +28,17 @@ export default function InvitePage() {
                     <p className="invite__item-text">
                         Пришлите им ссылку, чтобы они смогли присоединиться к мероприятию и узнать все подробности о нём
                     </p>
-                    <p className="invite__item-link">https://asda//asd;a.wrere;asdasdasdasdasdasdkafkslfdkasld</p>
-                    <button className="invite__item-copy">
-                        <img src="/svg/event/copy.svg" alt="copy" />
-                    </button>
+                    {message ? (
+                        <>
+                            <p className="invite__item-link">{message?.event_link}</p>
+                            <CopyButtonWithFeedback textToCopy={message?.event_link} isIcon={true} />
+                        </>
+                    ) : (
+                        <>
+                            <p className="invite__item-link">{previousUrl.replace(/^#/, '')}</p>
+                            <CopyButtonWithFeedback textToCopy={previousUrl.replace(/^#/, '')} isIcon={true} />
+                        </>
+                    )}
                 </div>
 
                 <div className="invite__item">
@@ -28,23 +46,16 @@ export default function InvitePage() {
                     <p className="invite__item-text">
                         Отправьте приглашение на почту участникам - они получат письмо с информацией о мероприятии и ссылкой для подключения
                     </p>
-                    <div className="invite__item-input input_white">
-                        <input className="input_white-field" type="email" placeholder="Почта" />
-                    </div>
-                    <button className="invite__item-add">Добавить</button>
-                    <p className="invite__item-mail">utenkov2003@mail.ru</p>
-                    <button className="invite__item-delete">Удалить</button>
-
-                    <button className="invite__item-send btn_black">Отправить приглашение</button>
+                    <InviteComponent />
                 </div>
 
                 <div className="invite__item">
                     <h2 className="invite__item-head">Пригласить людей из команд</h2>
                     <p className="invite__item-text">Выберите участников из ваших команд, кому отправить приглашение на мероприятие</p>
 
-                    <a href="" className="invite__item-create">
+                    <Link to="" className="invite__item-create">
                         Создать команду
-                    </a>
+                    </Link>
 
                     <form className="invite__item-invites">
                         <div className="invite__item-team">
@@ -146,9 +157,15 @@ export default function InvitePage() {
 
                 <div className="save save_hide">
                     <p>Если не хотите приглашать людей, просто нажмите "К мероприятию"</p>
-                    <Link to={`${AppRoute.Events}/${message?.event_id}`} className="save__btn btn_black">
-                        К мероприятию
-                    </Link>
+                    {message ? (
+                        <Link to={`${AppRoute.Events}/${message?.event_id}`} className="save__btn btn_black">
+                            К мероприятию
+                        </Link>
+                    ) : (
+                        <Link to={`${AppRoute.Events}/${lastNumber}`} className="save__btn btn_black">
+                            К мероприятию
+                        </Link>
+                    )}
                 </div>
             </section>
         </>

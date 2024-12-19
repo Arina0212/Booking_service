@@ -17,6 +17,7 @@ export enum APIRoute {
     EventCreate = 'event/create/',
     Filters = 'event/filter',
     Regist = 'event/register/',
+    OnlineLink = 'event/change-online-link',
 }
 
 export enum AppRoute {

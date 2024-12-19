@@ -15,6 +15,7 @@ import {
 import {
     getAllEvents,
     getCities,
+    getFilteredEvents,
     getLoadingAllEvents,
     getLoadingMyEvents,
     getLoadingOtherEvents,
@@ -27,7 +28,7 @@ import { AppRoute, AuthorizationStatus, FORMATS } from '../const';
 import { getAuthorizationStatus, getLoadingProfile, getProfile } from '../store/user-process/selectors';
 import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
-import { Cities, TransformedCities } from '../types/EventData';
+import { Cities, EventsShortData, TransformedCities } from '../types/EventData';
 import DateRangePicker from '../components/DataRangePicker/DataRangePicker';
 import { getAltDate } from '../services/utils/dataFormater';
 
@@ -86,13 +87,20 @@ export default function MainPage() {
     const [search, setSearchTerm] = useState<string | null>(null);
     const [city, setSelectedCity] = useState<string | null>(null);
     const [format, setSelectedFormat] = useState<string | null>(null);
+    const [filteredEvents, setFilteredEvents] = useState<EventsShortData | undefined>(undefined);
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         const val = e.target?.value;
         setSearchTerm(val);
         sendFilters(city, format);
     };
+    const filtered = useAppSelector(getFilteredEvents);
+    const [isLoadingFiltered, setLoadingFiltered] = useState<boolean>(true);
+    const [counter, setCounter] = useState(0);
 
-    const sendFilters = (selectedCity: string | null, selectedFormat: string | null) => {
+    const sendFilters = async (selectedCity: string | null, selectedFormat: string | null) => {
+        setCounter(counter + 1);
+
+        setLoadingFiltered(true);
         const cityToSend = selectedCity === 'все' ? null : selectedCity;
         const formatToSend = selectedFormat === 'все' ? null : selectedFormat;
 
@@ -104,9 +112,20 @@ export default function MainPage() {
             format: formatToSend,
         };
 
-        dispatch(postFiltersAction(filters));
+        const data = await dispatch(postFiltersAction(filters));
+
+        if (data.type === 'patient/postFiltersData/fulfilled') {
+            setLoadingFiltered(false);
+        }
     };
 
+    useEffect(() => {
+        if (filtered?.length !== 0) {
+            setFilteredEvents(filtered);
+        } else {
+            setFilteredEvents(undefined);
+        }
+    }, [filtered, isLoadingFiltered]);
     return (
         <>
             {!isProfileLoading || auth !== AuthorizationStatus.Auth ? (
@@ -161,26 +180,33 @@ export default function MainPage() {
                         </section>
 
                         <>
-                            {auth !== AuthorizationStatus.Auth ? (
-                                <EventsBlock isLoading={isLoading} title={'Все мероприятия'} events={events} />
+                            {counter > 0 && filteredEvents?.length === 0 && <p>По вашему запросу ничего не найдено</p>}
+                            {filteredEvents && filteredEvents?.length > 0 && counter !== 0 ? (
+                                <EventsBlock title={'Результаты поиска'} isLoading={isLoadingFiltered} events={filteredEvents} />
                             ) : (
                                 <>
-                                    {myEvents && myEvents?.length > 0 && (
-                                        <EventsBlock isLoading={isMyLoading} title={'Мои мероприятия'} events={myEvents} />
-                                    )}
-                                    {participateEvents && participateEvents.length > 0 && (
-                                        <EventsBlock
-                                            isLoading={isParticipateLoading}
-                                            title={'Мероприятия с моим участием'}
-                                            events={participateEvents}
-                                        />
-                                    )}
-                                    {otherEvents && otherEvents.length > 0 && (
-                                        <EventsBlock
-                                            isLoading={isOtherLoading}
-                                            title={'Другие открытые мероприятия'}
-                                            events={otherEvents}
-                                        />
+                                    {auth !== AuthorizationStatus.Auth ? (
+                                        <EventsBlock isLoading={isLoading} title={'Все мероприятия'} events={events} />
+                                    ) : (
+                                        <>
+                                            {myEvents && myEvents?.length > 0 && (
+                                                <EventsBlock isLoading={isMyLoading} title={'Мои мероприятия'} events={myEvents} />
+                                            )}
+                                            {participateEvents && participateEvents.length > 0 && (
+                                                <EventsBlock
+                                                    isLoading={isParticipateLoading}
+                                                    title={'Мероприятия с моим участием'}
+                                                    events={participateEvents}
+                                                />
+                                            )}
+                                            {otherEvents && otherEvents.length > 0 && (
+                                                <EventsBlock
+                                                    isLoading={isOtherLoading}
+                                                    title={'Другие открытые мероприятия'}
+                                                    events={otherEvents}
+                                                />
+                                            )}
+                                        </>
                                     )}
                                 </>
                             )}

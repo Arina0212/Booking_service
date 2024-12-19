@@ -2,15 +2,24 @@ import { Link, useParams } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../const';
 import Header from '../components/Header';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { useEffect, useState } from 'react';
-import { fetchEventData } from '../store/api-actions';
-import { getEvent, getLoadingEvent, getLoadingRegisterForEvent, getRegisterForEventMessedge } from '../store/events-process/selectors';
+import React, { useEffect, useState } from 'react';
+import { fetchEventData, getInfoRegisterForEvent } from '../store/api-actions';
+import {
+    getEvent,
+    getInfoForRegister,
+    getLoadingEvent,
+    getLoadingInfoForRegister,
+    getLoadingRegisterForEvent,
+    getRegisterForEventMessedge,
+} from '../store/events-process/selectors';
 import Loading from '../components/Loading';
 import CopyButtonWithFeedback from '../components/CopyTextButton';
 import { phoneFormater } from '../services/utils/PhoneFormater';
 import { formatDate, TimeComponent } from '../services/utils/dataFormater';
 import { getAuthorizationStatus, getProfile } from '../store/user-process/selectors';
 import RegistrationForEvent from '../components/dialogs/RegistrationForEvent';
+import FileInfo from '../components/FileInfo';
+import EventOnlineInvite from '../components/OnlineLinkPostForm';
 
 export default function EventPage() {
     const dispatch = useAppDispatch();
@@ -19,17 +28,20 @@ export default function EventPage() {
 
     useEffect(() => {
         dispatch(fetchEventData({ id: Number(urlParams.id) }));
+        dispatch(getInfoRegisterForEvent({ id: Number(urlParams.id) }));
     }, [dispatch, urlParams.id]);
 
     const event = useAppSelector(getEvent);
     const isLoading = useAppSelector(getLoadingEvent);
     const me = useAppSelector(getProfile);
+    const isLoadingInfoForRegister = useAppSelector(getLoadingInfoForRegister);
+    const infoForRegister = useAppSelector(getInfoForRegister);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const isLoadingRegister = useAppSelector(getLoadingRegisterForEvent);
     const getMessage = useAppSelector(getRegisterForEventMessedge);
     const openDialog = () => setIsDialogOpen(true);
     const closeDialog = () => setIsDialogOpen(false);
-
+    console.log('isLoadingInfoForRegister', isLoadingInfoForRegister);
     return (
         <>
             <RegistrationForEvent
@@ -37,9 +49,10 @@ export default function EventPage() {
                 onClose={closeDialog}
                 isLoading={isLoadingRegister}
                 message={getMessage}
+                customFields={infoForRegister?.custom_fields}
                 timeSlotsDescriptions={event?.time_slots_descriptions}
             />
-            {!isLoading ? (
+            {!isLoading && !isLoadingInfoForRegister ? (
                 <>
                     <Header />
                     <main className="event">
@@ -107,44 +120,76 @@ export default function EventPage() {
                                     </div>
 
                                     <p className="event__card-info-item-text">
-                                        {event?.visit_cost === 0 ? 'Бесплатно' : `${event?.visit_cost} ₽`},{' '}
-                                        <span>{event?.status === 'open' ? 'открытый доступ' : 'закрытый доступ'}</span>
+                                        {event?.visit_cost === 0 ? 'Бесплатно' : `${event?.visit_cost} ₽`}
+                                        <span>{event?.status === 'open' ? '' : ', закрытый доступ'}</span>
                                     </p>
                                 </div>
                             </div>
-                            {auth === AuthorizationStatus.Auth ? (
+                            {event?.state !== 'Завершено' && (
                                 <>
-                                    {me?.email !== event?.creator.contacts.email ? (
-                                        <button onClick={openDialog} className="event__card-btn btn_black">
-                                            Подать заявку
-                                        </button>
+                                    {auth === AuthorizationStatus.Auth ? (
+                                        <>
+                                            {me?.email !== event?.creator.contacts.email ? (
+                                                <button onClick={openDialog} className="event__card-btn btn_black">
+                                                    Подать заявку
+                                                </button>
+                                            ) : (
+                                                <Link
+                                                    to={
+                                                        {
+                                                            pathname: AppRoute.Invite,
+                                                            state: { from: window.location.href },
+                                                            hash: window.location.href,
+                                                        } as { pathname: string; state: { from: string }; hash: string }
+                                                    }
+                                                    className="event__card-btn btn_black"
+                                                >
+                                                    Пригласить людей
+                                                </Link>
+                                            )}
+                                        </>
                                     ) : (
-                                        <Link to={AppRoute.Invite} className="event__card-btn btn_black">
-                                            Пригласить людей
-                                        </Link>
+                                        <p className="event__text_desc">
+                                            Что-бы зарегистрироваться на мероприятие необходимо войти в аккаунт
+                                        </p>
                                     )}
                                 </>
-                            ) : (
-                                <p className="event__text_desc">Что-бы зарегистрироваться на мероприятие необходимо войти в аккаунт</p>
                             )}
                         </section>
 
                         <section className="event__desc">
+                            {event && event?.state !== 'Завершено' && event.city === '' && (
+                                <>
+                                    {me?.email === event?.creator.contacts.email ? (
+                                        <>
+                                            <EventOnlineInvite event_id={event.id} />
+                                        </>
+                                    ) : (
+                                        <>
+                                            {event?.online_link && (
+                                                <div className="event__desc-invite">
+                                                    <div className="event__desc-invite-input input_white">
+                                                        <input
+                                                            className="input_white-field"
+                                                            value={event?.online_link}
+                                                            type="text"
+                                                            placeholder="Скопировать"
+                                                            readOnly
+                                                        />
+                                                    </div>
+                                                    <Link to={event?.online_link} className="event__desc-invite-btn btn_black">
+                                                        Перейти
+                                                    </Link>
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+                                </>
+                            )}
                             <h2 className="event__desc-head">Описание</h2>
 
                             <p className="event__desc-text">{event?.description}</p>
-
-                            <a href="path_to_file" download="proposed_file_name" className="event__desc-download">
-                                <div className="event__desc-download-pic">
-                                    <img src="/svg/event/docIcon.svg" alt="doc" />
-                                </div>
-
-                                <p>Программа мероприятия</p>
-
-                                <span>megatz.docs</span>
-
-                                <span>3.2 Мб</span>
-                            </a>
+                            {event?.schedule_url && <FileInfo fileUrl={event.schedule_url} />}
                         </section>
 
                         <section className="event__host">

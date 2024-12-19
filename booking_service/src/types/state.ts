@@ -1,7 +1,7 @@
 import { AuthorizationStatus } from '../const';
 import { store } from '../store';
 import { ProfileData } from './ProfileData';
-import { Cities, EventPostOutputData, EventsShortData, EventViewData, RegisterForEventOutput } from './EventData';
+import { Cities, EventPostOutputData, EventsShortData, EventViewData, InfoForRegister, RegisterForEventOutput } from './EventData';
 
 export type UserProcess = {
     authorizationStatus: AuthorizationStatus;
@@ -28,6 +28,10 @@ export type EventProcess = {
     isCreateOutputLoading?: boolean;
     registerForEvent?: RegisterForEventOutput;
     isRegisterForEventLoading?: boolean;
+    filteredEvents: EventsShortData;
+    isLoadingFilteredEvents?: boolean;
+    infoForRegister?: InfoForRegister;
+    isLoadingInfoForRegister?: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;

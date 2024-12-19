@@ -8,7 +8,9 @@ import {
     fetchMyEventsData,
     fetchOtherEventsData,
     fetchParticipateEventsData,
+    getInfoRegisterForEvent,
     postEventDataAction,
+    postFiltersAction,
     registerForEvent,
 } from '../api-actions';
 
@@ -28,6 +30,10 @@ const initialState: EventProcess = {
     isCreateOutputLoading: true,
     isRegisterForEventLoading: true,
     registerForEvent: undefined,
+    filteredEvents: [],
+    isLoadingFilteredEvents: true,
+    infoForRegister: undefined,
+    isLoadingInfoForRegister: true,
 };
 
 export const eventProcess = createSlice({
@@ -87,6 +93,17 @@ export const eventProcess = createSlice({
             .addCase(registerForEvent.fulfilled, (state, action) => {
                 state.registerForEvent = action.payload;
                 state.isRegisterForEventLoading = false;
+            })
+            .addCase(postFiltersAction.fulfilled, (state, action) => {
+                state.filteredEvents = action.payload;
+                state.isLoadingFilteredEvents = false;
+            })
+            .addCase(getInfoRegisterForEvent.pending, (state) => {
+                state.isLoadingInfoForRegister = true;
+            })
+            .addCase(getInfoRegisterForEvent.fulfilled, (state, action) => {
+                state.infoForRegister = action.payload;
+                state.isLoadingInfoForRegister = false;
             });
     },
 });

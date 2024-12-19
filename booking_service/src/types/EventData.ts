@@ -33,6 +33,11 @@ export type EventCustomDate = {
     title: string;
 };
 
+export type EventCustomDateRegiser = {
+    title: string;
+    value: string;
+};
+
 export type EventPostInputData = {
     event: EventFullData;
     photo: File | null;
@@ -41,6 +46,7 @@ export type EventPostInputData = {
 export type EventPostOutputData = {
     msg: string;
     event_id: number;
+    event_link: string;
     registration_link: string;
 };
 
@@ -70,6 +76,7 @@ export type EventViewData = {
     status: string;
     format: string;
     state: string;
+    online_link: string;
     photo_url: string | null;
     schedule_url: string | null;
     creator: {
@@ -109,11 +116,45 @@ export type FiltersData = {
 
 export type RegisterForEvent = {
     event_id: number;
-    custom_fields: EventCustomDate[] | null;
+    custom_fields: EventCustomDateRegiser[] | null;
     event_date_time_id: number;
 };
 export type RegisterForEventOutput = {
     message: string;
+};
+
+type Email = { email: string };
+
+export type InviteByEmails = {
+    event_id: number;
+    users_emails: Email[];
+};
+
+export type OnlineLink = {
+    event_id: number;
+    online_link: string;
+};
+export type OnlineLinkOutput = {
+    msg: string;
+};
+
+export type InfoForRegister = {
+    dates: [
+        {
+            date_time_id: number;
+            start_date: string;
+            end_date: string;
+            start_time: string;
+            end_time: string;
+            seats_number: number;
+        },
+    ];
+    custom_fields: [
+        {
+            field_id: number;
+            title: string;
+        },
+    ];
 };
 
 export type Cities = { cities: [string] };

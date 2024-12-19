@@ -6,7 +6,7 @@ import Loading from './Loading';
 interface EventsBlockProps {
     title: string;
     events?: EventsShortData;
-    isLoading: boolean | undefined;
+    isLoading?: boolean | undefined;
 }
 
 export default function EventsBlock({ title, events = [], isLoading }: EventsBlockProps) {
