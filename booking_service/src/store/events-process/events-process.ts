@@ -27,7 +27,7 @@ const initialState: EventProcess = {
     isOtherEventsLoading: true,
     cities: undefined,
     createOutput: undefined,
-    isCreateOutputLoading: true,
+    isCreateOutputLoading: false,
     isRegisterForEventLoading: true,
     registerForEvent: undefined,
     filteredEvents: [],
@@ -82,6 +82,9 @@ export const eventProcess = createSlice({
             })
             .addCase(postEventDataAction.pending, (state) => {
                 state.isCreateOutputLoading = true;
+            })
+            .addCase(postEventDataAction.rejected, (state) => {
+                state.isCreateOutputLoading = false;
             })
             .addCase(postEventDataAction.fulfilled, (state, action) => {
                 state.createOutput = action.payload;

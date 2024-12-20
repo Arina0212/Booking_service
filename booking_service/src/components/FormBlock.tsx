@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
 import useAutosizeTextArea from '../hooks/useAutoSize';
-import { AppRoute, FORMATS } from '../const';
+import { FORMATS } from '../const';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { postEventDataAction } from '../store/api-actions';
 import { useNavigate } from 'react-router-dom';
 import { geOutputMessage, getLoadingOutputMessage } from '../store/events-process/selectors';
+import Spinner from './Spinner';
 
 interface Block {
     id: number;
@@ -778,9 +779,6 @@ const CreateEventForm: React.FC = () => {
             description: data.description,
         };
         dispatch(postEventDataAction({ event: eventFullData, photo: fileInfo, schedule: fileInfoDesc }));
-        if (isLoadongMessage === false) {
-            navigate(AppRoute.Invite);
-        }
     };
 
     return (
@@ -794,7 +792,7 @@ const CreateEventForm: React.FC = () => {
             <div className=" save ">
                 <p>Проверьте, что все обязательные поля заполнены</p>
                 <button type="submit" className=" save__btn btn_black">
-                    Создать мероприятие
+                    {isLoadongMessage ? <Spinner /> : 'Создать мероприятие'}
                 </button>
             </div>
         </form>
