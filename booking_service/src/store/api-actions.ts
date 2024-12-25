@@ -364,10 +364,54 @@ export const registerForEvent = createAsyncThunk<
         toast.success('Успешная запись на мероприятие');
 
         dispatch(fetchEventData({ id: event_id }));
+        dispatch(fetchIsMember({ id: event_id }));
         return data;
     } catch (error) {
         if (error instanceof AxiosError) {
             const errorMessage = error.response?.data?.message || 'Произошла ошибка при записи на мероприятие';
+            toast.error(errorMessage);
+        } else {
+            toast.error('Что-то пошло не так попробуйте позже');
+        }
+        throw error;
+    }
+});
+
+//Проверка записан ли человек на мероприятие
+export const fetchIsMember = createAsyncThunk<
+    string,
+    { id: number },
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('patient/fetchIsMember', async ({ id }, { extra: api }) => {
+    const { data } = await api.get<string>(`${APIRoute.IsMember}/${id}/`);
+    console.log('fetchIsMember', data);
+    return data;
+});
+
+//Отмена записи на мероприятие
+export const deleteBooking = createAsyncThunk<
+    string,
+    { id: number },
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('patient/deleteBooking', async ({ id }, { dispatch, extra: api }) => {
+    try {
+        const { data } = await api.delete<string>(`${APIRoute.CancelBooking}/${id}/`);
+        toast.success('Запись успешно отменена');
+
+        dispatch(fetchEventData({ id: id }));
+        dispatch(fetchIsMember({ id: id }));
+        return data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            const errorMessage = error.response?.data?.message || 'Произошла ошибка при отмене записи на мероприятие';
             toast.error(errorMessage);
         } else {
             toast.error('Что-то пошло не так попробуйте позже');

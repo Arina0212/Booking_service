@@ -2,9 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { EventProcess } from '../../types/state';
 import {
+    deleteBooking,
     fetchAllEventsData,
     fetchCitiesData,
     fetchEventData,
+    fetchIsMember,
     fetchMyEventsData,
     fetchOtherEventsData,
     fetchParticipateEventsData,
@@ -34,6 +36,8 @@ const initialState: EventProcess = {
     isLoadingFilteredEvents: true,
     infoForRegister: undefined,
     isLoadingInfoForRegister: true,
+    isMember: '',
+    isCancelBookingLoading: false,
 };
 
 export const eventProcess = createSlice({
@@ -110,6 +114,18 @@ export const eventProcess = createSlice({
             .addCase(getInfoRegisterForEvent.fulfilled, (state, action) => {
                 state.infoForRegister = action.payload;
                 state.isLoadingInfoForRegister = false;
+            })
+            .addCase(fetchIsMember.fulfilled, (state, action) => {
+                state.isMember = action.payload;
+            })
+            .addCase(deleteBooking.pending, (state) => {
+                state.isCancelBookingLoading = true;
+            })
+            .addCase(deleteBooking.rejected, (state) => {
+                state.isCancelBookingLoading = false;
+            })
+            .addCase(deleteBooking.fulfilled, (state) => {
+                state.isCancelBookingLoading = false;
             });
     },
 });

@@ -3,10 +3,12 @@ import { AppRoute, AuthorizationStatus } from '../const';
 import Header from '../components/Header';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import React, { useEffect, useState } from 'react';
-import { fetchEventData, getInfoRegisterForEvent } from '../store/api-actions';
+import { deleteBooking, fetchEventData, fetchIsMember, getInfoRegisterForEvent } from '../store/api-actions';
 import {
     getEvent,
     getInfoForRegister,
+    getIsCancelBookingLoaging,
+    getIsMember,
     getLoadingEvent,
     getLoadingInfoForRegister,
     getLoadingRegisterForEvent,
@@ -20,17 +22,22 @@ import { getAuthorizationStatus, getProfile } from '../store/user-process/select
 import RegistrationForEvent from '../components/dialogs/RegistrationForEvent';
 import FileInfo from '../components/FileInfo';
 import EventOnlineInvite from '../components/OnlineLinkPostForm';
+import Spinner from '../components/Spinner';
 
 export default function EventPage() {
     const dispatch = useAppDispatch();
     const urlParams = useParams();
     const auth = useAppSelector(getAuthorizationStatus);
-
     useEffect(() => {
         dispatch(fetchEventData({ id: Number(urlParams.id) }));
         dispatch(getInfoRegisterForEvent({ id: Number(urlParams.id) }));
-    }, [dispatch, urlParams.id]);
 
+        if (auth === AuthorizationStatus.Auth) {
+            const data = dispatch(fetchIsMember({ id: Number(urlParams.id) }));
+            console.log(data);
+        }
+    }, [auth, dispatch, urlParams.id]);
+    const isMember = useAppSelector(getIsMember);
     const event = useAppSelector(getEvent);
     const isLoading = useAppSelector(getLoadingEvent);
     const me = useAppSelector(getProfile);
@@ -41,6 +48,11 @@ export default function EventPage() {
     const getMessage = useAppSelector(getRegisterForEventMessedge);
     const openDialog = () => setIsDialogOpen(true);
     const closeDialog = () => setIsDialogOpen(false);
+    const isCancelBookingLoaging = useAppSelector(getIsCancelBookingLoaging);
+    const handleCancelBooking = (event: React.FormEvent) => {
+        event.preventDefault();
+        dispatch(deleteBooking({ id: Number(urlParams.id) }));
+    };
     return (
         <>
             <RegistrationForEvent
@@ -126,9 +138,17 @@ export default function EventPage() {
                                     {auth === AuthorizationStatus.Auth ? (
                                         <>
                                             {me?.email !== event?.creator.contacts.email ? (
-                                                <button onClick={openDialog} className="event__card-btn btn_black">
-                                                    Подать заявку
-                                                </button>
+                                                <>
+                                                    {isMember ? (
+                                                        <button onClick={handleCancelBooking} className="event__card-btn btn_black">
+                                                            {isCancelBookingLoaging ? <Spinner /> : 'Отменить участие'}
+                                                        </button>
+                                                    ) : (
+                                                        <button onClick={openDialog} className="event__card-btn btn_black">
+                                                            Подать заявку
+                                                        </button>
+                                                    )}
+                                                </>
                                             ) : (
                                                 <Link
                                                     to={
