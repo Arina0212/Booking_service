@@ -6,7 +6,7 @@ import { APIRoute, AppRoute } from '../const';
 import { dropToken, saveToken } from '../services/token';
 import { SignInData, UserData } from '../types/SignInData';
 import { AuthData, LoginData } from '../types/LoginData';
-import { ChangeProfilePhoto, ProfileData } from '../types/ProfileData';
+import { ChangePasswordPhoto, ChangeProfilePhoto, ProfileData } from '../types/ProfileData';
 import {
     Cities,
     EventPostInputData,
@@ -83,6 +83,30 @@ export const SignInAction = createAsyncThunk<
     }
     dispatch(fetchProfileData());
     return data;
+});
+
+//Смена пароля
+export const ChangePasswordAction = createAsyncThunk<
+    ChangePasswordPhoto,
+    ChangePasswordPhoto,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('auth/changePasswordAction', async ({ password }: ChangePasswordPhoto, { extra: api, rejectWithValue }) => {
+    try {
+        const { data } = await api.post<ChangePasswordPhoto>(APIRoute.ChangePassword, {
+            password,
+        });
+        toast.success('Пароль успешно изменен');
+        return data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            return rejectWithValue(error.response?.data || 'Ошибка при изменении пароля');
+        }
+        return rejectWithValue('Неизвестная ошибка');
+    }
 });
 
 //Получение информации о профиле

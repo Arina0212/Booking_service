@@ -16,3 +16,7 @@ export type ProfileData = {
 export type ChangeProfilePhoto = {
     new_photo: File | null;
 };
+
+export type ChangePasswordPhoto = {
+    password: string;
+};

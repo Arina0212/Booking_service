@@ -11,6 +11,7 @@ export type UserProcess = {
     isProfileLoading?: boolean;
     isLoading?: boolean;
     isPhotoLoading: boolean;
+    isPasswordLoading: boolean;
 };
 
 export type EventProcess = {

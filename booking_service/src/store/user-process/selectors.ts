@@ -10,3 +10,4 @@ export const getProfile = (state: Pick<State, NameSpace.User>): ProfileData | un
 export const getLoadingProfile = (state: Pick<State, NameSpace.User>): boolean | undefined => state[NameSpace.User].isProfileLoading;
 export const getLoading = (state: Pick<State, NameSpace.User>): boolean | undefined => state[NameSpace.User].isLoading;
 export const getLoadingPhoto = (state: Pick<State, NameSpace.User>): boolean | undefined => state[NameSpace.User].isPhotoLoading;
+export const getLoadingPassword = (state: Pick<State, NameSpace.User>): boolean | undefined => state[NameSpace.User].isPasswordLoading;

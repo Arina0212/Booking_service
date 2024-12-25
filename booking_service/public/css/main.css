@@ -94,6 +94,11 @@ input[data-autocompleted] {
     display: block;
 }
 
+.error {
+    padding-top: 0.8vw;
+
+}
+
 .btn_black {
     display: block;
     text-align: center;

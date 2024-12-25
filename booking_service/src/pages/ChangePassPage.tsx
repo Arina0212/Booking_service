@@ -1,9 +1,18 @@
-import { SetStateAction, useRef, useState } from 'react';
+import React, { SetStateAction, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { ChangePasswordAction } from '../store/api-actions';
+import { redirectToRoute } from '../store/action';
+import { AppRoute } from '../const';
+import { getLoadingPassword } from '../store/user-process/selectors';
+import Spinner from '../components/Spinner';
 
 export default function ChangePassPage() {
+    const dispatch = useAppDispatch();
+
+    const isLoadingPassword = useAppSelector(getLoadingPassword);
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const [inputType, setInputType] = useState('password');
-
+    const [error, setError] = useState('');
     const toggleInput = () => {
         setInputType(inputType === 'password' ? 'text' : 'password');
     };
@@ -35,8 +44,22 @@ export default function ChangePassPage() {
         setValueOldPass(event.target.value);
     }
 
+    const handleChangePassword = async (event: React.FormEvent) => {
+        event.preventDefault();
+        if (valueNewPass === valueConfirmNewPass) {
+            setError('');
+            await dispatch(
+                ChangePasswordAction({
+                    password: valueConfirmNewPass,
+                }),
+            );
+            dispatch(redirectToRoute(AppRoute.Lk));
+        } else {
+            setError('Пароли не совпадают');
+        }
+    };
     return (
-        <form className="auth">
+        <form className="auth" onSubmit={handleChangePassword}>
             <h1 className="auth__head">Смена пароля</h1>
             <div className="auth__input input_white input_pass">
                 <input
@@ -60,6 +83,7 @@ export default function ChangePassPage() {
                     </div>
                 )}
             </div>
+            {error !== '' && <div className="error">{error}</div>}
 
             <div className="auth__input input_white input_pass">
                 <input
@@ -107,7 +131,7 @@ export default function ChangePassPage() {
             </div>
 
             <button type="submit" className="auth__btn btn_black">
-                Изменить пароль
+                {isLoadingPassword ? <Spinner /> : 'Изменить пароль'}
             </button>
         </form>
     );
