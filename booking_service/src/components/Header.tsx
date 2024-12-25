@@ -18,9 +18,9 @@ export default function Header() {
             <Link to={AppRoute.Teams} className="header__link header__link_mid hide-on-mob">
                 команды
             </Link>
-            <Link to="" className="header__link hide-on-mob">
+            {/* <Link to="" className="header__link hide-on-mob">
                 о нас
-            </Link>
+            </Link>*/}
             {authorizationStatus === AuthorizationStatus.Auth ? (
                 <>
                     <Link to={AppRoute.Create} className="header__btn hide-on-mob">
@@ -30,10 +30,10 @@ export default function Header() {
                         <img src="/svg/header/create.svg" alt="+" />
                     </Link>
 
-                    <button className="header__notify">
+                    {/*<button className="header__notify">
                         <img src="/svg/header/notify.svg" alt="notify" />
                         <span className="header__notify-new"></span>
-                    </button>
+                    </button>*/}
 
                     <Link to={AppRoute.Lk} className="header__profile">
                         <img src="/svg/header/profile.svg" alt="profile" />
@@ -52,9 +52,9 @@ export default function Header() {
                 <Link to={AppRoute.Teams} className="header__link header__link_mid">
                     команды
                 </Link>
-                <Link to="" className="header__link">
+                {/* <Link to="" className="header__link">
                     о нас
-                </Link>
+                </Link>*/}
             </div>
         </header>
     );

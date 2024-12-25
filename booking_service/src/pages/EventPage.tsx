@@ -73,9 +73,6 @@ export default function EventPage() {
                             {me?.email === event?.creator.contacts.email && (
                                 <div className="event__card-links">
                                     <Link to={AppRoute.Main} className="event__card-links-link">
-                                        Создать копию
-                                    </Link>
-                                    <Link to={AppRoute.Main} className="event__card-links-link">
                                         Редактировать
                                     </Link>
                                 </div>
