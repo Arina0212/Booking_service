@@ -52,7 +52,7 @@ export default function EventPage() {
                 customFields={infoForRegister?.custom_fields}
                 timeSlotsDescriptions={event?.time_slots_descriptions}
             />
-            {!isLoading && !isLoadingInfoForRegister ? (
+            {!isLoading || (auth === AuthorizationStatus.Auth && !isLoadingInfoForRegister) ? (
                 <>
                     <Header />
                     <main className="event">

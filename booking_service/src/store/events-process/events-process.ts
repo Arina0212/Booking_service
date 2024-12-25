@@ -28,7 +28,7 @@ const initialState: EventProcess = {
     cities: undefined,
     createOutput: undefined,
     isCreateOutputLoading: false,
-    isRegisterForEventLoading: true,
+    isRegisterForEventLoading: false,
     registerForEvent: undefined,
     filteredEvents: [],
     isLoadingFilteredEvents: true,
@@ -92,6 +92,9 @@ export const eventProcess = createSlice({
             })
             .addCase(registerForEvent.pending, (state) => {
                 state.isRegisterForEventLoading = true;
+            })
+            .addCase(registerForEvent.rejected, (state) => {
+                state.isRegisterForEventLoading = false;
             })
             .addCase(registerForEvent.fulfilled, (state, action) => {
                 state.registerForEvent = action.payload;
