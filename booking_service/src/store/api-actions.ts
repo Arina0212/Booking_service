@@ -6,7 +6,7 @@ import { APIRoute, AppRoute } from '../const';
 import { dropToken, saveToken } from '../services/token';
 import { SignInData, UserData } from '../types/SignInData';
 import { AuthData, LoginData } from '../types/LoginData';
-import { ProfileData } from '../types/ProfileData';
+import { ChangeProfilePhoto, ProfileData } from '../types/ProfileData';
 import {
     Cities,
     EventPostInputData,
@@ -111,7 +111,7 @@ export const postProfileDataAction = createAsyncThunk<
 >(
     'patient/postProfileData',
     async (
-        { first_name, last_name, patronymic, email, birth_date, city, phone_number, company_name, vk, telegram, whatsapp, photo },
+        { first_name, last_name, patronymic, email, birth_date, city, phone_number, company_name, vk, telegram, whatsapp },
         { dispatch, extra: api },
     ) => {
         const { data } = await api.put<ProfileData>(APIRoute.ProfileData, {
@@ -126,12 +126,38 @@ export const postProfileDataAction = createAsyncThunk<
             vk,
             telegram,
             whatsapp,
-            photo,
         });
         dispatch(fetchProfileData());
         return data;
     },
 );
+
+//Редактирование фото пользователя
+export const changeProfilePhoto = createAsyncThunk<
+    ChangeProfilePhoto,
+    ChangeProfilePhoto,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('data/changeProfilePhoto', async ({ new_photo }, { dispatch, extra: api }) => {
+    const formData = new FormData();
+    if (new_photo) {
+        formData.append('new_photo', new_photo);
+    } else {
+        console.warn('Photo is null, not appending it to FormData');
+    }
+
+    const { data } = await api.put<ChangeProfilePhoto>(APIRoute.EditProfilePhoto, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    dispatch(fetchProfileData());
+    toast.success('Фото успешно сохранено');
+    return data;
+});
 
 //Получение списка всех мероприятий
 export const fetchAllEventsData = createAsyncThunk<

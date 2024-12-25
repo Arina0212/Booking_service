@@ -3,7 +3,6 @@ import useAutosizeTextArea from '../hooks/useAutoSize';
 import { FORMATS } from '../const';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { postEventDataAction } from '../store/api-actions';
-import { useNavigate } from 'react-router-dom';
 import { geOutputMessage, getLoadingOutputMessage } from '../store/events-process/selectors';
 import Spinner from './Spinner';
 
@@ -723,7 +722,6 @@ const CreateEventForm: React.FC = () => {
         setOpenBlockId(openBlockId === id ? null : id);
     };
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
     const message = useAppSelector(geOutputMessage);
     const isLoadongMessage = useAppSelector(getLoadingOutputMessage);
     const handleSubmit = async (event: React.FormEvent) => {

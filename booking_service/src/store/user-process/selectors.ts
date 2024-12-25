@@ -9,3 +9,4 @@ export const getEmailError = (state: Pick<State, NameSpace.User>): string => sta
 export const getProfile = (state: Pick<State, NameSpace.User>): ProfileData | undefined => state[NameSpace.User].profileData;
 export const getLoadingProfile = (state: Pick<State, NameSpace.User>): boolean | undefined => state[NameSpace.User].isProfileLoading;
 export const getLoading = (state: Pick<State, NameSpace.User>): boolean | undefined => state[NameSpace.User].isLoading;
+export const getLoadingPhoto = (state: Pick<State, NameSpace.User>): boolean | undefined => state[NameSpace.User].isPhotoLoading;

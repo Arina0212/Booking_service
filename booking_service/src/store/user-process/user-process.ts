@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AuthorizationStatus, NameSpace } from '../../const';
 import { UserProcess } from '../../types/state';
-import { fetchProfileData, loginAction, logoutAction, SignInAction } from '../api-actions';
+import { changeProfilePhoto, fetchProfileData, loginAction, logoutAction, SignInAction } from '../api-actions';
 
 const initialState: UserProcess = {
     authorizationStatus: AuthorizationStatus.NoAuth,
@@ -10,6 +10,7 @@ const initialState: UserProcess = {
     profileData: undefined,
     isProfileLoading: true,
     isLoading: false,
+    isPhotoLoading: false,
 };
 
 export const userProcess = createSlice({
@@ -57,6 +58,15 @@ export const userProcess = createSlice({
             .addCase(fetchProfileData.fulfilled, (state, action) => {
                 state.profileData = action.payload;
                 state.isProfileLoading = false;
+            })
+            .addCase(changeProfilePhoto.rejected, (state) => {
+                state.isPhotoLoading = false;
+            })
+            .addCase(changeProfilePhoto.pending, (state) => {
+                state.isPhotoLoading = true;
+            })
+            .addCase(changeProfilePhoto.fulfilled, (state) => {
+                state.isPhotoLoading = false;
             });
     },
 });

@@ -8,6 +8,7 @@ export enum APIRoute {
     Login = 'auth/login/',
     Logout = 'auth/logout/',
     ProfileData = 'profile/me/',
+    EditProfilePhoto = 'profile/update-photo',
     Events = 'event/view/',
     MyEvents = 'event/view/my/',
     ParticipateEvents = 'event/view/participate/',

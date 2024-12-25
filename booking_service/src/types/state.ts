@@ -10,6 +10,7 @@ export type UserProcess = {
     profileData?: ProfileData;
     isProfileLoading?: boolean;
     isLoading?: boolean;
+    isPhotoLoading: boolean;
 };
 
 export type EventProcess = {

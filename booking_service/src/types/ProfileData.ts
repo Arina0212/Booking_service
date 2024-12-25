@@ -10,5 +10,9 @@ export type ProfileData = {
     vk?: string;
     telegram?: string;
     whatsapp?: string;
-    photo: string | null;
+    photo?: string | null;
+};
+
+export type ChangeProfilePhoto = {
+    new_photo: File | null;
 };

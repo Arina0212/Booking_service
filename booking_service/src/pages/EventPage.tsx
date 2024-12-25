@@ -41,7 +41,6 @@ export default function EventPage() {
     const getMessage = useAppSelector(getRegisterForEventMessedge);
     const openDialog = () => setIsDialogOpen(true);
     const closeDialog = () => setIsDialogOpen(false);
-    console.log('isLoadingInfoForRegister', isLoadingInfoForRegister);
     return (
         <>
             <RegistrationForEvent
