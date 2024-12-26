@@ -22,6 +22,7 @@ export enum APIRoute {
     OnlineLink = 'event/change-online-link',
     IsMember = 'event/member',
     CancelBooking = 'event/cancel-booking',
+    CancelEvent = 'event/cancel',
 }
 
 export enum AppRoute {

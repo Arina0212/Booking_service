@@ -7,7 +7,8 @@ import { deleteBooking, fetchEventData, fetchIsMember, getInfoRegisterForEvent }
 import {
     getEvent,
     getInfoForRegister,
-    getIsCancelBookingLoaging,
+    getIsCancelBookingLoading,
+    getIsCancelEventLoading,
     getIsMember,
     getLoadingEvent,
     getLoadingInfoForRegister,
@@ -23,6 +24,7 @@ import RegistrationForEvent from '../components/dialogs/RegistrationForEvent';
 import FileInfo from '../components/FileInfo';
 import EventOnlineInvite from '../components/OnlineLinkPostForm';
 import Spinner from '../components/Spinner';
+import CancelEvent from '../components/dialogs/CancelEvent';
 
 export default function EventPage() {
     const dispatch = useAppDispatch();
@@ -44,11 +46,15 @@ export default function EventPage() {
     const isLoadingInfoForRegister = useAppSelector(getLoadingInfoForRegister);
     const infoForRegister = useAppSelector(getInfoForRegister);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDialogCancelOpen, setIsDialogCancelOpen] = useState(false);
     const isLoadingRegister = useAppSelector(getLoadingRegisterForEvent);
     const getMessage = useAppSelector(getRegisterForEventMessedge);
     const openDialog = () => setIsDialogOpen(true);
     const closeDialog = () => setIsDialogOpen(false);
-    const isCancelBookingLoaging = useAppSelector(getIsCancelBookingLoaging);
+    const openCancelDialog = () => setIsDialogCancelOpen(true);
+    const closeCancelDialog = () => setIsDialogCancelOpen(false);
+    const isCancelBookingLoaging = useAppSelector(getIsCancelBookingLoading);
+    const isCancelEventLoading = useAppSelector(getIsCancelEventLoading);
     const handleCancelBooking = (event: React.FormEvent) => {
         event.preventDefault();
         dispatch(deleteBooking({ id: Number(urlParams.id) }));
@@ -63,6 +69,7 @@ export default function EventPage() {
                 customFields={infoForRegister?.custom_fields}
                 timeSlotsDescriptions={event?.time_slots_descriptions}
             />
+            <CancelEvent isOpen={isDialogCancelOpen} onClose={closeCancelDialog} isLoading={isCancelEventLoading} />
             {!isLoading || (auth === AuthorizationStatus.Auth && !isLoadingInfoForRegister) ? (
                 <>
                     <Header />
@@ -150,18 +157,27 @@ export default function EventPage() {
                                                     )}
                                                 </>
                                             ) : (
-                                                <Link
-                                                    to={
-                                                        {
-                                                            pathname: AppRoute.Invite,
-                                                            state: { from: window.location.href },
-                                                            hash: window.location.href,
-                                                        } as { pathname: string; state: { from: string }; hash: string }
-                                                    }
-                                                    className="event__card-btn btn_black"
-                                                >
-                                                    Пригласить людей
-                                                </Link>
+                                                <>
+                                                    <button onClick={openCancelDialog} className="event__card_closed" type="button">
+                                                        Завершить
+                                                    </button>
+                                                    <Link
+                                                        to={
+                                                            {
+                                                                pathname: AppRoute.Invite,
+                                                                state: { from: window.location.href },
+                                                                hash: window.location.href,
+                                                            } as {
+                                                                pathname: string;
+                                                                state: { from: string };
+                                                                hash: string;
+                                                            }
+                                                        }
+                                                        className="event__card-btn btn_black"
+                                                    >
+                                                        Пригласить людей
+                                                    </Link>
+                                                </>
                                             )}
                                         </>
                                     ) : (
@@ -178,25 +194,35 @@ export default function EventPage() {
                                 <>
                                     {me?.email === event?.creator.contacts.email ? (
                                         <>
-                                            <EventOnlineInvite event_id={event.id} />
+                                            <h2 className="event__desc-head">Ссылка на подключение</h2>
+
+                                            <p className="event__desc-text">Добавьте ссылку на подключение к вашему онлайн мероприятию</p>
+                                            <EventOnlineInvite event_id={event.id} onlineLink={event.online_link} />
                                         </>
                                     ) : (
                                         <>
-                                            {event?.online_link && (
-                                                <div className="event__desc-invite">
-                                                    <div className="event__desc-invite-input input_white">
-                                                        <input
-                                                            className="input_white-field"
-                                                            value={event?.online_link}
-                                                            type="text"
-                                                            placeholder="Скопировать"
-                                                            readOnly
-                                                        />
+                                            {event?.online_link && isMember && (
+                                                <>
+                                                    <h2 className="event__desc-head">Ссылка на подключение</h2>
+
+                                                    <p className="event__desc-text">
+                                                        Добавьте ссылку на подключение к вашему онлайн мероприятию
+                                                    </p>
+                                                    <div className="event__desc-invite">
+                                                        <div className="event__desc-invite-input input_white">
+                                                            <input
+                                                                className="input_white-field"
+                                                                value={event?.online_link}
+                                                                type="text"
+                                                                placeholder="Скопировать"
+                                                                readOnly
+                                                            />
+                                                        </div>
+                                                        <Link to={event?.online_link} className="event__desc-invite-btn btn_black">
+                                                            Перейти
+                                                        </Link>
                                                     </div>
-                                                    <Link to={event?.online_link} className="event__desc-invite-btn btn_black">
-                                                        Перейти
-                                                    </Link>
-                                                </div>
+                                                </>
                                             )}
                                         </>
                                     )}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './DateRangePicker.css';
-import { getAltDate, humanizeDate } from '../../services/utils/dataFormater';
+import { humanizeDate } from '../../services/utils/dataFormater';
 import { MONTH } from '../../const';
 
 interface DateRange {
@@ -25,13 +25,11 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onDateChange, initial
     const handleDateClick = (date: Date) => {
         if (!selectedRange.start || (selectedRange.start && selectedRange.end)) {
             const newRange = { start: date, end: null };
-            console.log('Начало', getAltDate(newRange.start));
             setSelectedRange(newRange);
 
             onDateChange(newRange);
         } else {
             const newRange = { start: selectedRange.start, end: date };
-            console.log('Конец', getAltDate(newRange.end));
             setSelectedRange(newRange);
             onDateChange(newRange);
         }
@@ -121,7 +119,6 @@ const Calendar: React.FC<CalendarProps> = ({ onDateClick, closeCalendar }) => {
         setCurrentDate((prevDate) => {
             const newDate = new Date(prevDate);
             newDate.setMonth(newDate.getMonth() - 1);
-            console.log('Переход на предыдущий месяц:', newDate); // Добавлено для проверки
             return newDate;
         });
     };
@@ -130,7 +127,6 @@ const Calendar: React.FC<CalendarProps> = ({ onDateClick, closeCalendar }) => {
         setCurrentDate((prevDate) => {
             const newDate = new Date(prevDate);
             newDate.setMonth(newDate.getMonth() + 1);
-            console.log('Переход на следующий месяц:', newDate); // Добавлено для проверки
             return newDate;
         });
     };

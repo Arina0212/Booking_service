@@ -36,6 +36,7 @@ export type EventProcess = {
     isLoadingInfoForRegister?: boolean;
     isMember: string;
     isCancelBookingLoading: boolean;
+    isCancelEventLoading: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;

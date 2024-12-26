@@ -673,6 +673,16 @@ input[data-autocompleted] {
     background-color: rgba(255, 0, 0, 0.1019607843);
 }
 
+.event__card_closed {
+    margin: auto 0;
+    font-size: 0.7368421053vw;
+    height: 1.7368vw;
+    width: 6.1053vw;
+    color: #FF0000;
+    border-radius: 0.4211vw;
+    background-color: rgba(255, 0, 0, 0.1019607843);
+}
+
 .event__card-tags-tag_goes {
     color: #FF9D00;
     background-color: rgba(255, 157, 0, 0.1019607843);

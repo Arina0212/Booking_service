@@ -300,6 +300,33 @@ export const postEventDataAction = createAsyncThunk<
     return data;
 });
 
+//Завершение мероприятия
+export const cancelEvent = createAsyncThunk<
+    string,
+    { id: number },
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('patient/cancelEvent', async ({ id }, { dispatch, extra: api }) => {
+    try {
+        const { data } = await api.delete<string>(`${APIRoute.CancelEvent}/${id}/`);
+        toast.success('Мероприятие завершено');
+
+        dispatch(redirectToRoute(AppRoute.Main));
+        return data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            const errorMessage = error.response?.data?.message || 'Произошла ошибка при завершении мероприятия';
+            toast.error(errorMessage);
+        } else {
+            toast.error('Что-то пошло не так попробуйте позже');
+        }
+        throw error;
+    }
+});
+
 //Получение информации о мероприятии для подачи заявки
 export const getInfoRegisterForEvent = createAsyncThunk<
     InfoForRegister,

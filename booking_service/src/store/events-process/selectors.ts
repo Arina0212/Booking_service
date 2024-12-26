@@ -47,5 +47,7 @@ export const getInfoForRegister = (state: Pick<State, NameSpace.Event>): InfoFor
 export const getLoadingInfoForRegister = (state: Pick<State, NameSpace.Event>): boolean | undefined =>
     state[NameSpace.Event].isLoadingInfoForRegister;
 export const getIsMember = (state: Pick<State, NameSpace.Event>): string | undefined => state[NameSpace.Event].isMember;
-export const getIsCancelBookingLoaging = (state: Pick<State, NameSpace.Event>): boolean | undefined =>
+export const getIsCancelBookingLoading = (state: Pick<State, NameSpace.Event>): boolean | undefined =>
     state[NameSpace.Event].isCancelBookingLoading;
+export const getIsCancelEventLoading = (state: Pick<State, NameSpace.Event>): boolean | undefined =>
+    state[NameSpace.Event].isCancelEventLoading;

@@ -46,3 +46,64 @@ input {
     flex-direction: row;
     gap: 1vw;
 }
+
+.dropdown-menu-wrapper_dates {
+    transition: padding linear 250ms;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.7894736842vw 0.8421052632vw;
+}
+
+.dropdown-menu-month {
+    background: none;
+    border: none;
+    outline: none;
+    grid-column: span 5;
+    font-size: 0.7368421053vw;
+}
+
+.dropdown-menu-arrow {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: 0.8421052632vw;
+    height: 0.6315789474vw;
+}
+
+.dropdown-menu-arrow_left {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu-arrow img {
+    width: 100%;
+    height: 100%;
+}
+
+.dropdown-menu-day {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 0.7368421053vw;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.3157894737vw;
+    transition: background-color ease-in-out 250ms;
+}
+
+.dropdown-menu-day_bold {
+    font-weight: 700;
+}
+
+.dropdown-menu-day_pink {
+    color: #B700FF;
+}
+
+.dropdown-menu-day_gray {
+    color: #ACB6BF;
+}
+
+.dropdown-menu-day:hover {
+    background: rgba(183, 0, 255, 0.1019607843);
+}
