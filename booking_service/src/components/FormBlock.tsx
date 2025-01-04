@@ -179,8 +179,14 @@ const CreateEventForm: React.FC = () => {
     };
 
     // Состояние для управления открытыми блоками
-    const [openBlockId, setOpenBlockId] = useState<number | null>(null);
+    const [openBlockId, setOpenBlockId] = useState<number>(1);
 
+    const dispatch = useAppDispatch();
+    const message = useAppSelector(geOutputMessage);
+    const isLoadongMessage = useAppSelector(getLoadingOutputMessage);
+    const handleNextBlock = () => {
+        setOpenBlockId((prevId) => prevId + 1);
+    };
     // Массив блоков с их содержимым
     const blocks: Block[] = [
         {
@@ -190,21 +196,24 @@ const CreateEventForm: React.FC = () => {
                     <h1>
                         Название мероприятия<span>*</span>
                     </h1>
-                    <div className="create__item-head-pic">
+                    {/*<div className="create__item-head-pic">
                         <img src="/svg/caret.svg" alt="caret" />
-                    </div>
+                    </div>*/}
                 </div>
             ),
             content: (
                 <div className={`create__item-content ${openBlockId === 1 ? 'create__item-content_active' : ''}`}>
                     <div className="create__item-content-wrap">
+                        <h3 className="create__item-content-head">
+                            Название мероприятия<span>*</span>
+                        </h3>
                         <p className="create__item-content-text">
                             Назовите ваше событие ярко и кратко, чтобы заинтересовать пользователей
                             <br />
                             Максимум 120 символов
                         </p>
                         <textarea
-                            className="create__item-content-input textarea"
+                            className="create__item-content-input textarea input_white_gray"
                             placeholder="Введите название"
                             maxLength={120}
                             onChange={handleChangeName}
@@ -213,6 +222,9 @@ const CreateEventForm: React.FC = () => {
                             value={data.name}
                             required
                         ></textarea>
+                        <button className="create__item-content-btn btn_black" onClick={handleNextBlock}>
+                            Далее
+                        </button>
                     </div>
                 </div>
             ),
@@ -222,14 +234,15 @@ const CreateEventForm: React.FC = () => {
             title: (
                 <div className={`create__item-head ${openBlockId === 2 ? 'create__item-head_active' : ''}`}>
                     <h1>Баннер</h1>
-                    <div className="create__item-head-pic">
+                    {/*<div className="create__item-head-pic">
                         <img src="/svg/caret.svg" alt="caret" />
-                    </div>
+                    </div>*/}
                 </div>
             ),
             content: (
                 <div className={`create__item-content ${openBlockId === 2 ? 'create__item-content_active' : ''}`}>
                     <div className="create__item-content-wrap">
+                        <h3 className="create__item-content-head">Баннер</h3>
                         <p className="create__item-content-text">
                             Для привлечения внимания пользователей предлагаем загрузить баннер мероприятия
                             <br />
@@ -268,6 +281,9 @@ const CreateEventForm: React.FC = () => {
                                 </>
                             )}
                         </div>
+                        <button className="create__item-content-btn btn_black" onClick={handleNextBlock}>
+                            Далее
+                        </button>
                     </div>
                 </div>
             ),
@@ -279,21 +295,22 @@ const CreateEventForm: React.FC = () => {
                     <h1>
                         Описание<span>*</span>
                     </h1>
-                    <div className="create__item-head-pic">
+                    {/*<div className="create__item-head-pic">
                         <img src="/svg/caret.svg" alt="caret" />
-                    </div>
+                    </div>*/}
                 </div>
             ),
             content: (
                 <div className={`create__item-content ${openBlockId === 3 ? 'create__item-content_active' : ''}`}>
                     <div className="create__item-content-wrap">
+                        <h3 className="create__item-content-head">Описание</h3>
                         <p className="create__item-content-text">
                             Расскажите подробнее о мероприятии
                             <br />
                             Рекомендуем 3-4 предложения, чтобы познакомить пользователей с предстоящим событием
                         </p>
                         <textarea
-                            className="create__item-content-input textarea"
+                            className="create__item-content-input textarea input_white_gray"
                             value={data.description}
                             ref={textAreaRef}
                             onChange={handleChangeDesc}
@@ -327,6 +344,9 @@ const CreateEventForm: React.FC = () => {
                                 </>
                             )}
                         </div>
+                        <button className="create__item-content-btn btn_black" onClick={handleNextBlock}>
+                            Далее
+                        </button>
                     </div>
                 </div>
             ),
@@ -338,14 +358,17 @@ const CreateEventForm: React.FC = () => {
                     <h1>
                         Адрес<span>*</span>
                     </h1>
-                    <div className="create__item-head-pic">
+                    {/*<div className="create__item-head-pic">
                         <img src="/svg/caret.svg" alt="caret" />
-                    </div>
+                    </div>*/}
                 </div>
             ),
             content: (
                 <div className={`create__item-content ${openBlockId === 4 ? 'create__item-content_active' : ''}`}>
                     <div className="create__item-content-wrap">
+                        <h3 className="create__item-content-head">
+                            Адрес<span>*</span>
+                        </h3>
                         <p className="create__item-content-text">
                             Расскажите, где будет проходить ваше мероприятие
                             <br />
@@ -386,7 +409,7 @@ const CreateEventForm: React.FC = () => {
                             <div id="createAddressOfflineInfo" className="create__item-content-hidden_show">
                                 <div className="create__item-content-wrap">
                                     <div className="create__item-content-inputs">
-                                        <div className="input_white">
+                                        <div className="input_white input_white_gray">
                                             <input
                                                 className="input_white-field"
                                                 name="city"
@@ -396,7 +419,7 @@ const CreateEventForm: React.FC = () => {
                                                 onChange={handleChangeCity}
                                             />
                                         </div>
-                                        <div className="input_white">
+                                        <div className="input_white input_white_gray">
                                             <input
                                                 className="input_white-field"
                                                 name="address"
@@ -410,6 +433,9 @@ const CreateEventForm: React.FC = () => {
                                 </div>
                             </div>
                         )}
+                        <button className="create__item-content-btn btn_black" onClick={handleNextBlock}>
+                            Далее
+                        </button>
                     </div>
                 </div>
             ),
@@ -421,16 +447,19 @@ const CreateEventForm: React.FC = () => {
                     <h1>
                         Формат<span>*</span>
                     </h1>
-                    <div className="create__item-head-pic">
+                    {/*<div className="create__item-head-pic">
                         <img src="/svg/caret.svg" alt="caret" />
-                    </div>
+                    </div>*/}
                 </div>
             ),
             content: (
                 <div className={`create__item-content ${openBlockId === 5 ? 'create__item-content_active' : ''}`}>
                     <div className="create__item-content-wrap">
+                        <h3 className="create__item-content-head">
+                            Формат<span>*</span>
+                        </h3>
                         <p className="create__item-content-text">Укажите один из форматов вашего мероприятия</p>
-                        <div className="create__item-content-dropdown dropdown">
+                        <div className="create__item-content-dropdown dropdown dropdown_gray">
                             <div className="create__item-content-dropdown-select dropdown-select" onClick={toggleDropdown}>
                                 <div className="dropdown-select-selected">
                                     <span style={{ color: selectedFormat ? 'black' : 'gray' }}>{selectedFormat || 'Выберите формат'}</span>
@@ -457,6 +486,9 @@ const CreateEventForm: React.FC = () => {
                             )}
                         </div>
                     </div>
+                    <button className="create__item-content-btn btn_black" onClick={handleNextBlock}>
+                        Далее
+                    </button>
                 </div>
             ),
         },
@@ -467,14 +499,17 @@ const CreateEventForm: React.FC = () => {
                     <h1>
                         Дата и время<span>*</span>
                     </h1>
-                    <div className="create__item-head-pic">
+                    {/* <div className="create__item-head-pic">
                         <img src="/svg/caret.svg" alt="caret" />
-                    </div>
+                    </div>*/}
                 </div>
             ),
             content: (
                 <div className={`create__item-content ${openBlockId === 6 ? 'create__item-content_active' : ''}`}>
                     <div className="create__item-content-wrap">
+                        <h3 className="create__item-content-head">
+                            Дата и время<span>*</span>
+                        </h3>
                         <p className="create__item-content-text">
                             Укажите даты и время начала и окончания вашего мероприятия
                             <br />
@@ -494,7 +529,10 @@ const CreateEventForm: React.FC = () => {
                                     </button>
                                 </div>
                                 <p className="create__item-content-dates_text">Начало:</p>
-                                <div className="create__item-content-dates-date input_white" onClick={() => handleInputClick(index)}>
+                                <div
+                                    className="create__item-content-dates-date input_white input_white_gray"
+                                    onClick={() => handleInputClick(index)}
+                                >
                                     <input
                                         id={`dateTimeInputStart${index}`}
                                         className="input_white-field input_white-field_date"
@@ -504,7 +542,10 @@ const CreateEventForm: React.FC = () => {
                                     />
                                 </div>
                                 <p className="create__item-content-dates_text">Конец:</p>
-                                <div className="create__item-content-dates-date input_white" onClick={() => handleInputClick(index)}>
+                                <div
+                                    className="create__item-content-dates-date input_white input_white_gray"
+                                    onClick={() => handleInputClick(index)}
+                                >
                                     <input
                                         id={`dateTimeInputEnd${index}`}
                                         className="input_white-field input_white-field_date"
@@ -530,7 +571,7 @@ const CreateEventForm: React.FC = () => {
                                     </label>
 
                                     {isLimitEnabled[index] && (
-                                        <div className="create__item-content-participant-limit input_white">
+                                        <div className="create__item-content-participant-limit input_white input_white_gray">
                                             <input
                                                 type="number"
                                                 className="input_white-field"
@@ -548,6 +589,9 @@ const CreateEventForm: React.FC = () => {
                         <button type="button" onClick={handleAddDateTime} className="create__item-content-add">
                             Добавить дату и время
                         </button>
+                        <button className="create__item-content-btn btn_black" onClick={handleNextBlock}>
+                            Далее
+                        </button>
                     </div>
                 </div>
             ),
@@ -559,14 +603,17 @@ const CreateEventForm: React.FC = () => {
                     <h1>
                         Стоимость входа<span>*</span>
                     </h1>
-                    <div className="create__item-head-pic">
+                    {/*<div className="create__item-head-pic">
                         <img src="/svg/caret.svg" alt="caret" />
-                    </div>
+                    </div>*/}
                 </div>
             ),
             content: (
                 <div className={`create__item-content ${openBlockId === 7 ? 'create__item-content_active' : ''}`}>
                     <div className="create__item-content-wrap">
+                        <h3 className="create__item-content-head">
+                            Стоимость входа<span>*</span>
+                        </h3>
                         <p className="create__item-content-text">
                             Если у вас платное мероприятие, то укажите стоимость входа для посетителей
                         </p>
@@ -603,7 +650,7 @@ const CreateEventForm: React.FC = () => {
                         {data.paymentType === 'pay' && (
                             <div id="createJoinPayInfo" className="create__item-content-hidden_show">
                                 <div className="create__item-content-wrap">
-                                    <div className="create__item-content-input_short input_white">
+                                    <div className="create__item-content-input_short input_white input_white_gray">
                                         <input
                                             className="input_white-field"
                                             name="visitCoast"
@@ -616,6 +663,9 @@ const CreateEventForm: React.FC = () => {
                                 </div>
                             </div>
                         )}
+                        <button className="create__item-content-btn btn_black" onClick={handleNextBlock}>
+                            Далее
+                        </button>
                     </div>
                 </div>
             ),
@@ -627,14 +677,17 @@ const CreateEventForm: React.FC = () => {
                     <h1>
                         Доступ к мероприятию<span>*</span>
                     </h1>
-                    <div className="create__item-head-pic">
+                    {/*<div className="create__item-head-pic">
                         <img src="/svg/caret.svg" alt="caret" />
-                    </div>
+                    </div>*/}
                 </div>
             ),
             content: (
                 <div className={`create__item-content ${openBlockId === 8 ? 'create__item-content_active' : ''}`}>
                     <div className="create__item-content-wrap">
+                        <h3 className="create__item-content-head">
+                            Доступ к мероприятию<span>*</span>
+                        </h3>
                         <p className="create__item-content-text">
                             Выберите уровень доступа к мероприятию
                             <br />
@@ -671,6 +724,9 @@ const CreateEventForm: React.FC = () => {
                                 Закрытое мероприятие
                             </label>
                         </div>
+                        <button className="create__item-content-btn btn_black" onClick={handleNextBlock}>
+                            Далее
+                        </button>
                     </div>
                 </div>
             ),
@@ -682,9 +738,9 @@ const CreateEventForm: React.FC = () => {
                     <h1>
                         Дополнительные поля<span></span>
                     </h1>
-                    <div className="create__item-head-pic">
+                    {/*<div className="create__item-head-pic">
                         <img src="/svg/caret.svg" alt="caret" />
-                    </div>
+                    </div>*/}
                 </div>
             ),
             content: (
@@ -693,7 +749,7 @@ const CreateEventForm: React.FC = () => {
                         <p className="create__item-content-text">Добавьте свои поля для сбора дополнительной информации от участников</p>
                         {customFields.map((field, index) => (
                             <div className="create__item-custom" key={index}>
-                                <div className="create__item-content-input_short input_white">
+                                <div className="create__item-content-input_short input_white input_white_gray">
                                     <input
                                         className="input_white-field"
                                         name={`customFields_${index}`}
@@ -711,6 +767,9 @@ const CreateEventForm: React.FC = () => {
                         <button type="button" className="create__item-content-add" onClick={addField}>
                             Добавить дополнительное поле
                         </button>
+                        <button type="submit" className="create__item-content-btn btn_black">
+                            {isLoadongMessage ? <Spinner /> : 'Создать мероприятие'}
+                        </button>
                     </div>
                 </div>
             ),
@@ -719,11 +778,9 @@ const CreateEventForm: React.FC = () => {
 
     // Функция для переключения открытого блока
     const toggleBlock = (id: number) => {
-        setOpenBlockId(openBlockId === id ? null : id);
+        setOpenBlockId(openBlockId === id ? 0 : id);
     };
-    const dispatch = useAppDispatch();
-    const message = useAppSelector(geOutputMessage);
-    const isLoadongMessage = useAppSelector(getLoadingOutputMessage);
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault(); // Предотвращаем стандартное поведение формы
 
@@ -781,18 +838,22 @@ const CreateEventForm: React.FC = () => {
 
     return (
         <form className="create" onSubmit={handleSubmit}>
+            <div className="create__head">
+                Создание
+                <br /> мероприятия
+            </div>
             {blocks.map((block) => (
                 <div className="create__item" key={block.id}>
                     <div onClick={() => toggleBlock(block.id)}>{block.title}</div>
                     {openBlockId === block.id && block.content}
                 </div>
             ))}
-            <div className=" save ">
+            {/*<div className=" save ">
                 <p>Проверьте, что все обязательные поля заполнены</p>
                 <button type="submit" className=" save__btn btn_black">
                     {isLoadongMessage ? <Spinner /> : 'Создать мероприятие'}
                 </button>
-            </div>
+            </div>*/}
         </form>
     );
 };
