@@ -95,6 +95,7 @@ export default function RegistrationForEvent({
                     event_id: Number(urlParams.id),
                     custom_fields: customFieldValues,
                     event_date_time_id: selectedSlot,
+                    expiration_days: null,
                 }),
             );
             onClose();
@@ -138,7 +139,7 @@ export default function RegistrationForEvent({
                     ))}
                 </div>
 
-                <button type="submit" className="dialog__content-btn btn_black">
+                <button type="submit" className="dialog__content-btn btn_black" disabled={!!isLoading}>
                     {isLoading ? <Spinner /> : 'Записаться'}
                 </button>
             </form>

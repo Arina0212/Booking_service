@@ -59,6 +59,7 @@ export default function EventPage() {
         event.preventDefault();
         dispatch(deleteBooking({ id: Number(urlParams.id) }));
     };
+
     return (
         <>
             <RegistrationForEvent
@@ -90,7 +91,7 @@ export default function EventPage() {
                             </div>
                             {me?.email === event?.creator.contacts.email && (
                                 <div className="event__card-links">
-                                    <Link to={AppRoute.Main} className="event__card-links-link">
+                                    <Link to={`${AppRoute.Events}/${event?.id}/edit`} className="event__card-links-link">
                                         Редактировать
                                     </Link>
                                 </div>

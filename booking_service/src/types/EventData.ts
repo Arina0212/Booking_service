@@ -52,14 +52,14 @@ export type EventPostOutputData = {
 
 export type EventFullData = {
     event_dates_times: EventDate[];
-    name: string;
+    name?: string;
     custom_fields: EventCustomDate[];
-    city: string;
-    address: string;
-    visit_cost: number;
-    status: string;
+    city?: string;
+    address?: string;
+    visit_cost?: number;
+    status?: string;
     format: string;
-    description: string;
+    description?: string;
 };
 
 export type EventViewData = {
@@ -118,6 +118,7 @@ export type RegisterForEvent = {
     event_id: number;
     custom_fields: EventCustomDateRegiser[] | null;
     event_date_time_id: number;
+    expiration_days: number | null;
 };
 export type RegisterForEventOutput = {
     message: string;

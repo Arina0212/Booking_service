@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from '../hooks';
+import { sendOnEmails } from '../store/api-actions';
 
 type Email = { email: string };
 
 export type InviteByEmails = {
-    event_id: number;
-    users_emails: Email[];
+    event_id?: number;
+    users_emails?: Email[];
+    previousUrl: string;
 };
 
-const InviteComponent = () => {
+function InviteComponent({ previousUrl }: InviteByEmails) {
     const [emails, setEmails] = useState<Email[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
 
@@ -23,10 +25,18 @@ const InviteComponent = () => {
         const newEmails = emails.filter((_, i) => i !== index);
         setEmails(newEmails);
     };
+
+    const extractLastDigits = (url: string): number | null => {
+        // Используем регулярное выражение для извлечения цифр
+        const match = url.match(/(\d+)$/);
+        return match ? parseInt(match[1], 10) : null; // Преобразуем в число
+    };
+
+    const eventId = extractLastDigits(previousUrl);
     const dispatch = useAppDispatch();
     const handleSendInvitations = () => {
         console.log('Отправка приглашений на:', emails);
-        /* dispatch();*/
+        dispatch(sendOnEmails({ event_id: Number(eventId), users_emails: emails }));
     };
 
     return (
@@ -60,6 +70,6 @@ const InviteComponent = () => {
             </button>
         </>
     );
-};
+}
 
 export default InviteComponent;

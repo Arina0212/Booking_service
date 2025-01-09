@@ -14,6 +14,7 @@ import TeamsPage from './pages/TeamsPage';
 import InvitePage from './pages/InvitePage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/ReactToastify.min.css';
+import EditEventPage from './pages/EditEventPage';
 
 function App() {
     const auth = useAppSelector(getAuthorizationStatus);
@@ -24,7 +25,10 @@ function App() {
             <Routes>
                 <Route path={AppRoute.Main} element={<MainPage />} />
                 <Route path={AppRoute.Events}>
-                    <Route path=":id" element={<EventPage />} />
+                    <Route path=":id">
+                        <Route index={true} element={<EventPage />}></Route>
+                        <Route path="edit" element={<EditEventPage />} />
+                    </Route>
                 </Route>
                 <Route path={AppRoute.Login} element={<LoginPage />} />
                 <Route path={AppRoute.SignIn} element={<SignInPage />} />

@@ -11,7 +11,6 @@ import React from 'react';
 export default function InvitePage() {
     const message = useAppSelector(geOutputMessage);
     const location = useLocation();
-    console.log(location); // Посмотрите, что выводится в консоль
     const previousUrl = location.hash;
     const match = previousUrl.match(/(\d+)$/);
 
@@ -46,7 +45,7 @@ export default function InvitePage() {
                     <p className="invite__item-text">
                         Отправьте приглашение на почту участникам - они получат письмо с информацией о мероприятии и ссылкой для подключения
                     </p>
-                    <InviteComponent />
+                    <InviteComponent previousUrl={previousUrl} />
                 </div>
 
                 <div className="invite__item">

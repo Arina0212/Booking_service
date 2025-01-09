@@ -15,6 +15,7 @@ import {
     EventViewData,
     FiltersData,
     InfoForRegister,
+    InviteByEmails,
     OnlineLink,
     OnlineLinkOutput,
     RegisterForEvent,
@@ -386,6 +387,7 @@ export const registerForEvent = createAsyncThunk<
         const { data } = await api.post<RegisterForEventOutput>(`${APIRoute.Regist}${event_id}/`, {
             event_date_time_id,
             custom_fields,
+            expiration_days: null,
         });
 
         toast.success('Успешная запись на мероприятие');
@@ -448,32 +450,29 @@ export const deleteBooking = createAsyncThunk<
 });
 
 //Отправка приглашения на мероприятие на введенные почты
-/*export const sendOnEmails = createAsyncThunk<
-    OnlineLinkOutput,
+export const sendOnEmails = createAsyncThunk<
+    InviteByEmails,
     InviteByEmails,
     {
         dispatch: AppDispatch;
         state: State;
         extra: AxiosInstance;
     }
->('patient/sendOnEmailsData', async ({ online_link, event_id }, { dispatch, extra: api }) => {
+>('patient/sendOnEmailsData', async ({ event_id, users_emails }, { extra: api }) => {
     try {
-        const { data } = await api.post<OnlineLinkOutput>(`${APIRoute.OnlineLink}/${event_id}/`, {
-            online_link,
-        });
-        toast.success('Ссылка на подключение к мероприятию успешно добавлена');
-        dispatch(fetchEventData({ id: event_id }));
+        const { data } = await api.post<InviteByEmails>(`${APIRoute.InviteByEmail}`, { event_id, users_emails });
+        toast.success('Письмо было успешно отправлено');
         return data;
     } catch (error) {
         if (error instanceof AxiosError) {
-            const errorMessage = error.response?.data?.message || 'Произошла ошибка при добавлении ссылки';
+            const errorMessage = error.response?.data?.message || 'Произошла ошибка при отправке письма';
             toast.error(errorMessage);
         } else {
             toast.error('Что-то пошло не так попробуйте позже');
         }
         throw error;
     }
-});*/
+});
 
 //Сохранение ссылки на онлайн мероприятие
 export const postOnlineLink = createAsyncThunk<

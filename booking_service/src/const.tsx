@@ -23,6 +23,7 @@ export enum APIRoute {
     IsMember = 'event/member',
     CancelBooking = 'event/cancel-booking',
     CancelEvent = 'event/cancel',
+    InviteByEmail = 'event/invite/',
 }
 
 export enum AppRoute {
@@ -35,6 +36,7 @@ export enum AppRoute {
     Invite = '/invite',
     ChangePass = 'changePassword',
     Teams = '/teams',
+    Edit = '/edit',
 }
 
 export enum AuthorizationStatus {

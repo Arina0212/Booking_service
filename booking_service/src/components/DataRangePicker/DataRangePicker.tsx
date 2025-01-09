@@ -132,7 +132,6 @@ const Calendar: React.FC<CalendarProps> = ({ onDateClick, closeCalendar }) => {
     };
     const startDate = humanizeDate(currentDate).split('.');
     const startMonth = Number(startDate[1]) - 1;
-    console.log(startMonth);
     return (
         <div className="calendar">
             <div className="header-calendar">

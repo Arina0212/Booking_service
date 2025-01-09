@@ -139,7 +139,7 @@ input[data-autocompleted] {
     left: 1.5789473684vw;
     top: 50%;
     transform: translateY(-50%);
-    width: 75%;
+    width: 85%;
     height: 100%;
     background: none;
     border: none;
@@ -2561,7 +2561,7 @@ input:checked + label img {
         left: 4.6875vw;
         top: 50%;
         transform: translateY(-50%);
-        width: 80%;
+        width: 85%;
         background: none;
         border: none;
         outline: none;

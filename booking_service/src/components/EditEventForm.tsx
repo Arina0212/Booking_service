@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useAutosizeTextArea from '../hooks/useAutoSize';
 import { FORMATS } from '../const';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { postEventDataAction } from '../store/api-actions';
-import { geOutputMessage, getLoadingOutputMessage } from '../store/events-process/selectors';
+import { getLoadingOutputMessage } from '../store/events-process/selectors';
 import Spinner from './Spinner';
+import { EventViewData } from '../types/EventData';
 
 interface Block {
     id: number;
@@ -17,18 +18,31 @@ interface DateTime {
     end: string;
 }
 
-const CreateEventForm: React.FC = () => {
+type EditEventFormProps = {
+    event?: EventViewData;
+    customField?: [
+        {
+            field_id: number;
+            title: string;
+        },
+    ];
+};
+
+function EditEventForm({ event, customField }: EditEventFormProps) {
     const [data, setData] = useState({
-        name: '',
-        description: '',
-        eventLocation: '',
-        city: '',
-        address: '',
-        paymentType: '',
-        payCount: '',
+        name: event?.name || '',
+        description: event?.description || '',
+        eventLocation: event?.city === '' ? 'online' : 'offline',
+        city: event?.city || '',
+        address: event?.address || '',
+        paymentType: event?.visit_cost === 0 ? 'free' : 'pay',
+        payCount: event?.visit_cost || 0,
     });
+
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
     useAutosizeTextArea(textAreaRef.current, data.name);
+
     useAutosizeTextArea(textAreaRef.current, data.description);
 
     const handleChangeName = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -141,14 +155,14 @@ const CreateEventForm: React.FC = () => {
         setIsDropdownOpen((prev) => !prev);
     };
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
+    const [selectedFormat, setSelectedFormat] = useState<string | undefined | null>(event?.format);
 
     const handleSelectFormat = (format: string) => {
         setSelectedFormat(format);
         setIsDropdownOpen(false);
     };
 
-    const [accessLevel, setAccessLevel] = useState('');
+    const [accessLevel, setAccessLevel] = useState(event?.status);
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAccessLevel(event.target.value);
@@ -158,11 +172,17 @@ const CreateEventForm: React.FC = () => {
         setData((prevState) => ({ ...prevState, paymentType: event.target.value }));
     };
     const handlePaymentCountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setData((prevState) => ({ ...prevState, payCount: event.target.value }));
+        setData((prevState) => ({ ...prevState, payCount: Number(event.target.value) }));
     };
 
     const [customFields, setCustomFields] = useState<{ title: string }[]>([]); // Используем массив объектов
-    console.log(customFields);
+    useEffect(() => {
+        const customNew_fields = customField?.map(({ title }) => ({ title }));
+        if (customNew_fields) {
+            setCustomFields(customNew_fields);
+        }
+    }, [customField]);
+
     const handleFieldChange = (index: number, value: string) => {
         const newFields = [...customFields];
         newFields[index] = { title: value }; // Заполняем поле в объекте
@@ -182,8 +202,8 @@ const CreateEventForm: React.FC = () => {
     const [openBlockId, setOpenBlockId] = useState<number>(1);
 
     const dispatch = useAppDispatch();
-    const message = useAppSelector(geOutputMessage);
-    const isLoadongMessage = useAppSelector(getLoadingOutputMessage);
+    //const message = useAppSelector(geOutputMessage);
+    const isLoadingMessage = useAppSelector(getLoadingOutputMessage);
     const handleNextBlock = () => {
         setOpenBlockId((prevId) => prevId + 1);
     };
@@ -734,7 +754,7 @@ const CreateEventForm: React.FC = () => {
         {
             id: 9,
             title: (
-                <div className={`create__item-head ${openBlockId === 8 ? 'create__item-head_active' : ''}`}>
+                <div className={`create__item-head ${openBlockId === 9 ? 'create__item-head_active' : ''}`}>
                     <h1>
                         Дополнительные поля<span></span>
                     </h1>
@@ -768,7 +788,7 @@ const CreateEventForm: React.FC = () => {
                             Добавить дополнительное поле
                         </button>
                         <button type="submit" className="create__item-content-btn btn_black">
-                            {isLoadongMessage ? <Spinner /> : 'Создать мероприятие'}
+                            {isLoadingMessage ? <Spinner /> : 'Сохранить изменения'}
                         </button>
                     </div>
                 </div>
@@ -787,9 +807,9 @@ const CreateEventForm: React.FC = () => {
         const formData = new FormData();
 
         // Добавьте данные из состояния data
-        for (const [key, value] of Object.entries(data)) {
+        /*for (const [key, value] of Object.entries(data)) {
             formData.append(key, value);
-        }
+        }*/
 
         // Добавьте файлы в formData
         if (fileInfo) {
@@ -839,7 +859,7 @@ const CreateEventForm: React.FC = () => {
     return (
         <form className="create" onSubmit={handleSubmit}>
             <div className="create__head">
-                Создание
+                Редактирование
                 <br /> мероприятия
             </div>
             {blocks.map((block) => (
@@ -848,14 +868,8 @@ const CreateEventForm: React.FC = () => {
                     {openBlockId === block.id && block.content}
                 </div>
             ))}
-            {/*<div className=" save ">
-                <p>Проверьте, что все обязательные поля заполнены</p>
-                <button type="submit" className=" save__btn btn_black">
-                    {isLoadongMessage ? <Spinner /> : 'Создать мероприятие'}
-                </button>
-            </div>*/}
         </form>
     );
-};
+}
 
-export default CreateEventForm;
+export default EditEventForm;
