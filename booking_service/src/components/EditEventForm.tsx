@@ -85,9 +85,9 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
     const [fileInfoDesc, setFileInfoDesc] = useState<File | null>(null);
 
     const handleFileDescChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]; // Получаем загруженный файл
+        const file = event.target.files?.[0];
         if (file) {
-            setFileInfoDesc(file); // Сохраняем имя и размер файла
+            setFileInfoDesc(file);
         }
     };
 
@@ -110,8 +110,8 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
     const [participantCounts, setParticipantCounts] = useState<number[]>([]);
 
     const handleAddDateTime = () => {
-        setDateTimes((prev) => [...prev, { start: '', end: '' }]); // Добавляем новый объект с пустыми датами
-        setIsLimitEnabled((prev) => [...prev, false]); // По умолчанию ограничение выключено
+        setDateTimes((prev) => [...prev, { start: '', end: '' }]);
+        setIsLimitEnabled((prev) => [...prev, false]);
     };
 
     const handleRemoveDateTime = (index: number) => {
@@ -144,7 +144,6 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
         });
     };
     const handleInputClick = (index: number) => {
-        // Установка фокуса на input при клике на поле
         const input = document.getElementById(`dateTimeInput${index}`) as HTMLInputElement;
         if (input) {
             input.focus();
@@ -175,7 +174,7 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
         setData((prevState) => ({ ...prevState, payCount: Number(event.target.value) }));
     };
 
-    const [customFields, setCustomFields] = useState<{ title: string }[]>([]); // Используем массив объектов
+    const [customFields, setCustomFields] = useState<{ title: string }[]>([]);
     useEffect(() => {
         const customNew_fields = customField?.map(({ title }) => ({ title }));
         if (customNew_fields) {
@@ -185,29 +184,24 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
 
     const handleFieldChange = (index: number, value: string) => {
         const newFields = [...customFields];
-        newFields[index] = { title: value }; // Заполняем поле в объекте
+        newFields[index] = { title: value };
         setCustomFields(newFields);
     };
 
     const addField = () => {
-        setCustomFields([...customFields, { title: '' }]); // Добавляем новый объект с пустым названием
+        setCustomFields([...customFields, { title: '' }]);
     };
 
     const removeField = (index: number) => {
         const newFields = customFields.filter((_, i) => i !== index);
-        setCustomFields(newFields); // Удаляем поле по индексу
+        setCustomFields(newFields);
     };
-
-    // Состояние для управления открытыми блоками
     const [openBlockId, setOpenBlockId] = useState<number>(1);
-
     const dispatch = useAppDispatch();
-    //const message = useAppSelector(geOutputMessage);
     const isLoadingMessage = useAppSelector(getLoadingOutputMessage);
     const handleNextBlock = () => {
         setOpenBlockId((prevId) => prevId + 1);
     };
-    // Массив блоков с их содержимым
     const blocks: Block[] = [
         {
             id: 1,
@@ -216,9 +210,6 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                     <h1>
                         Название мероприятия<span>*</span>
                     </h1>
-                    {/*<div className="create__item-head-pic">
-                        <img src="/svg/caret.svg" alt="caret" />
-                    </div>*/}
                 </div>
             ),
             content: (
@@ -254,9 +245,6 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
             title: (
                 <div className={`create__item-head ${openBlockId === 2 ? 'create__item-head_active' : ''}`}>
                     <h1>Баннер</h1>
-                    {/*<div className="create__item-head-pic">
-                        <img src="/svg/caret.svg" alt="caret" />
-                    </div>*/}
                 </div>
             ),
             content: (
@@ -312,12 +300,7 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
             id: 3,
             title: (
                 <div className={`create__item-head ${openBlockId === 3 ? 'create__item-head_active' : ''}`}>
-                    <h1>
-                        Описание<span>*</span>
-                    </h1>
-                    {/*<div className="create__item-head-pic">
-                        <img src="/svg/caret.svg" alt="caret" />
-                    </div>*/}
+                    <h1>Описание</h1>
                 </div>
             ),
             content: (
@@ -378,9 +361,6 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                     <h1>
                         Адрес<span>*</span>
                     </h1>
-                    {/*<div className="create__item-head-pic">
-                        <img src="/svg/caret.svg" alt="caret" />
-                    </div>*/}
                 </div>
             ),
             content: (
@@ -467,9 +447,6 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                     <h1>
                         Формат<span>*</span>
                     </h1>
-                    {/*<div className="create__item-head-pic">
-                        <img src="/svg/caret.svg" alt="caret" />
-                    </div>*/}
                 </div>
             ),
             content: (
@@ -519,9 +496,6 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                     <h1>
                         Дата и время<span>*</span>
                     </h1>
-                    {/* <div className="create__item-head-pic">
-                        <img src="/svg/caret.svg" alt="caret" />
-                    </div>*/}
                 </div>
             ),
             content: (
@@ -623,9 +597,6 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                     <h1>
                         Стоимость входа<span>*</span>
                     </h1>
-                    {/*<div className="create__item-head-pic">
-                        <img src="/svg/caret.svg" alt="caret" />
-                    </div>*/}
                 </div>
             ),
             content: (
@@ -697,9 +668,6 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                     <h1>
                         Доступ к мероприятию<span>*</span>
                     </h1>
-                    {/*<div className="create__item-head-pic">
-                        <img src="/svg/caret.svg" alt="caret" />
-                    </div>*/}
                 </div>
             ),
             content: (
@@ -758,9 +726,6 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                     <h1>
                         Дополнительные поля<span></span>
                     </h1>
-                    {/*<div className="create__item-head-pic">
-                        <img src="/svg/caret.svg" alt="caret" />
-                    </div>*/}
                 </div>
             ),
             content: (
@@ -813,11 +778,11 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
 
         // Добавьте файлы в formData
         if (fileInfo) {
-            formData.append('fileInfo', fileInfo); // Добавьте файл, если он существует
+            formData.append('fileInfo', fileInfo);
         }
 
         if (fileInfoDesc) {
-            formData.append('fileInfoDesc', fileInfoDesc); // Добавьте файл описания, если он существует
+            formData.append('fileInfoDesc', fileInfoDesc);
         }
         if (selectedFormat) {
             formData.append('format', selectedFormat);
@@ -858,10 +823,7 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
 
     return (
         <form className="create" onSubmit={handleSubmit}>
-            <div className="create__head">
-                Редактирование
-                <br /> мероприятия
-            </div>
+            <div className="create__head">Редактирование мероприятия</div>
             {blocks.map((block) => (
                 <div className="create__item" key={block.id}>
                     <div onClick={() => toggleBlock(block.id)}>{block.title}</div>

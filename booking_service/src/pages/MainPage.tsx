@@ -202,7 +202,7 @@ export default function MainPage() {
                                             {otherEvents && otherEvents.length > 0 && (
                                                 <EventsBlock
                                                     isLoading={isOtherLoading}
-                                                    title={'Другие открытые мероприятия'}
+                                                    title={'Открытые мероприятия на площадке'}
                                                     events={otherEvents}
                                                 />
                                             )}

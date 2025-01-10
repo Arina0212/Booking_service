@@ -48,7 +48,7 @@ export default function InvitePage() {
                     <InviteComponent previousUrl={previousUrl} />
                 </div>
 
-                <div className="invite__item">
+                {/*<div className="invite__item">
                     <h2 className="invite__item-head">Пригласить людей из команд</h2>
                     <p className="invite__item-text">Выберите участников из ваших команд, кому отправить приглашение на мероприятие</p>
 
@@ -152,7 +152,7 @@ export default function InvitePage() {
                             Отправить приглашение
                         </button>
                     </form>
-                </div>
+                </div>*/}
 
                 <div className="save save_hide">
                     <p>Если не хотите приглашать людей, просто нажмите "К мероприятию"</p>

@@ -8,6 +8,7 @@ import {
     fetchCitiesData,
     fetchEventData,
     fetchIsMember,
+    fetchListMembers,
     fetchMyEventsData,
     fetchOtherEventsData,
     fetchParticipateEventsData,
@@ -40,6 +41,8 @@ const initialState: EventProcess = {
     isMember: '',
     isCancelBookingLoading: false,
     isCancelEventLoading: false,
+    listOfMembers: undefined,
+    isListOfMembersLoading: false,
 };
 
 export const eventProcess = createSlice({
@@ -137,6 +140,16 @@ export const eventProcess = createSlice({
             })
             .addCase(cancelEvent.fulfilled, (state) => {
                 state.isCancelEventLoading = false;
+            })
+            .addCase(fetchListMembers.pending, (state) => {
+                state.isListOfMembersLoading = true;
+            })
+            .addCase(fetchListMembers.rejected, (state) => {
+                state.isListOfMembersLoading = false;
+            })
+            .addCase(fetchListMembers.fulfilled, (state, action) => {
+                state.listOfMembers = action.payload;
+                state.isListOfMembersLoading = false;
             });
     },
 });

@@ -158,6 +158,36 @@ export type InfoForRegister = {
     ];
 };
 
+export type Member = {
+    id: number;
+    first_name: string;
+    last_name: string;
+    patronymic: string;
+    email: string;
+    phone_number: string;
+    vk: string;
+    telegram: string;
+    whatsapp: string;
+    photo: string;
+    custom_fields: [
+        {
+            field_title: string;
+            field_value: string;
+        },
+    ];
+};
+export type MemberInfo = {
+    id: number;
+    start_date: string;
+    end_date: string;
+    start_time: string;
+    end_time: string;
+    seats_number: number;
+    bookings_count: number;
+    members: Member[];
+};
+
+export type MembersInfo = [MemberInfo];
 export type Cities = { cities: [string] };
 export type TransformedCities = { cities: { labelValue: string }[] };
 

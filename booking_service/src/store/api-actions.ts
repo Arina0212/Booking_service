@@ -16,6 +16,7 @@ import {
     FiltersData,
     InfoForRegister,
     InviteByEmails,
+    MembersInfo,
     OnlineLink,
     OnlineLinkOutput,
     RegisterForEvent,
@@ -500,4 +501,18 @@ export const postOnlineLink = createAsyncThunk<
         }
         throw error;
     }
+});
+
+//Вывод списка участников мероприятия
+export const fetchListMembers = createAsyncThunk<
+    MembersInfo,
+    { id: number },
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('patient/fetchListMembers', async ({ id }, { extra: api }) => {
+    const { data } = await api.get<MembersInfo>(`${APIRoute.ListMembers}/${id}/`);
+    return data;
 });

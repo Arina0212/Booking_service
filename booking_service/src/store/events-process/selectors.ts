@@ -6,6 +6,7 @@ import {
     EventsShortData,
     EventViewData,
     InfoForRegister,
+    MembersInfo,
     RegisterForEventOutput,
 } from '../../types/EventData';
 
@@ -51,3 +52,7 @@ export const getIsCancelBookingLoading = (state: Pick<State, NameSpace.Event>): 
     state[NameSpace.Event].isCancelBookingLoading;
 export const getIsCancelEventLoading = (state: Pick<State, NameSpace.Event>): boolean | undefined =>
     state[NameSpace.Event].isCancelEventLoading;
+
+export const getListOfMembers = (state: Pick<State, NameSpace.Event>): MembersInfo | undefined => state[NameSpace.Event].listOfMembers;
+export const getIsListOfMembersLoading = (state: Pick<State, NameSpace.Event>): boolean | undefined =>
+    state[NameSpace.Event].isListOfMembersLoading;

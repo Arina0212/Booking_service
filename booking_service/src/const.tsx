@@ -21,6 +21,7 @@ export enum APIRoute {
     Regist = 'event/register/',
     OnlineLink = 'event/change-online-link',
     IsMember = 'event/member',
+    ListMembers = 'event/members',
     CancelBooking = 'event/cancel-booking',
     CancelEvent = 'event/cancel',
     InviteByEmail = 'event/invite/',

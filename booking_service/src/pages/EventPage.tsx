@@ -3,13 +3,15 @@ import { AppRoute, AuthorizationStatus } from '../const';
 import Header from '../components/Header';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import React, { useEffect, useState } from 'react';
-import { deleteBooking, fetchEventData, fetchIsMember, getInfoRegisterForEvent } from '../store/api-actions';
+import { deleteBooking, fetchEventData, fetchIsMember, fetchListMembers, getInfoRegisterForEvent } from '../store/api-actions';
 import {
     getEvent,
     getInfoForRegister,
     getIsCancelBookingLoading,
     getIsCancelEventLoading,
+    getIsListOfMembersLoading,
     getIsMember,
+    getListOfMembers,
     getLoadingEvent,
     getLoadingInfoForRegister,
     getLoadingRegisterForEvent,
@@ -25,6 +27,7 @@ import FileInfo from '../components/FileInfo';
 import EventOnlineInvite from '../components/OnlineLinkPostForm';
 import Spinner from '../components/Spinner';
 import CancelEvent from '../components/dialogs/CancelEvent';
+import ListOfParticipants from '../components/dialogs/ListOfParticipants';
 
 export default function EventPage() {
     const dispatch = useAppDispatch();
@@ -32,34 +35,51 @@ export default function EventPage() {
     const auth = useAppSelector(getAuthorizationStatus);
     useEffect(() => {
         dispatch(fetchEventData({ id: Number(urlParams.id) }));
-        dispatch(getInfoRegisterForEvent({ id: Number(urlParams.id) }));
 
         if (auth === AuthorizationStatus.Auth) {
-            const data = dispatch(fetchIsMember({ id: Number(urlParams.id) }));
-            console.log(data);
+            dispatch(fetchIsMember({ id: Number(urlParams.id) }));
+            dispatch(getInfoRegisterForEvent({ id: Number(urlParams.id) }));
         }
     }, [auth, dispatch, urlParams.id]);
     const isMember = useAppSelector(getIsMember);
     const event = useAppSelector(getEvent);
     const isLoading = useAppSelector(getLoadingEvent);
     const me = useAppSelector(getProfile);
+    useEffect(() => {
+        if (auth === AuthorizationStatus.Auth && me?.email === event?.creator.contacts.email) {
+            dispatch(fetchListMembers({ id: Number(urlParams.id) }));
+        }
+    }, [auth, dispatch, event?.creator.contacts.email, me?.email, urlParams.id]);
     const isLoadingInfoForRegister = useAppSelector(getLoadingInfoForRegister);
     const infoForRegister = useAppSelector(getInfoForRegister);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isDialogCancelOpen, setIsDialogCancelOpen] = useState(false);
+    const [isDialogListOpen, setIsDialogListOpen] = useState(false);
     const isLoadingRegister = useAppSelector(getLoadingRegisterForEvent);
     const getMessage = useAppSelector(getRegisterForEventMessedge);
     const openDialog = () => setIsDialogOpen(true);
     const closeDialog = () => setIsDialogOpen(false);
     const openCancelDialog = () => setIsDialogCancelOpen(true);
     const closeCancelDialog = () => setIsDialogCancelOpen(false);
+    const [selectSlot, setSelectedSlot] = useState<number | null>(null);
+    const closeListDialog = () => {
+        setIsDialogListOpen(false);
+        setSelectedSlot(null);
+    };
     const isCancelBookingLoaging = useAppSelector(getIsCancelBookingLoading);
     const isCancelEventLoading = useAppSelector(getIsCancelEventLoading);
+
     const handleCancelBooking = (event: React.FormEvent) => {
         event.preventDefault();
         dispatch(deleteBooking({ id: Number(urlParams.id) }));
     };
-
+    const handleListOfMembers = () => {
+        if (auth === AuthorizationStatus.Auth && me?.email === event?.creator.contacts.email) {
+            setIsDialogListOpen(true);
+        }
+    };
+    const listOfMembers = useAppSelector(getListOfMembers);
+    const isListOfMembersLoading = useAppSelector(getIsListOfMembersLoading);
     return (
         <>
             <RegistrationForEvent
@@ -71,10 +91,13 @@ export default function EventPage() {
                 timeSlotsDescriptions={event?.time_slots_descriptions}
             />
             <CancelEvent isOpen={isDialogCancelOpen} onClose={closeCancelDialog} isLoading={isCancelEventLoading} />
+            <ListOfParticipants isOpen={isDialogListOpen} onClose={closeListDialog} listOfMembers={listOfMembers} selectSlot={selectSlot} />
+
             {!isLoading || (auth === AuthorizationStatus.Auth && !isLoadingInfoForRegister) ? (
                 <>
                     <Header />
-                    <main className="event">
+
+                    <main className="event display_none_print">
                         <section className="event__card">
                             <div className="event__card-pic">
                                 <img src={`${event?.photo_url ? event?.photo_url : '/svg/event/defaultBanner.svg'}`} alt="event" />
@@ -121,12 +144,12 @@ export default function EventPage() {
                                             <img src="/svg/event/pplIcon.svg" alt="ppl" />
                                         </div>
 
-                                        <Link to={''} className="event__card-info-item-amount">
+                                        <button type="button" onClick={handleListOfMembers} className="event__card-info-item-amount">
                                             {timeSlot.bookings_count}
                                             {timeSlot.seats_number !== null && timeSlot.seats_number !== 0
                                                 ? ` / ${timeSlot.seats_number}`
                                                 : ''}
-                                        </Link>
+                                        </button>
                                     </div>
                                 ))}
 
@@ -207,7 +230,7 @@ export default function EventPage() {
                                                     <h2 className="event__desc-head">Ссылка на подключение</h2>
 
                                                     <p className="event__desc-text">
-                                                        Добавьте ссылку на подключение к вашему онлайн мероприятию
+                                                        Перейдите по ссылке для подключения к онлайн мероприятию
                                                     </p>
                                                     <div className="event__desc-invite">
                                                         <div className="event__desc-invite-input input_white">
@@ -229,10 +252,14 @@ export default function EventPage() {
                                     )}
                                 </>
                             )}
-                            <h2 className="event__desc-head">Описание</h2>
+                            {event?.description !== '' && (
+                                <>
+                                    <h2 className="event__desc-head">Описание</h2>
 
-                            <p className="event__desc-text">{event?.description}</p>
-                            {event?.schedule_url && <FileInfo fileUrl={event.schedule_url} />}
+                                    <p className="event__desc-text">{event?.description}</p>
+                                    {event?.schedule_url && <FileInfo fileUrl={event.schedule_url} />}
+                                </>
+                            )}
                         </section>
 
                         <section className="event__host">

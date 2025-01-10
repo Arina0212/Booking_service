@@ -1,7 +1,15 @@
 import { AuthorizationStatus } from '../const';
 import { store } from '../store';
 import { ProfileData } from './ProfileData';
-import { Cities, EventPostOutputData, EventsShortData, EventViewData, InfoForRegister, RegisterForEventOutput } from './EventData';
+import {
+    Cities,
+    EventPostOutputData,
+    EventsShortData,
+    EventViewData,
+    InfoForRegister,
+    MembersInfo,
+    RegisterForEventOutput,
+} from './EventData';
 
 export type UserProcess = {
     authorizationStatus: AuthorizationStatus;
@@ -37,6 +45,8 @@ export type EventProcess = {
     isMember: string;
     isCancelBookingLoading: boolean;
     isCancelEventLoading: boolean;
+    listOfMembers?: MembersInfo;
+    isListOfMembersLoading: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;

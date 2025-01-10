@@ -7,17 +7,17 @@ export default function Header() {
     const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
     return (
-        <header className="header">
+        <header className="header display_none_print">
             <Link to={AppRoute.Main} className="header__logo">
                 <img src="/svg/header/logo.svg" alt="наместе" />
             </Link>
 
-            <Link to={AppRoute.Main} className="header__link header__link_active hide-on-mob">
+            {/*<Link to={AppRoute.Main} className="header__link header__link_active hide-on-mob">
                 мероприятия
-            </Link>
-            <Link to={AppRoute.Teams} className="header__link header__link_mid hide-on-mob">
+            </Link>*/}
+            {/*<Link to={AppRoute.Teams} className="header__link header__link_mid hide-on-mob">
                 команды
-            </Link>
+            </Link>*/}
             {/* <Link to="" className="header__link hide-on-mob">
                 о нас
             </Link>*/}
@@ -45,13 +45,13 @@ export default function Header() {
                 </Link>
             )}
 
-            <div className="header__mob hide-on-desktop">
-                <Link to={AppRoute.Main} className="header__link header__link_active">
+            <div className="header__mob display_none_print hide-on-desktop">
+                {/*<Link to={AppRoute.Main} className="header__link header__link_active">
                     мероприятия
-                </Link>
-                <Link to={AppRoute.Teams} className="header__link header__link_mid">
+                </Link>*/}
+                {/*<Link to={AppRoute.Teams} className="header__link header__link_mid">
                     команды
-                </Link>
+                </Link>*/}
                 {/* <Link to="" className="header__link">
                     о нас
                 </Link>*/}

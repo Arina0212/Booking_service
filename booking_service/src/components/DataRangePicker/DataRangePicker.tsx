@@ -44,11 +44,9 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onDateChange, initial
         <div className="date-range-picker">
             <input
                 type="text"
-                className="input_white"
+                className="input_white dropdown-selected_dates"
                 value={
-                    selectedRange.start === null
-                        ? 'Выберите диапазон дат-'
-                        : `${formatDate(selectedRange.start)} - ${formatDate(selectedRange.end)}`
+                    selectedRange.start === null ? 'Дата: от - до' : `${formatDate(selectedRange.start)} - ${formatDate(selectedRange.end)}`
                 }
                 readOnly
                 onClick={toggleCalendar}

@@ -292,9 +292,7 @@ const CreateEventForm: React.FC = () => {
             id: 3,
             title: (
                 <div className={`create__item-head ${openBlockId === 3 ? 'create__item-head_active' : ''}`}>
-                    <h1>
-                        Описание<span>*</span>
-                    </h1>
+                    <h1>Описание</h1>
                     {/*<div className="create__item-head-pic">
                         <img src="/svg/caret.svg" alt="caret" />
                     </div>*/}
@@ -838,10 +836,7 @@ const CreateEventForm: React.FC = () => {
 
     return (
         <form className="create" onSubmit={handleSubmit}>
-            <div className="create__head">
-                Создание
-                <br /> мероприятия
-            </div>
+            <div className="create__head">Создание мероприятия</div>
             {blocks.map((block) => (
                 <div className="create__item" key={block.id}>
                     <div onClick={() => toggleBlock(block.id)}>{block.title}</div>

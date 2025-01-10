@@ -23,7 +23,8 @@ export default function LoginPage() {
 
     const dispatch = useAppDispatch();
 
-    const containsAnyLetters = (password: string) => /[a-z]+/i.test(password);
+    const containsAnyLetters = (password: string) => /[a-zа-яё]+/i.test(password);
+
     const containsAnyNumbers = (password: string) => /[0-9]+/i.test(password);
     const isValidEmail = (email: string) => /^[\w-\\.]+@+[\w-]+\.[a-z]{2,4}$/i.test(email);
 
