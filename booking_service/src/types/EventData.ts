@@ -13,11 +13,12 @@ export type EventShortData = {
 };
 
 export type EventDate = {
+    id?: number;
     start_date: string;
     end_date: string;
     start_time: string;
     end_time: string;
-    seats_number: number;
+    seats_number?: number;
 };
 
 export type EventTimeSlots = {
@@ -50,6 +51,12 @@ export type EventPostOutputData = {
     registration_link: string;
 };
 
+export type EventPutEditInputData = {
+    updated_event: EventFullData;
+    photo: File | null;
+    schedule: File | null;
+    id: number;
+};
 export type EventFullData = {
     event_dates_times: EventDate[];
     name?: string;

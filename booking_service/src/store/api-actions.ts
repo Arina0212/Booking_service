@@ -11,6 +11,7 @@ import {
     Cities,
     EventPostInputData,
     EventPostOutputData,
+    EventPutEditInputData,
     EventsShortData,
     EventViewData,
     FiltersData,
@@ -299,6 +300,39 @@ export const postEventDataAction = createAsyncThunk<
     });
     dispatch(redirectToRoute(AppRoute.Invite));
     toast.success('Мероприятие было успешно создано');
+    return data;
+});
+
+//Редактирование мероприятия
+export const editEventDataAction = createAsyncThunk<
+    EventPostOutputData,
+    EventPutEditInputData,
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('patient/editEventData', async ({ updated_event, photo, schedule, id }, { dispatch, extra: api }) => {
+    const formData = new FormData();
+    formData.append('updated_event', JSON.stringify(updated_event));
+    if (photo) {
+        formData.append('photo', photo);
+    } else {
+        console.warn('Photo is null, not appending it to FormData');
+    }
+    if (schedule) {
+        formData.append('schedule', schedule);
+    } else {
+        console.warn('Photo is null, not appending it to FormData');
+    }
+
+    const { data } = await api.put<EventPostOutputData>(`${APIRoute.EventUpdate}/${id}/`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    dispatch(redirectToRoute(AppRoute.Invite));
+    toast.success('Мероприятие было успешно отредактировано');
     return data;
 });
 

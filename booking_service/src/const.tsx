@@ -17,6 +17,7 @@ export enum APIRoute {
     Event = 'event/',
     Cities = 'event/cities/',
     EventCreate = 'event/create/',
+    EventUpdate = 'event/update',
     Filters = 'event/filter',
     Regist = 'event/register/',
     OnlineLink = 'event/change-online-link',

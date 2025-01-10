@@ -4,6 +4,7 @@ import { EventProcess } from '../../types/state';
 import {
     cancelEvent,
     deleteBooking,
+    editEventDataAction,
     fetchAllEventsData,
     fetchCitiesData,
     fetchEventData,
@@ -96,6 +97,16 @@ export const eventProcess = createSlice({
                 state.isCreateOutputLoading = false;
             })
             .addCase(postEventDataAction.fulfilled, (state, action) => {
+                state.createOutput = action.payload;
+                state.isCreateOutputLoading = false;
+            })
+            .addCase(editEventDataAction.pending, (state) => {
+                state.isCreateOutputLoading = true;
+            })
+            .addCase(editEventDataAction.rejected, (state) => {
+                state.isCreateOutputLoading = false;
+            })
+            .addCase(editEventDataAction.fulfilled, (state, action) => {
                 state.createOutput = action.payload;
                 state.isCreateOutputLoading = false;
             })

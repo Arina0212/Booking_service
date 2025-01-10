@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import useAutosizeTextArea from '../hooks/useAutoSize';
 import { FORMATS } from '../const';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { postEventDataAction } from '../store/api-actions';
 import { getLoadingOutputMessage } from '../store/events-process/selectors';
 import Spinner from './Spinner';
 import { EventViewData } from '../types/EventData';
+import { editEventDataAction } from '../store/api-actions';
+import { useParams } from 'react-router-dom';
 
 interface Block {
     id: number;
@@ -14,8 +15,10 @@ interface Block {
 }
 
 interface DateTime {
+    id?: number;
     start: string;
     end: string;
+    bookings_count?: number;
 }
 
 type EditEventFormProps = {
@@ -38,7 +41,7 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
         paymentType: event?.visit_cost === 0 ? 'free' : 'pay',
         payCount: event?.visit_cost || 0,
     });
-
+    const urlParams = useParams();
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     useAutosizeTextArea(textAreaRef.current, data.name);
@@ -58,7 +61,6 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
 
     const [fileInfo, setFileInfo] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
-
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -109,6 +111,23 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
     const [isLimitEnabled, setIsLimitEnabled] = useState<boolean[]>([]);
     const [participantCounts, setParticipantCounts] = useState<number[]>([]);
 
+    useEffect(() => {
+        if (event && event.time_slots_descriptions) {
+            const initialDateTimes = event.time_slots_descriptions.map((slot) => ({
+                id: slot.id,
+                start: `${slot.start_date}T${slot.start_time}`,
+                end: `${slot.end_date}T${slot.end_time}`,
+                bookings_count: slot.bookings_count,
+            }));
+            setDateTimes(initialDateTimes);
+
+            const initialParticipantCounts = event.time_slots_descriptions.map((slot) => slot.seats_number || 0);
+            setParticipantCounts(initialParticipantCounts);
+
+            const initialIsLimitEnabled = event.time_slots_descriptions.map((slot) => slot.seats_number !== null);
+            setIsLimitEnabled(initialIsLimitEnabled);
+        }
+    }, [event]);
     const handleAddDateTime = () => {
         setDateTimes((prev) => [...prev, { start: '', end: '' }]);
         setIsLimitEnabled((prev) => [...prev, false]);
@@ -174,9 +193,9 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
         setData((prevState) => ({ ...prevState, payCount: Number(event.target.value) }));
     };
 
-    const [customFields, setCustomFields] = useState<{ title: string }[]>([]);
+    const [customFields, setCustomFields] = useState<{ id?: number; title: string }[]>([]);
     useEffect(() => {
-        const customNew_fields = customField?.map(({ title }) => ({ title }));
+        const customNew_fields = customField?.map((title) => ({ id: title.field_id, title: title.title }));
         if (customNew_fields) {
             setCustomFields(customNew_fields);
         }
@@ -256,6 +275,9 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                             <br />
                             Формат: .jpg, .png и .bmp, размер от 400 пикселей в ширину и высоту, вес до 2 MB
                         </p>
+                        <p className="create__item-content-text" style={{ color: 'red' }}>
+                            Если вы загружали файл ранее, необходимо загрузить его повторно
+                        </p>
                         <div className="create__item-content-file">
                             <input
                                 type="file"
@@ -288,6 +310,20 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                                     </button>
                                 </>
                             )}
+                            {/*{oldBanner && (
+                                <div className="mini-preview">
+                                    <img src={oldBanner} alt="Мини превью" style={{ width: '100px', height: 'auto' }} />
+                                    <button
+                                        type="button"
+                                        className="create__item-content-file-delete"
+                                        onClick={() => {
+                                            setOldBanner(null);
+                                        }}
+                                    >
+                                        Удалить загруженное фото
+                                    </button>
+                                </div>
+                            )}*/}
                         </div>
                         <button className="create__item-content-btn btn_black" onClick={handleNextBlock}>
                             Далее
@@ -320,6 +356,9 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                             placeholder="Введите описание"
                         ></textarea>
                         <p className="create__item-content-text">Загрузите программу мероприятия</p>
+                        <p className="create__item-content-text" style={{ color: 'red' }}>
+                            Если вы загружали файл ранее, необходимо загрузить его повторно
+                        </p>
                         <div className="create__item-content-file">
                             <input
                                 type="file"
@@ -329,7 +368,7 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                                 onChange={handleFileDescChange}
                             />
                             <label htmlFor="input__file-upload" className="create__item-content-file-upload">
-                                Выберать файл
+                                Выбрать файл
                             </label>
                             {fileInfoDesc && (
                                 <>
@@ -514,13 +553,15 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                             <div key={index} id="createDates" className="create__item-content-dates">
                                 <div className="create__item-content-dates_title">
                                     <p>{index + 1} часть мероприятия</p>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleRemoveDateTime(index)}
-                                        className={`create__item-content-dates-remove ${index === 0 ? 'visually-hidden' : ''}`}
-                                    >
-                                        Удалить
-                                    </button>
+                                    {!dateTime.bookings_count && (
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveDateTime(index)}
+                                            className={`create__item-content-dates-remove`}
+                                        >
+                                            Удалить
+                                        </button>
+                                    )}
                                 </div>
                                 <p className="create__item-content-dates_text">Начало:</p>
                                 <div
@@ -548,7 +589,6 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                                         onChange={(e) => handleChangeDateTime(index, 'end', e.target.value)}
                                     />
                                 </div>
-
                                 <div className="create__item-content-restriction">
                                     <label className="create__item-content-restriction_check">
                                         <input
@@ -583,6 +623,7 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                         <button type="button" onClick={handleAddDateTime} className="create__item-content-add">
                             Добавить дату и время
                         </button>
+
                         <button className="create__item-content-btn btn_black" onClick={handleNextBlock}>
                             Далее
                         </button>
@@ -744,6 +785,7 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                                         onChange={(e) => handleFieldChange(index, e.target.value)}
                                     />
                                 </div>
+
                                 <button type="button" className="create__item-content-dates-remove" onClick={() => removeField(index)}>
                                     Удалить
                                 </button>
@@ -767,14 +809,9 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
     };
 
     const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault(); // Предотвращаем стандартное поведение формы
+        event.preventDefault();
 
         const formData = new FormData();
-
-        // Добавьте данные из состояния data
-        /*for (const [key, value] of Object.entries(data)) {
-            formData.append(key, value);
-        }*/
 
         // Добавьте файлы в formData
         if (fileInfo) {
@@ -787,6 +824,7 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
         if (selectedFormat) {
             formData.append('format', selectedFormat);
         }
+
         const event_dates_times = dateTimes.map((dateTime, index) => {
             const startDate = new Date(dateTime.start);
             const endDate = new Date(dateTime.end);
@@ -799,11 +837,12 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
             const end_time = endDate.toTimeString().split(' ')[0].slice(0, 5);
 
             return {
+                id: dateTime.id,
                 start_date: start_date,
                 end_date: end_date,
                 start_time: start_time,
                 end_time: end_time,
-                seats_number: participantCounts[index],
+                seats_number: participantCounts[index] === 0 ? undefined : participantCounts[index],
             };
         });
 
@@ -818,12 +857,26 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
             format: selectedFormat ? selectedFormat : '',
             description: data.description,
         };
-        dispatch(postEventDataAction({ event: eventFullData, photo: fileInfo, schedule: fileInfoDesc }));
+
+        dispatch(
+            editEventDataAction({
+                updated_event: eventFullData,
+                photo: fileInfo,
+                schedule: fileInfoDesc,
+                id: Number(urlParams.id),
+            }),
+        );
     };
 
     return (
         <form className="create" onSubmit={handleSubmit}>
-            <div className="create__head">Редактирование мероприятия</div>
+            <div className="create__head">
+                Редактирование мероприятия{' '}
+                <p className="create__item-content-text" style={{ color: 'red' }}>
+                    Если вы загружали баннер и программу мероприятия ранее, необходимо загрузить их повторно
+                </p>
+            </div>
+
             {blocks.map((block) => (
                 <div className="create__item" key={block.id}>
                     <div onClick={() => toggleBlock(block.id)}>{block.title}</div>

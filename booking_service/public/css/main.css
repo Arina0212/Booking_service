@@ -1264,8 +1264,11 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .create__head {
+    display: flex;
     font-weight: 700;
     font-size: 1.6842105263vw;
+    justify-content: space-between;
+    align-items: baseline;
 }
 
 .create__item-head {
