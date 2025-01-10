@@ -5,6 +5,7 @@ import {
     EventPostOutputData,
     EventsShortData,
     EventViewData,
+    FilledCustom,
     InfoForRegister,
     MembersInfo,
     RegisterForEventOutput,
@@ -56,3 +57,4 @@ export const getIsCancelEventLoading = (state: Pick<State, NameSpace.Event>): bo
 export const getListOfMembers = (state: Pick<State, NameSpace.Event>): MembersInfo | undefined => state[NameSpace.Event].listOfMembers;
 export const getIsListOfMembersLoading = (state: Pick<State, NameSpace.Event>): boolean | undefined =>
     state[NameSpace.Event].isListOfMembersLoading;
+export const getFilledCustom = (state: Pick<State, NameSpace.Event>): FilledCustom | undefined => state[NameSpace.Event].filledCustom;

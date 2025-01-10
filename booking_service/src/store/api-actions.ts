@@ -14,6 +14,7 @@ import {
     EventPutEditInputData,
     EventsShortData,
     EventViewData,
+    FilledCustom,
     FiltersData,
     InfoForRegister,
     InviteByEmails,
@@ -300,6 +301,21 @@ export const postEventDataAction = createAsyncThunk<
     });
     dispatch(redirectToRoute(AppRoute.Invite));
     toast.success('Мероприятие было успешно создано');
+    return data;
+});
+
+//Получение кастомных полей с записями
+export const fetchFilledCustomData = createAsyncThunk<
+    FilledCustom,
+    { id: number },
+    {
+        dispatch: AppDispatch;
+        state: State;
+        extra: AxiosInstance;
+    }
+>('data/fetchFilledCustomData', async ({ id }, { extra: api }) => {
+    const { data } = await api.get<FilledCustom>(`${APIRoute.FilteredCustom}/${id}/`);
+    console.log(data, 'Получение кастомных полей с записями');
     return data;
 });
 

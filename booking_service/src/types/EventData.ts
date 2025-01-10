@@ -194,6 +194,10 @@ export type MemberInfo = {
     members: Member[];
 };
 
+export type FilledCustom = {
+    filled_custom_fields: number[];
+};
+
 export type MembersInfo = [MemberInfo];
 export type Cities = { cities: [string] };
 export type TransformedCities = { cities: { labelValue: string }[] };

@@ -4,7 +4,7 @@ import { FORMATS } from '../const';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { getLoadingOutputMessage } from '../store/events-process/selectors';
 import Spinner from './Spinner';
-import { EventViewData } from '../types/EventData';
+import { EventViewData, FilledCustom } from '../types/EventData';
 import { editEventDataAction } from '../store/api-actions';
 import { useParams } from 'react-router-dom';
 
@@ -29,9 +29,10 @@ type EditEventFormProps = {
             title: string;
         },
     ];
+    filledCustom?: FilledCustom;
 };
 
-function EditEventForm({ event, customField }: EditEventFormProps) {
+function EditEventForm({ event, customField, filledCustom }: EditEventFormProps) {
     const [data, setData] = useState({
         name: event?.name || '',
         description: event?.description || '',
@@ -786,9 +787,16 @@ function EditEventForm({ event, customField }: EditEventFormProps) {
                                     />
                                 </div>
 
-                                <button type="button" className="create__item-content-dates-remove" onClick={() => removeField(index)}>
-                                    Удалить
-                                </button>
+                                {field.id && !filledCustom?.filled_custom_fields.includes(field.id) && (
+                                    <button type="button" className="create__item-content-dates-remove" onClick={() => removeField(index)}>
+                                        Удалить
+                                    </button>
+                                )}
+                                {!field.id && (
+                                    <button type="button" className="create__item-content-dates-remove" onClick={() => removeField(index)}>
+                                        Удалить
+                                    </button>
+                                )}
                             </div>
                         ))}
                         <button type="button" className="create__item-content-add" onClick={addField}>

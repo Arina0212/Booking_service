@@ -19,6 +19,7 @@ export enum APIRoute {
     EventCreate = 'event/create/',
     EventUpdate = 'event/update',
     Filters = 'event/filter',
+    FilteredCustom = 'event/get-filled-custom-fields',
     Regist = 'event/register/',
     OnlineLink = 'event/change-online-link',
     IsMember = 'event/member',

@@ -6,6 +6,7 @@ import {
     EventPostOutputData,
     EventsShortData,
     EventViewData,
+    FilledCustom,
     InfoForRegister,
     MembersInfo,
     RegisterForEventOutput,
@@ -47,6 +48,7 @@ export type EventProcess = {
     isCancelEventLoading: boolean;
     listOfMembers?: MembersInfo;
     isListOfMembersLoading: boolean;
+    filledCustom?: FilledCustom;
 };
 
 export type State = ReturnType<typeof store.getState>;

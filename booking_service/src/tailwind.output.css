@@ -553,6 +553,10 @@ video {
   display: block;
 }
 
+.table {
+  display: table;
+}
+
 .hidden {
   display: none;
 }
