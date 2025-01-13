@@ -15,10 +15,9 @@ export type InviteByEmails = {
 function InviteComponent({ previousUrl }: InviteByEmails) {
     const [emails, setEmails] = useState<Email[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
-
+    const isValidEmail = (email: string) => /^[\w-\\.]+@+[\w-]+\.[a-z]{2,4}$/i.test(email);
     const handleAddEmail = () => {
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (inputValue && emailPattern.test(inputValue)) {
+        if (inputValue && isValidEmail(inputValue)) {
             setEmails([...emails, { email: inputValue }]);
             setInputValue('');
         } else {
