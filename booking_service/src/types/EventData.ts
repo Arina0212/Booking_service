@@ -46,7 +46,7 @@ export type EventPostInputData = {
 };
 export type EventPostOutputData = {
     msg: string;
-    event_id: number;
+    event_id: number | string;
     event_link: string;
     registration_link: string;
 };
@@ -55,7 +55,7 @@ export type EventPutEditInputData = {
     updated_event: EventFullData;
     photo: File | null;
     schedule: File | null;
-    id: number;
+    id: number | string;
 };
 export type EventFullData = {
     event_dates_times: EventDate[];
@@ -122,7 +122,7 @@ export type FiltersData = {
 };
 
 export type RegisterForEvent = {
-    event_id: number;
+    event_id: number | string;
     custom_fields: EventCustomDateRegiser[] | null;
     event_date_time_id: number;
     expiration_days: number | null;
@@ -134,12 +134,12 @@ export type RegisterForEventOutput = {
 type Email = { email: string };
 
 export type InviteByEmails = {
-    event_id: number;
+    event_id: number | string;
     users_emails: Email[];
 };
 
 export type OnlineLink = {
-    event_id: number;
+    event_id: number | string;
     online_link: string;
 };
 export type OnlineLinkOutput = {

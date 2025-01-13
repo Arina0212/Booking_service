@@ -78,3 +78,4 @@ export const FORMATS = [
     { labelValue: 'Форум' },
     { labelValue: 'Хакатон' },
 ];
+export const autoDelete = [{ labelValue: '15 дней' }, { labelValue: '30 дней' }, { labelValue: '60 дней' }, { labelValue: '90 дней' }];

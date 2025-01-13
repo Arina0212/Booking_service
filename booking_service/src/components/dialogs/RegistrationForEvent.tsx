@@ -7,6 +7,8 @@ import { useAppDispatch } from '../../hooks';
 import { registerForEvent } from '../../store/api-actions';
 import { useParams } from 'react-router-dom';
 import Spinner from '../Spinner';
+import { autoDelete } from '../../const';
+import Dropdown from '../DropDown';
 
 interface RegistrationForEventProps {
     isOpen: boolean;
@@ -53,7 +55,13 @@ export default function RegistrationForEvent({
     const urlParams = useParams();
     const [selectedSlot, setSelectedSlot] = useState<number>();
     const [customFieldValues, setCustomFieldValues] = useState<CustomFieldValue[]>([]);
-
+    const [isAutoDelete, setIsAutoDelete] = useState<boolean>(false);
+    const [selectedAutoDelete, setSelectedAutoDelete] = useState<number | null>(null);
+    console.log(selectedAutoDelete);
+    const handleLimitChange = (value: boolean) => {
+        console.log(value);
+        setIsAutoDelete(value);
+    };
     useEffect(() => {
         if (customFields) {
             const initialValues = customFields.map((field) => ({
@@ -95,7 +103,7 @@ export default function RegistrationForEvent({
                     event_id: Number(urlParams.id),
                     custom_fields: customFieldValues,
                     event_date_time_id: selectedSlot,
-                    expiration_days: null,
+                    expiration_days: isAutoDelete ? selectedAutoDelete : null,
                 }),
             );
             onClose();
@@ -126,17 +134,48 @@ export default function RegistrationForEvent({
                     </div>
 
                     {customFieldValues.map((field) => (
-                        <div className="dialog__content-input input_white" key={field.title}>
+                        <>
+                            <p className="dialog__content-sub_title">{field.title}</p>
+                            <div className="dialog__content-input input_white" key={field.title}>
+                                <input
+                                    className="input_white-field input_white-field_pass"
+                                    type="text"
+                                    placeholder={`Введите ${field.title.toLowerCase()}`}
+                                    value={field.value}
+                                    onChange={handleCustomFieldChange(field.title)}
+                                    required
+                                />
+                            </div>
+                        </>
+                    ))}
+                    <p className="dialog__content-sub_title">Автоудаление данных</p>
+                    <div className="flex">
+                        <label className="create__item-content-restriction_check">
                             <input
-                                className="input_white-field input_white-field_pass"
-                                type="text"
-                                placeholder={field.title}
-                                value={field.value}
-                                onChange={handleCustomFieldChange(field.title)}
-                                required
+                                id="requestCheckbox1"
+                                type="checkbox"
+                                className="visually-hidden"
+                                checked={isAutoDelete}
+                                onChange={(e) => handleLimitChange(e.target.checked)}
+                            />
+                            <label htmlFor="requestCheckbox1" className="invite__item-team-head-checkbox">
+                                <img src="/svg/event/checkbox.svg" alt="✓" />
+                            </label>
+                        </label>
+                        <p className="dialog__content-text">Через</p>
+                        <div className="dialog__content-dropdown dialog__content-dropdown_short dropdown">
+                            <Dropdown
+                                placeHolder="дней"
+                                type="arrow-down"
+                                options={autoDelete}
+                                onChange={(value) => {
+                                    const numberValue = parseInt(value.split(' ')[0], 10);
+                                    setSelectedAutoDelete(numberValue);
+                                }}
+                                isFirstValue={true}
                             />
                         </div>
-                    ))}
+                    </div>
                 </div>
 
                 <button type="submit" className="dialog__content-btn btn_black" disabled={!!isLoading}>

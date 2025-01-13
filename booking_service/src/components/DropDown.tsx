@@ -18,9 +18,15 @@ interface IDropdownProps {
     isFirstValue?: boolean;
 }
 
-function Dropdown({ options, placeHolder, type, tabIndex, onChange }: IDropdownProps) {
+function Dropdown({ options, placeHolder, type, tabIndex, onChange, isFirstValue = false }: IDropdownProps) {
     const [isFocused, setIsFocused] = React.useState(false);
-    const [selectedItem, setSelectedItem] = React.useState<number | string>(options[0].labelValue);
+    const [selectedItem, setSelectedItem] = React.useState<number | string | null>(null);
+    useEffect(() => {
+        if (!isFirstValue) {
+            setSelectedItem(options[0].labelValue);
+        }
+    }, [isFirstValue, options]);
+
     const wrapperRef = useRef<any>(null);
 
     useEffect(() => {
@@ -51,14 +57,23 @@ function Dropdown({ options, placeHolder, type, tabIndex, onChange }: IDropdownP
         <div ref={wrapperRef} className="relative">
             <div tabIndex={tabIndex} className="dropdown-select dropdown-select-selected" onClick={() => setIsFocused(!isFocused)}>
                 <div className="dropdown-select-selected">
-                    {selectedItem === '' ? (
+                    {!isFirstValue && (
                         <>
-                            <span>{placeHolder}</span> &nbsp;<p className="dropdown-select-selected-text">Онлайн</p>
+                            {selectedItem === '' ? (
+                                <>
+                                    <span>{placeHolder}</span> &nbsp;<p className="dropdown-select-selected-text">Онлайн</p>
+                                </>
+                            ) : (
+                                <>
+                                    <span>{placeHolder}</span>&nbsp;<p className="dropdown-select-selected-text">{selectedItem}</p>
+                                </>
+                            )}
                         </>
+                    )}
+                    {selectedItem === null && isFirstValue ? (
+                        <span>{placeHolder}</span>
                     ) : (
-                        <>
-                            <span>{placeHolder}</span>&nbsp;<p className="dropdown-select-selected-text">{selectedItem}</p>
-                        </>
+                        <p className="dropdown-select-selected-text">{selectedItem}</p>
                     )}
                 </div>
                 {type === 'arrow-down' && (

@@ -207,7 +207,7 @@ export const fetchAllEventsData = createAsyncThunk<
 //Получение информации о мероприятии
 export const fetchEventData = createAsyncThunk<
     EventViewData,
-    { id: number },
+    { id: number | string },
     {
         dispatch: AppDispatch;
         state: State;
@@ -310,7 +310,7 @@ export const postEventDataAction = createAsyncThunk<
 //Получение кастомных полей с записями
 export const fetchFilledCustomData = createAsyncThunk<
     FilledCustom,
-    { id: number },
+    { id: number | string },
     {
         dispatch: AppDispatch;
         state: State;
@@ -358,7 +358,7 @@ export const editEventDataAction = createAsyncThunk<
 //Завершение мероприятия
 export const cancelEvent = createAsyncThunk<
     string,
-    { id: number },
+    { id: number | string },
     {
         dispatch: AppDispatch;
         state: State;
@@ -385,7 +385,7 @@ export const cancelEvent = createAsyncThunk<
 //Получение информации о мероприятии для подачи заявки
 export const getInfoRegisterForEvent = createAsyncThunk<
     InfoForRegister,
-    { id: number },
+    { id: number | string },
     {
         dispatch: AppDispatch;
         state: State;
@@ -436,12 +436,12 @@ export const registerForEvent = createAsyncThunk<
         state: State;
         extra: AxiosInstance;
     }
->('patient/registerForEventData', async ({ event_date_time_id, custom_fields, event_id }, { dispatch, extra: api }) => {
+>('patient/registerForEventData', async ({ event_date_time_id, custom_fields, event_id, expiration_days }, { dispatch, extra: api }) => {
     try {
         const { data } = await api.post<RegisterForEventOutput>(`${APIRoute.Regist}${event_id}/`, {
             event_date_time_id,
             custom_fields,
-            expiration_days: null,
+            expiration_days: expiration_days,
         });
 
         toast.success('Успешная запись на мероприятие');
@@ -463,7 +463,7 @@ export const registerForEvent = createAsyncThunk<
 //Проверка записан ли человек на мероприятие
 export const fetchIsMember = createAsyncThunk<
     string,
-    { id: number },
+    { id: number | string },
     {
         dispatch: AppDispatch;
         state: State;
@@ -478,7 +478,7 @@ export const fetchIsMember = createAsyncThunk<
 //Отмена записи на мероприятие
 export const deleteBooking = createAsyncThunk<
     string,
-    { id: number },
+    { id: number | string },
     {
         dispatch: AppDispatch;
         state: State;
@@ -559,7 +559,7 @@ export const postOnlineLink = createAsyncThunk<
 //Вывод списка участников мероприятия
 export const fetchListMembers = createAsyncThunk<
     MembersInfo,
-    { id: number },
+    { id: number | string },
     {
         dispatch: AppDispatch;
         state: State;

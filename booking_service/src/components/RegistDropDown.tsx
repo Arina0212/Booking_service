@@ -9,17 +9,17 @@ export interface IDropdownOption {
 interface IDropdownProps {
     options: { labelValue: string | number; id: number }[];
     placeHolder: string;
-    type?: 'arrow-down'; // Added type definition for type safety
+    type?: 'arrow-down';
     tabIndex?: number;
     onChange: (selectedValue: number) => void;
 }
 
 function DropdownRegister({ options, placeHolder, type = 'arrow-down', tabIndex = 0, onChange }: IDropdownProps) {
     const [isFocused, setIsFocused] = useState(false);
-    const [selectedItem, setSelectedItem] = useState<string | number | null>(null); // Changed to string | null
+    const [selectedItem, setSelectedItem] = useState<string | number | null>(null);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [selectedId, setSelectedId] = useState<string | number | null>(null); // Track the ID
-    const wrapperRef = useRef<HTMLDivElement>(null); // Added type for useRef
+    const [selectedId, setSelectedId] = useState<string | number | null>(null);
+    const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -34,8 +34,8 @@ function DropdownRegister({ options, placeHolder, type = 'arrow-down', tabIndex 
 
     const onValueChange = (selectedOption: IDropdownOption) => {
         setSelectedItem(selectedOption.labelValue);
-        setSelectedId(selectedOption.id); // Set the selected ID
-        onChange(selectedOption.id); // Pass the ID to onChange
+        setSelectedId(selectedOption.id);
+        onChange(selectedOption.id);
         setIsFocused(false);
     };
 
@@ -43,7 +43,6 @@ function DropdownRegister({ options, placeHolder, type = 'arrow-down', tabIndex 
         <div ref={wrapperRef} className="relative">
             <div tabIndex={tabIndex} className="dropdown-select dropdown-select-selected" onClick={() => setIsFocused(!isFocused)}>
                 <div className="dropdown-select-selected">
-                    {/* Conditionally render placeholder or selected item */}
                     {selectedItem === null ? <span>{placeHolder}</span> : <p className="dropdown-select-selected-text">{selectedItem}</p>}
                 </div>
                 {type === 'arrow-down' && (
