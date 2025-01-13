@@ -15,7 +15,7 @@ export const shouldDisplayError = (response: AxiosResponse) => !!StatusCodeMappi
 
 export const shouldUnauthorizedError = (response: AxiosResponse) => response.status === StatusCodes.UNAUTHORIZED;
 
-const BACKEND_URL = 'https://vk.com/away.php?to=https%3A%2F%2Fbooking-service-qh6z74ymy-nevazhnos-projects-5956fad7.vercel.app&utf=1/api/';
+const BACKEND_URL = 'https://booking-service-lac.vercel.app/api/';
 
 const REQUEST_TIMEOUT = 50000;
 
