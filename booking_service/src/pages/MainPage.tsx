@@ -31,6 +31,8 @@ import Loading from '../components/Loading';
 import { Cities, EventsShortData, TransformedCities } from '../types/EventData';
 import DateRangePicker from '../components/DataRangePicker/DataRangePicker';
 import { getAltDate } from '../services/utils/dataFormater';
+import CopyButtonWithFeedback from '../components/CopyTextButton';
+import { phoneFormater } from '../services/utils/PhoneFormater';
 
 interface DateRange {
     start: Date | null;
@@ -157,7 +159,7 @@ export default function MainPage() {
                                     <img src="/svg/searchIcon.svg" alt="search" draggable="false" />
                                 </div>
                             </div>
-
+                            <CopyButtonWithFeedback textToCopy={phoneFormater('79223434229')} />
                             <DateRangePicker initialRange={dateRange} onDateChange={handleDateChange} />
                             <Dropdown
                                 placeHolder="Город:"
