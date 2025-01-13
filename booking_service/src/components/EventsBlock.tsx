@@ -24,7 +24,7 @@ export default function EventsBlock({ title, events = [], isLoading }: EventsBlo
                         <div className="main__events-content">
                             {events.slice(0, visibleCount).map((event) => (
                                 <EventCard
-                                    key={event.id} // добавляем ключ для компонента
+                                    key={event.id}
                                     id={event.id}
                                     name={event.name}
                                     start_date={event.start_date}

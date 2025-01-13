@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from '../hooks';
 import { sendOnEmails } from '../store/api-actions';
+import { toast } from 'react-toastify';
+import 'react-toastify/ReactToastify.min.css';
 
 type Email = { email: string };
 
@@ -15,9 +17,12 @@ function InviteComponent({ previousUrl }: InviteByEmails) {
     const [inputValue, setInputValue] = useState<string>('');
 
     const handleAddEmail = () => {
-        if (inputValue) {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (inputValue && emailPattern.test(inputValue)) {
             setEmails([...emails, { email: inputValue }]);
             setInputValue('');
+        } else {
+            toast.error('Введите корректный адрес электронной почты');
         }
     };
 
@@ -27,9 +32,8 @@ function InviteComponent({ previousUrl }: InviteByEmails) {
     };
 
     const extractLastDigits = (url: string): number | null => {
-        // Используем регулярное выражение для извлечения цифр
         const match = url.match(/(\d+)$/);
-        return match ? parseInt(match[1], 10) : null; // Преобразуем в число
+        return match ? parseInt(match[1], 10) : null;
     };
 
     const eventId = extractLastDigits(previousUrl);

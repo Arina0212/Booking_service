@@ -33,7 +33,6 @@ export default function EventCard({
     const startMonth = Number(startDate[1]) - 1;
     const endDate = humanizeDate(end_date).split('.');
     const endMonth = Number(endDate[1]) - 1;
-    console.log('pfrjlbhjdfyysq', encodeURI(id.toString()));
 
     return (
         <>
