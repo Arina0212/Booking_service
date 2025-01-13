@@ -10,10 +10,13 @@ input {
 
 .calendar {
     position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    padding: 10px;
+    background: #FFFFFF;
+    border-radius: 0.6315789474vw;
+    margin-top: 0.7894736842vw;
+    padding: 0.7895vw;
     z-index: 1000;
+    width: 14.7368vw;
+    transition: linear 250ms;
 }
 
 .header-calendar {
@@ -44,7 +47,15 @@ input {
 .days-of-week {
     display: flex;
     flex-direction: row;
-    gap: 1vw;
+    gap: 0.8421vw;
+}
+
+.dropdown-menu-wrapper {
+    z-index: 20;
+    overflow: hidden;
+    max-height: 15.7894736842vw;
+    overflow-y: scroll;
+    overscroll-behavior-y: auto;
 }
 
 .dropdown-menu-wrapper_dates {
@@ -90,6 +101,9 @@ input {
     height: 100%;
     border-radius: 0.3157894737vw;
     transition: background-color ease-in-out 250ms;
+    text-align: center;
+    padding-top: 0.4895vw;
+    padding-bottom: 0.4895vw;
 }
 
 .dropdown-menu-day_bold {

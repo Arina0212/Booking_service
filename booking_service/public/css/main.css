@@ -364,7 +364,7 @@ input[data-autocompleted] {
 .header {
     position: fixed;
     top: 0;
-    
+    z-index: 50;
     display: flex;
     align-items: center;
     justify-content: start;
@@ -2159,7 +2159,7 @@ input:checked + label img {
 }
 
 .dialog {
-    top: 35%;
+    top: 45%;
     left: 50%;
     translate: -50% -50%;
     padding: 0;

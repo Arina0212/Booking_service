@@ -73,7 +73,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateClick, closeCalendar }) => {
         return (
             <div className="days-of-week">
                 {daysOfWeek.map((day, index) => (
-                    <div key={index} className="day-of-week">
+                    <div key={index} className="dropdown-menu-day">
                         {day}
                     </div>
                 ))}
@@ -99,7 +99,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateClick, closeCalendar }) => {
             daysArray.push(
                 <div
                     key={`${year}-${month}-${i}`}
-                    className="day"
+                    className="dropdown-menu-day"
                     onClick={() => {
                         onDateClick(date);
                         closeCalendar();
@@ -133,12 +133,15 @@ const Calendar: React.FC<CalendarProps> = ({ onDateClick, closeCalendar }) => {
     return (
         <div className="calendar">
             <div className="header-calendar">
-                <h2>
+                <h2 className="dropdown-menu-month">
                     {MONTH[startMonth]} {currentDate.getFullYear()}
                 </h2>
-
-                <button onClick={handlePrevMonth}>Назад</button>
-                <button onClick={handleNextMonth}>Вперед</button>
+                <button className="dropdown-menu-arrow dropdown-menu-arrow_left" onClick={handlePrevMonth}>
+                    <img src="/svg/arrow.svg" alt="back" />
+                </button>
+                <button className="dropdown-menu-arrow" onClick={handleNextMonth}>
+                    <img src="/svg/arrow.svg" alt="next" />
+                </button>
             </div>
             {renderDaysOfWeek()}
             <div className="calendar-grid">{renderDays()}</div>
