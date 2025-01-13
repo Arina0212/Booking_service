@@ -26,6 +26,7 @@ import {
 } from '../types/EventData';
 import { toast } from 'react-toastify';
 import 'react-toastify/ReactToastify.min.css';
+import browserHistory from '../browser-history';
 
 //Вход
 export const loginAction = createAsyncThunk<
@@ -41,13 +42,15 @@ export const loginAction = createAsyncThunk<
         const { data } = await api.post<LoginData>(APIRoute.Login, { email, password });
         saveToken(data.access_token);
         if (data.error === undefined) {
-            dispatch(redirectToRoute(AppRoute.Main));
+            //dispatch(redirectToRoute(AppRoute.Main));
+
+            browserHistory.back();
         }
         dispatch(fetchProfileData());
         return data;
     } catch (error) {
         toast.error('Неверный логин или пароль');
-        throw error; // Это обеспечит, что состояние будет обновлено на "ошибка" в redux
+        throw error;
     }
 });
 
