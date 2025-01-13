@@ -85,7 +85,8 @@ export const SignInAction = createAsyncThunk<
     });
     saveToken(data.access_token);
     if (data.email === undefined) {
-        dispatch(redirectToRoute(AppRoute.Main));
+        browserHistory.back();
+        browserHistory.back();
     } else {
     }
     dispatch(fetchProfileData());
@@ -318,7 +319,6 @@ export const fetchFilledCustomData = createAsyncThunk<
     }
 >('data/fetchFilledCustomData', async ({ id }, { extra: api }) => {
     const { data } = await api.get<FilledCustom>(`${APIRoute.FilteredCustom}/${id}/`);
-    console.log(data, 'Получение кастомных полей с записями');
     return data;
 });
 
@@ -471,7 +471,6 @@ export const fetchIsMember = createAsyncThunk<
     }
 >('patient/fetchIsMember', async ({ id }, { extra: api }) => {
     const { data } = await api.get<string>(`${APIRoute.IsMember}/${id}/`);
-    console.log('fetchIsMember', data);
     return data;
 });
 

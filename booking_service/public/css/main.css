@@ -654,8 +654,14 @@ input[data-autocompleted] {
     border-radius: 0.4210526316vw;
 }
 
-.event {
+.event_page {
     padding: 5.7894736842vw 10.5263157895vw;
+    display: flex;
+    gap: 2.6315789474vw;
+    flex-direction: column;
+}
+
+.event {
     display: grid;
     grid-template-columns: 1fr 13.1578947368vw;
     gap: 2.6315789474vw 5.8947368421vw;

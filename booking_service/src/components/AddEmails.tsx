@@ -38,7 +38,6 @@ function InviteComponent({ previousUrl }: InviteByEmails) {
     const eventId = extractLastDigits(previousUrl);
     const dispatch = useAppDispatch();
     const handleSendInvitations = () => {
-        console.log('Отправка приглашений на:', emails);
         dispatch(sendOnEmails({ event_id: Number(eventId), users_emails: emails }));
     };
 

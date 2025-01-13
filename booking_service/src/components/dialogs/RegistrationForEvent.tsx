@@ -57,9 +57,8 @@ export default function RegistrationForEvent({
     const [customFieldValues, setCustomFieldValues] = useState<CustomFieldValue[]>([]);
     const [isAutoDelete, setIsAutoDelete] = useState<boolean>(false);
     const [selectedAutoDelete, setSelectedAutoDelete] = useState<number | null>(null);
-    console.log(selectedAutoDelete);
+
     const handleLimitChange = (value: boolean) => {
-        console.log(value);
         setIsAutoDelete(value);
     };
     useEffect(() => {

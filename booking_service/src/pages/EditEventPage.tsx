@@ -19,7 +19,6 @@ export default function EditEventPage() {
     const filledCustom = useAppSelector(getFilledCustom);
     const event = useAppSelector(getEvent);
     const infoForRegister = useAppSelector(getInfoForRegister);
-    console.log(filledCustom, 'filledCustom');
     return (
         <>
             <Header />

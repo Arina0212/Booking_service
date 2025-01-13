@@ -161,8 +161,7 @@ const CreateEventForm: React.FC = () => {
         setData((prevState) => ({ ...prevState, payCount: event.target.value }));
     };
 
-    const [customFields, setCustomFields] = useState<{ title: string }[]>([]); // Используем массив объектов
-    console.log(customFields);
+    const [customFields, setCustomFields] = useState<{ title: string }[]>([]);
     const handleFieldChange = (index: number, value: string) => {
         const newFields = [...customFields];
         newFields[index] = { title: value }; // Заполняем поле в объекте

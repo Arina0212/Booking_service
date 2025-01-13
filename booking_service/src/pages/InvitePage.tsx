@@ -15,7 +15,6 @@ export default function InvitePage() {
     const match = previousUrl.match(/(\d+)$/);
 
     const lastNumber = match ? match[0] : null;
-    console.log('previousUrl', location, previousUrl);
     return (
         <>
             <Header />

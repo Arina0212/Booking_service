@@ -39,7 +39,7 @@ export default function ChangeProfilePhoto({ isOpen, onClose }: ChangeProfilePho
             setFileInfo(file);
         }
     };
-    console.log('isLoadingPhoto', isLoadingPhoto);
+
     const handleUpload = async (event: React.FormEvent) => {
         event.preventDefault();
         if (fileInfo) {
