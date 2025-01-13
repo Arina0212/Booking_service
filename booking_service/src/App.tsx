@@ -17,6 +17,7 @@ import 'react-toastify/ReactToastify.min.css';
 import EditEventPage from './pages/EditEventPage';
 
 function App() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const auth = useAppSelector(getAuthorizationStatus);
 
     return (

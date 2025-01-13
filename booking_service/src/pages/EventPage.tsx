@@ -79,6 +79,7 @@ export default function EventPage() {
         }
     };
     const listOfMembers = useAppSelector(getListOfMembers);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isListOfMembersLoading = useAppSelector(getIsListOfMembersLoading);
     return (
         <>

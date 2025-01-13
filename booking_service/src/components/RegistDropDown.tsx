@@ -17,6 +17,7 @@ interface IDropdownProps {
 function DropdownRegister({ options, placeHolder, type = 'arrow-down', tabIndex = 0, onChange }: IDropdownProps) {
     const [isFocused, setIsFocused] = useState(false);
     const [selectedItem, setSelectedItem] = useState<string | number | null>(null); // Changed to string | null
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [selectedId, setSelectedId] = useState<string | number | null>(null); // Track the ID
     const wrapperRef = useRef<HTMLDivElement>(null); // Added type for useRef
 

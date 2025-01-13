@@ -107,6 +107,13 @@ export default function ListOfParticipants({ isOpen, onClose, listOfMembers }: L
                                                         <CopyButtonWithFeedback textToCopy={member.email} isIcon iconName="mailIcon" />
                                                     )}
                                                 </div>
+                                                <div className="dialog__content-member-info">
+                                                    {member.custom_fields.map((field) => (
+                                                        <p className="dialog__content-member-info-text">
+                                                            {field.field_title}: <span>{field.field_value}</span>
+                                                        </p>
+                                                    ))}
+                                                </div>
                                             </div>
                                         ))}
                                     </>
