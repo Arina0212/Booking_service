@@ -13,11 +13,21 @@ export default function EditEventPage() {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(fetchEventData({ id: Number(urlParams.id) }));
-        dispatch(getInfoRegisterForEvent({ id: Number(urlParams.id) }));
         dispatch(fetchFilledCustomData({ id: Number(urlParams.id) }));
     }, [dispatch, urlParams.id]);
     const filledCustom = useAppSelector(getFilledCustom);
     const event = useAppSelector(getEvent);
+    useEffect(() => {
+        if (event?.status === 'close') {
+            if (event.unique_key) {
+                dispatch(getInfoRegisterForEvent({ id: event.unique_key }));
+            }
+        } else {
+            if (urlParams.id) {
+                dispatch(getInfoRegisterForEvent({ id: urlParams.id }));
+            }
+        }
+    }, [dispatch, event?.creator.contacts.email, event?.id, event?.status, event?.unique_key, urlParams.id]);
     const infoForRegister = useAppSelector(getInfoForRegister);
     return (
         <>
