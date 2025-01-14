@@ -21,13 +21,14 @@ import Loading from '../components/Loading';
 import CopyButtonWithFeedback from '../components/CopyTextButton';
 import { phoneFormater } from '../services/utils/PhoneFormater';
 import { formatDate, TimeComponent } from '../services/utils/dataFormater';
-import { getAuthorizationStatus, getProfile } from '../store/user-process/selectors';
+import { getAuthorizationStatus, getLoadingProfile, getProfile } from '../store/user-process/selectors';
 import RegistrationForEvent from '../components/dialogs/RegistrationForEvent';
 import FileInfo from '../components/FileInfo';
 import EventOnlineInvite from '../components/OnlineLinkPostForm';
 import Spinner from '../components/Spinner';
 import CancelEvent from '../components/dialogs/CancelEvent';
 import ListOfParticipants from '../components/dialogs/ListOfParticipants';
+import LateRegistration from '../components/dialogs/LateRegistration';
 
 export default function EventPage() {
     const dispatch = useAppDispatch();
@@ -45,6 +46,7 @@ export default function EventPage() {
     const event = useAppSelector(getEvent);
     const isLoading = useAppSelector(getLoadingEvent);
     const me = useAppSelector(getProfile);
+    const isLoadingProfile = useAppSelector(getLoadingProfile);
     useEffect(() => {
         if (auth === AuthorizationStatus.Auth && me?.email === event?.creator.contacts.email) {
             dispatch(fetchListMembers({ id: Number(urlParams.id) }));
@@ -53,12 +55,20 @@ export default function EventPage() {
     const isLoadingInfoForRegister = useAppSelector(getLoadingInfoForRegister);
     const infoForRegister = useAppSelector(getInfoForRegister);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDialogLateOpen, setIsDialogLateOpen] = useState(false);
     const [isDialogCancelOpen, setIsDialogCancelOpen] = useState(false);
     const [isDialogListOpen, setIsDialogListOpen] = useState(false);
     const isLoadingRegister = useAppSelector(getLoadingRegisterForEvent);
     const getMessage = useAppSelector(getRegisterForEventMessedge);
-    const openDialog = () => setIsDialogOpen(true);
+    const openDialog = () => {
+        if (!me?.last_name && !me?.first_name && !me?.patronymic) {
+            setIsDialogLateOpen(true);
+        } else {
+            setIsDialogOpen(true);
+        }
+    };
     const closeDialog = () => setIsDialogOpen(false);
+    const closeLateDialog = () => setIsDialogLateOpen(false);
     const openCancelDialog = () => setIsDialogCancelOpen(true);
     const closeCancelDialog = () => setIsDialogCancelOpen(false);
     const [selectSlot, setSelectedSlot] = useState<number | null>(null);
@@ -90,6 +100,12 @@ export default function EventPage() {
                 message={getMessage}
                 customFields={infoForRegister?.custom_fields}
                 timeSlotsDescriptions={event?.time_slots_descriptions}
+            />
+            <LateRegistration
+                setIsDialogOpen={setIsDialogOpen}
+                isOpen={isDialogLateOpen}
+                onClose={closeLateDialog}
+                isLoading={isLoadingProfile}
             />
             <CancelEvent isOpen={isDialogCancelOpen} onClose={closeCancelDialog} isLoading={isCancelEventLoading} />
             <ListOfParticipants isOpen={isDialogListOpen} onClose={closeListDialog} listOfMembers={listOfMembers} selectSlot={selectSlot} />
@@ -178,55 +194,40 @@ export default function EventPage() {
                                     <>
                                         {auth === AuthorizationStatus.Auth ? (
                                             <>
-                                                {me?.first_name && me?.last_name && me?.patronymic && me?.city ? (
+                                                {me?.email !== event?.creator.contacts.email ? (
                                                     <>
-                                                        {me?.email !== event?.creator.contacts.email ? (
-                                                            <>
-                                                                {isMember ? (
-                                                                    <button
-                                                                        onClick={handleCancelBooking}
-                                                                        className="event__card-btn btn_black"
-                                                                    >
-                                                                        {isCancelBookingLoaging ? <Spinner /> : 'Отменить участие'}
-                                                                    </button>
-                                                                ) : (
-                                                                    <button onClick={openDialog} className="event__card-btn btn_black">
-                                                                        Подать заявку
-                                                                    </button>
-                                                                )}
-                                                            </>
+                                                        {isMember ? (
+                                                            <button onClick={handleCancelBooking} className="event__card-btn btn_black">
+                                                                {isCancelBookingLoaging ? <Spinner /> : 'Отменить участие'}
+                                                            </button>
                                                         ) : (
-                                                            <>
-                                                                <button
-                                                                    onClick={openCancelDialog}
-                                                                    className="event__card_closed"
-                                                                    type="button"
-                                                                >
-                                                                    Завершить
-                                                                </button>
-                                                                <Link
-                                                                    to={
-                                                                        {
-                                                                            pathname: AppRoute.Invite,
-                                                                            state: { from: window.location.href },
-                                                                            hash: window.location.href,
-                                                                        } as {
-                                                                            pathname: string;
-                                                                            state: { from: string };
-                                                                            hash: string;
-                                                                        }
-                                                                    }
-                                                                    className="event__card-btn btn_black"
-                                                                >
-                                                                    Пригласить людей
-                                                                </Link>
-                                                            </>
+                                                            <button onClick={openDialog} className="event__card-btn btn_black">
+                                                                Подать заявку
+                                                            </button>
                                                         )}
                                                     </>
                                                 ) : (
-                                                    <p className="event__text_desc">
-                                                        Что-бы зарегистрироваться на мероприятие необходимо заполнить профиль
-                                                    </p>
+                                                    <>
+                                                        <button onClick={openCancelDialog} className="event__card_closed" type="button">
+                                                            Завершить
+                                                        </button>
+                                                        <Link
+                                                            to={
+                                                                {
+                                                                    pathname: AppRoute.Invite,
+                                                                    state: { from: window.location.href },
+                                                                    hash: window.location.href,
+                                                                } as {
+                                                                    pathname: string;
+                                                                    state: { from: string };
+                                                                    hash: string;
+                                                                }
+                                                            }
+                                                            className="event__card-btn btn_black"
+                                                        >
+                                                            Пригласить людей
+                                                        </Link>
+                                                    </>
                                                 )}
                                             </>
                                         ) : (

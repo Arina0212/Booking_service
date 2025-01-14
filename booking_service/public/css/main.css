@@ -2218,6 +2218,12 @@ input:checked + label img {
     margin-bottom: 2.6315789474vw;
 }
 
+.dialog__content-title-late {
+    font-weight: 700;
+    font-size: 1.6842105263vw;
+    text-align: center;
+}
+
 .dialog__content-sub_title {
     margin: 1.5789473684vw 0 1.0526315789vw;
 }

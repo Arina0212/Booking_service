@@ -110,7 +110,7 @@ export default function RegistrationForEvent({
     };
 
     return (
-        <dialog className="dialog dialog_request" open>
+        <dialog className="dialog dialog_request" open={isOpen}>
             <form method="dialog" className="dialog__content" onSubmit={handleRegister}>
                 <button className="dialog__content-close" formNoValidate onClick={onClose}>
                     <img src="/svg/closeCross.svg" alt="закрыть" />
