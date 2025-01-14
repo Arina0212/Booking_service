@@ -60,7 +60,7 @@ export default function ProfilePage() {
                 last_name: last_name,
                 patronymic: patronymic,
                 email: me.email,
-                birth_date: getAltDate(me.birth_date),
+                birth_date: !!me.birth_date ? getAltDate(me.birth_date) : me.birth_date,
                 city: me.city,
                 phone_number: me.phone_number.replace(/[^\d]/g, ''),
                 company_name: me.company_name,
