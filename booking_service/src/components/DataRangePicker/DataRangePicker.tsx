@@ -22,7 +22,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onDateChange, initial
         function handleClickOutside(event: MouseEvent) {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
                 setIsFocused(false);
-                setIsCalendarOpen(false); // Закрываем календарь
+                setIsCalendarOpen(false);
             }
         }
 

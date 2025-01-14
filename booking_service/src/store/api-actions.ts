@@ -436,29 +436,32 @@ export const registerForEvent = createAsyncThunk<
         state: State;
         extra: AxiosInstance;
     }
->('patient/registerForEventData', async ({ event_date_time_id, custom_fields, event_id, expiration_days }, { dispatch, extra: api }) => {
-    try {
-        const { data } = await api.post<RegisterForEventOutput>(`${APIRoute.Regist}${event_id}/`, {
-            event_date_time_id,
-            custom_fields,
-            expiration_days: expiration_days,
-        });
+>(
+    'patient/registerForEventData',
+    async ({ id, event_date_time_id, custom_fields, event_id, expiration_days }, { dispatch, extra: api }) => {
+        try {
+            const { data } = await api.post<RegisterForEventOutput>(`${APIRoute.Regist}${event_id}/`, {
+                event_date_time_id,
+                custom_fields,
+                expiration_days: expiration_days,
+            });
 
-        toast.success('Успешная запись на мероприятие');
+            toast.success('Успешная запись на мероприятие');
 
-        dispatch(fetchEventData({ id: event_id }));
-        dispatch(fetchIsMember({ id: event_id }));
-        return data;
-    } catch (error) {
-        if (error instanceof AxiosError) {
-            const errorMessage = error.response?.data?.message || 'Произошла ошибка при записи на мероприятие';
-            toast.error(errorMessage);
-        } else {
-            toast.error('Что-то пошло не так попробуйте позже');
+            dispatch(fetchEventData({ id: event_id }));
+            dispatch(fetchIsMember({ id: id }));
+            return data;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                const errorMessage = error.response?.data?.message || 'Произошла ошибка при записи на мероприятие';
+                toast.error(errorMessage);
+            } else {
+                toast.error('Что-то пошло не так попробуйте позже');
+            }
+            throw error;
         }
-        throw error;
-    }
-});
+    },
+);
 
 //Проверка записан ли человек на мероприятие
 export const fetchIsMember = createAsyncThunk<

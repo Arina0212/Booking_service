@@ -122,6 +122,7 @@ export type FiltersData = {
 };
 
 export type RegisterForEvent = {
+    id: number;
     event_id: number | string;
     custom_fields: EventCustomDateRegiser[] | null;
     event_date_time_id: number;

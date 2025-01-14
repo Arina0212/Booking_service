@@ -11,6 +11,7 @@ import { autoDelete } from '../../const';
 import DropdownAutoDelete from '../DropDownAutoDelete';
 
 interface RegistrationForEventProps {
+    id?: number;
     isOpen: boolean;
     onClose: () => void;
     timeSlotsDescriptions?: [
@@ -44,6 +45,7 @@ interface CustomField {
 }
 
 export default function RegistrationForEvent({
+    id,
     isOpen,
     onClose,
     timeSlotsDescriptions,
@@ -96,10 +98,11 @@ export default function RegistrationForEvent({
 
     const handleRegister = async (event: React.FormEvent) => {
         event.preventDefault();
-        if (urlParams.id && selectedSlot) {
+        if (urlParams.id && selectedSlot && id) {
             await dispatch(
                 registerForEvent({
-                    event_id: Number(urlParams.id),
+                    id: id,
+                    event_id: urlParams.id,
                     custom_fields: customFieldValues,
                     event_date_time_id: selectedSlot,
                     expiration_days: isAutoDelete ? selectedAutoDelete : null,

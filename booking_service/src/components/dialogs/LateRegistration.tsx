@@ -90,30 +90,38 @@ export default function LateRegistration({ isOpen, onClose, isLoading = false, s
                     <h2 className="dialog__content-title-late display_none_print">Давайте знакомиться</h2>
 
                     <div className="display_none_print">
-                        <p className="dialog__content-sub_title">ФИО</p>
-                        <div className="dialog__content-input input_white">
-                            <input
-                                className="input_white-field input_white-field_pass"
-                                type="text"
-                                placeholder="Например, Гром Пётр Петрович"
-                                required
-                                value={me?.fio}
-                                name="fio"
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <p className="dialog__content-sub_title">Telegram</p>
-                        <div className="dialog__content-input input_white">
-                            <input
-                                className="input_white-field input_white-field_pass"
-                                type="text"
-                                placeholder="Например, @test"
-                                required
-                                name="telegram"
-                                value={me.telegram}
-                                onChange={handleChange}
-                            />
-                        </div>
+                        {!profileData?.first_name && !profileData?.last_name && !profileData?.patronymic && (
+                            <>
+                                <p className="dialog__content-sub_title">ФИО</p>
+                                <div className="dialog__content-input input_white">
+                                    <input
+                                        className="input_white-field input_white-field_pass"
+                                        type="text"
+                                        placeholder="Например, Гром Пётр Петрович"
+                                        required
+                                        value={me?.fio}
+                                        name="fio"
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </>
+                        )}
+                        {!me?.telegram && (
+                            <>
+                                <p className="dialog__content-sub_title">Telegram</p>
+                                <div className="dialog__content-input input_white">
+                                    <input
+                                        className="input_white-field input_white-field_pass"
+                                        type="text"
+                                        placeholder="Например, @test"
+                                        required
+                                        name="telegram"
+                                        value={me.telegram}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </>
+                        )}
                     </div>
                     <button type="submit" className="dialog__content-btn btn_black">
                         {isLoading ? <Spinner /> : 'Подтвердить'}

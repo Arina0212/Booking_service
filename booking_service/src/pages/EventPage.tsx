@@ -35,11 +35,13 @@ export default function EventPage() {
     const urlParams = useParams();
     const auth = useAppSelector(getAuthorizationStatus);
     useEffect(() => {
-        dispatch(fetchEventData({ id: Number(urlParams.id) }));
+        if (urlParams.id) {
+            dispatch(fetchEventData({ id: urlParams.id }));
 
-        if (auth === AuthorizationStatus.Auth) {
-            dispatch(fetchIsMember({ id: Number(urlParams.id) }));
-            dispatch(getInfoRegisterForEvent({ id: Number(urlParams.id) }));
+            if (auth === AuthorizationStatus.Auth && event?.id) {
+                dispatch(fetchIsMember({ id: event?.id }));
+                dispatch(getInfoRegisterForEvent({ id: urlParams.id }));
+            }
         }
     }, [auth, dispatch, urlParams.id]);
     const isMember = useAppSelector(getIsMember);
@@ -48,10 +50,10 @@ export default function EventPage() {
     const me = useAppSelector(getProfile);
     const isLoadingProfile = useAppSelector(getLoadingProfile);
     useEffect(() => {
-        if (auth === AuthorizationStatus.Auth && me?.email === event?.creator.contacts.email) {
-            dispatch(fetchListMembers({ id: Number(urlParams.id) }));
+        if (auth === AuthorizationStatus.Auth && me?.email === event?.creator.contacts.email && event?.id) {
+            dispatch(fetchListMembers({ id: event?.id }));
         }
-    }, [auth, dispatch, event?.creator.contacts.email, me?.email, urlParams.id]);
+    }, [auth, dispatch, event?.creator.contacts.email, event?.id, me?.email, urlParams.id]);
     const isLoadingInfoForRegister = useAppSelector(getLoadingInfoForRegister);
     const infoForRegister = useAppSelector(getInfoForRegister);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -60,13 +62,17 @@ export default function EventPage() {
     const [isDialogListOpen, setIsDialogListOpen] = useState(false);
     const isLoadingRegister = useAppSelector(getLoadingRegisterForEvent);
     const getMessage = useAppSelector(getRegisterForEventMessedge);
+
     const openDialog = () => {
-        if (!me?.last_name && !me?.first_name && !me?.patronymic) {
+        const isNamesFilled = !me?.last_name && !me?.first_name && !me?.patronymic;
+
+        if (isNamesFilled || !me?.telegram) {
             setIsDialogLateOpen(true);
         } else {
             setIsDialogOpen(true);
         }
     };
+
     const closeDialog = () => setIsDialogOpen(false);
     const closeLateDialog = () => setIsDialogLateOpen(false);
     const openCancelDialog = () => setIsDialogCancelOpen(true);
@@ -79,9 +85,11 @@ export default function EventPage() {
     const isCancelBookingLoaging = useAppSelector(getIsCancelBookingLoading);
     const isCancelEventLoading = useAppSelector(getIsCancelEventLoading);
 
-    const handleCancelBooking = (event: React.FormEvent) => {
-        event.preventDefault();
-        dispatch(deleteBooking({ id: Number(urlParams.id) }));
+    const handleCancelBooking = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (event?.id) {
+            dispatch(deleteBooking({ id: event?.id }));
+        }
     };
     const handleListOfMembers = () => {
         if (auth === AuthorizationStatus.Auth && me?.email === event?.creator.contacts.email) {
@@ -94,6 +102,7 @@ export default function EventPage() {
     return (
         <>
             <RegistrationForEvent
+                id={event?.id}
                 isOpen={isDialogOpen}
                 onClose={closeDialog}
                 isLoading={isLoadingRegister}
