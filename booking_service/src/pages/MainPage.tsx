@@ -166,6 +166,7 @@ export default function MainPage() {
                                     setSelectedCity(value);
                                     sendFilters(value, format);
                                 }}
+                                isFirstValue={false}
                             />
                             <Dropdown
                                 placeHolder="Формат:"
@@ -175,6 +176,7 @@ export default function MainPage() {
                                     setSelectedFormat(value);
                                     sendFilters(city, value);
                                 }}
+                                isFirstValue={false}
                             />
                         </section>
 

@@ -18,9 +18,9 @@ interface IDropdownProps {
     isFirstValue?: boolean;
 }
 
-function Dropdown({ options, placeHolder, type, tabIndex, onChange, isFirstValue = false }: IDropdownProps) {
+function DropdownAutoDelete({ options, placeHolder, type, tabIndex, onChange, isFirstValue = false }: IDropdownProps) {
     const [isFocused, setIsFocused] = React.useState(false);
-    const [selectedItem, setSelectedItem] = React.useState<number | string | null>(null);
+    const [selectedItem, setSelectedItem] = React.useState<number | string | null>(options[1].labelValue);
     useEffect(() => {
         if (!isFirstValue) {
             setSelectedItem(options[0].labelValue);
@@ -57,18 +57,10 @@ function Dropdown({ options, placeHolder, type, tabIndex, onChange, isFirstValue
         <div ref={wrapperRef} className="relative">
             <div tabIndex={tabIndex} className="dropdown-select dropdown-select-selected" onClick={() => setIsFocused(!isFocused)}>
                 <div className="dropdown-select-selected">
-                    {!isFirstValue && (
-                        <>
-                            {selectedItem === '' ? (
-                                <>
-                                    <span>{placeHolder}</span> &nbsp;<p className="dropdown-select-selected-text">Онлайн</p>
-                                </>
-                            ) : (
-                                <>
-                                    <span>{placeHolder}</span>&nbsp;<p className="dropdown-select-selected-text">{selectedItem}</p>
-                                </>
-                            )}
-                        </>
+                    {selectedItem === null && isFirstValue ? (
+                        <span>{placeHolder}</span>
+                    ) : (
+                        <p className="dropdown-select-selected-text">{selectedItem}</p>
                     )}
                 </div>
                 {type === 'arrow-down' && (
@@ -96,9 +88,9 @@ function Dropdown({ options, placeHolder, type, tabIndex, onChange, isFirstValue
     );
 }
 
-export default Dropdown;
+export default DropdownAutoDelete;
 
-Dropdown.defaultProps = {
+DropdownAutoDelete.defaultProps = {
     name: '',
     type: '',
     className: '',

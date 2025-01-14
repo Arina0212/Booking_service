@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './DateRangePicker.css';
 import { humanizeDate } from '../../services/utils/dataFormater';
 import { MONTH } from '../../const';
@@ -15,6 +15,23 @@ interface DateRangePickerProps {
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({ onDateChange, initialRange }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+    const [isFocused, setIsFocused] = React.useState(false);
+    const wrapperRef = useRef<any>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+                setIsFocused(false);
+                setIsCalendarOpen(false); // Закрываем календарь
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [wrapperRef]);
 
     const toggleCalendar = () => {
         setIsCalendarOpen(!isCalendarOpen);
@@ -26,7 +43,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onDateChange, initial
         if (!selectedRange.start || (selectedRange.start && selectedRange.end)) {
             const newRange = { start: date, end: null };
             setSelectedRange(newRange);
-
             onDateChange(newRange);
         } else {
             const newRange = { start: selectedRange.start, end: date };
@@ -41,7 +57,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onDateChange, initial
     };
 
     return (
-        <div className="date-range-picker">
+        <div className="date-range-picker" ref={wrapperRef} onClick={() => setIsFocused(!isFocused)}>
             <input
                 type="text"
                 className="input_white dropdown-selected_dates"

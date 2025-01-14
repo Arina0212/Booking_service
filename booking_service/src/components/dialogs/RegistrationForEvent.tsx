@@ -8,7 +8,7 @@ import { registerForEvent } from '../../store/api-actions';
 import { useParams } from 'react-router-dom';
 import Spinner from '../Spinner';
 import { autoDelete } from '../../const';
-import Dropdown from '../DropDown';
+import DropdownAutoDelete from '../DropDownAutoDelete';
 
 interface RegistrationForEventProps {
     isOpen: boolean;
@@ -55,7 +55,7 @@ export default function RegistrationForEvent({
     const urlParams = useParams();
     const [selectedSlot, setSelectedSlot] = useState<number>();
     const [customFieldValues, setCustomFieldValues] = useState<CustomFieldValue[]>([]);
-    const [isAutoDelete, setIsAutoDelete] = useState<boolean>(false);
+    const [isAutoDelete, setIsAutoDelete] = useState<boolean>(true);
     const [selectedAutoDelete, setSelectedAutoDelete] = useState<number | null>(null);
 
     const handleLimitChange = (value: boolean) => {
@@ -139,7 +139,7 @@ export default function RegistrationForEvent({
                                 <input
                                     className="input_white-field input_white-field_pass"
                                     type="text"
-                                    placeholder={`Введите ${field.title.toLowerCase()}`}
+                                    placeholder="Введите"
                                     value={field.value}
                                     onChange={handleCustomFieldChange(field.title)}
                                     required
@@ -163,7 +163,7 @@ export default function RegistrationForEvent({
                         </label>
                         <p className="dialog__content-text">Через</p>
                         <div className="dialog__content-dropdown dialog__content-dropdown_short dropdown">
-                            <Dropdown
+                            <DropdownAutoDelete
                                 placeHolder="дней"
                                 type="arrow-down"
                                 options={autoDelete}
