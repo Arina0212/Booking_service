@@ -106,7 +106,7 @@ export default function LateRegistration({ isOpen, onClose, isLoading = false, s
                                 </div>
                             </>
                         )}
-                        {!me?.telegram && (
+                        {!profileData?.telegram && (
                             <>
                                 <p className="dialog__content-sub_title">Telegram</p>
                                 <div className="dialog__content-input input_white">
