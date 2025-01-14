@@ -9,10 +9,10 @@ type Email = { email: string };
 export type InviteByEmails = {
     event_id?: number;
     users_emails?: Email[];
-    previousUrl: string;
+    previousUrl?: string;
 };
 
-function InviteComponent({ previousUrl }: InviteByEmails) {
+function InviteComponent({ event_id }: InviteByEmails) {
     const [emails, setEmails] = useState<Email[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const isValidEmail = (email: string) => /^[\w-\\.]+@+[\w-]+\.[a-z]{2,4}$/i.test(email);
@@ -30,15 +30,11 @@ function InviteComponent({ previousUrl }: InviteByEmails) {
         setEmails(newEmails);
     };
 
-    const extractLastDigits = (url: string): number | null => {
-        const match = url.match(/(\d+)$/);
-        return match ? parseInt(match[1], 10) : null;
-    };
-
-    const eventId = extractLastDigits(previousUrl);
     const dispatch = useAppDispatch();
     const handleSendInvitations = () => {
-        dispatch(sendOnEmails({ event_id: Number(eventId), users_emails: emails }));
+        if (event_id) {
+            dispatch(sendOnEmails({ event_id: event_id, users_emails: emails }));
+        }
     };
 
     return (

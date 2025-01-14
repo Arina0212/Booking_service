@@ -220,20 +220,7 @@ export default function EventPage() {
                                                         <button onClick={openCancelDialog} className="event__card_closed" type="button">
                                                             Завершить
                                                         </button>
-                                                        <Link
-                                                            to={
-                                                                {
-                                                                    pathname: AppRoute.Invite,
-                                                                    state: { from: window.location.href },
-                                                                    hash: window.location.href,
-                                                                } as {
-                                                                    pathname: string;
-                                                                    state: { from: string };
-                                                                    hash: string;
-                                                                }
-                                                            }
-                                                            className="event__card-btn btn_black"
-                                                        >
+                                                        <Link to={AppRoute.Invite} className="event__card-btn btn_black">
                                                             Пригласить людей
                                                         </Link>
                                                     </>

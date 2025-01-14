@@ -85,6 +85,7 @@ export type EventViewData = {
     state: string;
     online_link: string;
     photo_url: string | null;
+    unique_key: string | null;
     schedule_url: string | null;
     creator: {
         first_name: string;
