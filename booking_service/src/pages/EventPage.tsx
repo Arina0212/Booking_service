@@ -40,7 +40,6 @@ export default function EventPage() {
 
             if (auth === AuthorizationStatus.Auth && event?.id) {
                 dispatch(fetchIsMember({ id: event?.id }));
-                dispatch(getInfoRegisterForEvent({ id: urlParams.id }));
             }
         }
     }, [auth, dispatch, urlParams.id]);
@@ -52,6 +51,15 @@ export default function EventPage() {
     useEffect(() => {
         if (auth === AuthorizationStatus.Auth && me?.email === event?.creator.contacts.email && event?.id) {
             dispatch(fetchListMembers({ id: event?.id }));
+            if (event?.status === 'close') {
+                if (event.unique_key) {
+                    dispatch(getInfoRegisterForEvent({ id: event.unique_key }));
+                }
+            } else {
+                if (urlParams.id) {
+                    dispatch(getInfoRegisterForEvent({ id: urlParams.id }));
+                }
+            }
         }
     }, [auth, dispatch, event?.creator.contacts.email, event?.id, me?.email, urlParams.id]);
     const isLoadingInfoForRegister = useAppSelector(getLoadingInfoForRegister);
