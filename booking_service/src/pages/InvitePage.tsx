@@ -29,8 +29,23 @@ export default function InvitePage() {
                         </>
                     ) : (
                         <>
-                            {/*<p className="invite__item-link">{previousUrl.replace(/^#/, '')}</p>
-                            <CopyButtonWithFeedback textToCopy={previousUrl.replace(/^#/, '')} isIcon={true} />*/}
+                            {event?.status === 'close' ? (
+                                <>
+                                    <p className="invite__item-link">{`https://booking-service-ochre.vercel.app/events/${event.unique_key}`}</p>
+                                    <CopyButtonWithFeedback
+                                        textToCopy={`https://booking-service-ochre.vercel.app/events/${event.unique_key}`}
+                                        isIcon={true}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <p className="invite__item-link">{`https://booking-service-ochre.vercel.app/events/${event?.id}`}</p>
+                                    <CopyButtonWithFeedback
+                                        textToCopy={`https://booking-service-ochre.vercel.app/events/${event?.id}`}
+                                        isIcon={true}
+                                    />
+                                </>
+                            )}
                         </>
                     )}
                 </div>
