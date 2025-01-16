@@ -7,13 +7,14 @@ interface EventsBlockProps {
     title: string;
     events?: EventsShortData;
     isLoading?: boolean | undefined;
+    vCount: number;
 }
 
-export default function EventsBlock({ title, events = [], isLoading }: EventsBlockProps) {
-    const [visibleCount, setVisibleCount] = useState(4);
+export default function EventsBlock({ title, events = [], isLoading, vCount }: EventsBlockProps) {
+    const [visibleCount, setVisibleCount] = useState(vCount);
 
     const handleShowMore = () => {
-        setVisibleCount((prevCount) => prevCount + 4);
+        setVisibleCount((prevCount) => prevCount + vCount);
     };
     return (
         <section className="main__events">

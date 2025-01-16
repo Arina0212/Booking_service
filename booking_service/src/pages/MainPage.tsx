@@ -183,21 +183,27 @@ export default function MainPage() {
                         <>
                             {counter > 0 && filteredEvents?.length === 0 && <p>По вашему запросу ничего не найдено</p>}
                             {filteredEvents && filteredEvents?.length > 0 && counter !== 0 ? (
-                                <EventsBlock title={'Результаты поиска'} isLoading={isLoadingFiltered} events={filteredEvents} />
+                                <EventsBlock title={'Результаты поиска'} isLoading={isLoadingFiltered} events={filteredEvents} vCount={8} />
                             ) : (
                                 <>
                                     {auth !== AuthorizationStatus.Auth ? (
-                                        <EventsBlock isLoading={isLoading} title={'Все мероприятия'} events={events} />
+                                        <EventsBlock isLoading={isLoading} title={'Все мероприятия'} events={events} vCount={8} />
                                     ) : (
                                         <>
                                             {myEvents && myEvents?.length > 0 && (
-                                                <EventsBlock isLoading={isMyLoading} title={'Мои мероприятия'} events={myEvents} />
+                                                <EventsBlock
+                                                    isLoading={isMyLoading}
+                                                    title={'Мои мероприятия'}
+                                                    events={myEvents}
+                                                    vCount={4}
+                                                />
                                             )}
                                             {participateEvents && participateEvents.length > 0 && (
                                                 <EventsBlock
                                                     isLoading={isParticipateLoading}
                                                     title={'Мероприятия с моим участием'}
                                                     events={participateEvents}
+                                                    vCount={4}
                                                 />
                                             )}
                                             {otherEvents && otherEvents.length > 0 && (
@@ -205,6 +211,7 @@ export default function MainPage() {
                                                     isLoading={isOtherLoading}
                                                     title={'Открытые мероприятия на площадке'}
                                                     events={otherEvents}
+                                                    vCount={8}
                                                 />
                                             )}
                                         </>
